@@ -1,25 +1,34 @@
-
+import { useState } from "react";
 import Layout from "../../components/layout/Layout";
 import About from "../about/About";
 import Contact from "../contact/Contact";
 import Home from "../home/Home";
 import Service from "../service/Service";
+import Signup from "../registration/signup";
 
 export default function HomePage() {
-  
-
+ 
   return (
     <Layout>
-      {/* homepage */}
+      {/* Homepage */}
       <Home />
-      {/* about page */}
-      <About />
 
-      {/* service */}
-      <Service />
+      {/* About */}
+      <div style={{ marginTop: "-60px" }} id="about">
+        <About />
+      </div>
 
-      {/* contact */}
-      <Contact />
+      {/* Service */}
+      <div style={{ marginTop: "-100px" }} id="services">
+        <Service />
+      </div>
+
+      {/* Contact */}
+      <div style={{ marginTop: "-100px" }} id="contact">
+        <Contact />
+      </div>
+
+
     </Layout>
   );
 }

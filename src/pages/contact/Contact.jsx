@@ -3,6 +3,7 @@ import Layout from "../../components/layout/Layout";
 import toast from "react-hot-toast";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { fireDB } from "../../firebase/FirebaseConfig";
+import { motion } from "framer-motion";
 
 export default function Contact() {
   const [contact, setContact] = useState({
@@ -32,7 +33,6 @@ export default function Contact() {
       await addDoc(contactRef, contact);
       toast.success("Message sent successfully");
 
-      // Reset form
       setContact({
         name: "",
         email: "",
@@ -49,119 +49,107 @@ export default function Contact() {
 
   return (
     <Layout>
-      <div
-        id="contact"
-        className="min-h-screen pt-20 px-4 py-12 bg-gradient-to-br from-violet-100 via-white to-violet-200"
-      >
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white py-20 px-4">
         {/* Header */}
-        <h1 className="text-3xl sm:text-4xl font-bold text-center text-violet-700 mb-3">
-          Contact Me
-        </h1>
-        <p className="text-center text-gray-600 text-lg mb-12">
-          I’d love to hear from you! Feel free to reach out for any project,
-          collaboration, or just to say hello.
-        </p>
+        <motion.h1
+          className="text-4xl font-bold text-center text-yellow-400 mb-3"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          Contact MK ENTERPRISES and Management Service
+        </motion.h1>
+        <motion.p
+          className="text-center text-gray-300 text-lg mb-12"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          We're here to help. Reach out for partnerships, services, or inquiries.
+        </motion.p>
 
-        {/* Form and Info */}
-        <div className="flex flex-col lg:flex-row items-start justify-center gap-10">
-          {/* Contact Form */}
-          <form
+        {/* Main Section */}
+        <div className="flex flex-col lg:flex-row items-start justify-center gap-10 max-w-6xl mx-auto">
+          {/* Form */}
+          <motion.form
             onSubmit={submitContact}
-            className="bg-white px-6 py-8 rounded-md shadow-md border border-violet-300 space-y-4 w-full max-w-sm"
+            className="w-full max-w-md backdrop-blur-lg bg-white/5 border border-yellow-500 rounded-2xl p-8 space-y-5 shadow-xl"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
           >
+            <h2 className="text-2xl text-yellow-300 font-semibold mb-2">Send a Message</h2>
+
             <div>
-              <label className="block mb-1 text-xs text-gray-700 font-medium">Name</label>
+              <label className="block text-sm text-yellow-100 mb-1">Name</label>
               <input
                 type="text"
                 name="name"
                 value={contact.name}
                 onChange={handleChange}
-                placeholder="Your name"
-                className="w-full px-2 py-1 border text-xs border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-violet-400"
+                placeholder="name"
+                className="w-full px-4 py-2 rounded bg-black/40 border border-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 required
               />
             </div>
+
             <div>
-              <label className="block mb-1 text-xs text-gray-700 font-medium">Email</label>
+              <label className="block text-sm text-yellow-100 mb-1">Email</label>
               <input
                 type="email"
                 name="email"
                 value={contact.email}
                 onChange={handleChange}
-                placeholder="you@example.com"
-                className="w-full px-2 py-1 border text-xs border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-violet-400"
+                placeholder="name@example.com"
+                className="w-full px-4 py-2 rounded bg-black/40 border border-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 required
               />
             </div>
+
             <div>
-              <label className="block mb-1 text-xs text-gray-700 font-medium">Message</label>
+              <label className="block text-sm text-yellow-100 mb-1">Message</label>
               <textarea
-                rows="3"
                 name="message"
                 value={contact.message}
                 onChange={handleChange}
-                placeholder="Your message..."
-                className="w-full px-2 py-1 border text-xs border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-violet-400"
+                placeholder="Your message here..."
+                rows="4"
+                className="w-full px-4 py-2 rounded bg-black/40 border border-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 required
-              ></textarea>
+              />
             </div>
+
             <button
               type="submit"
-              className="bg-violet-600 text-white text-xs px-3 py-1 rounded hover:bg-violet-700 transition"
+              className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-medium py-2 rounded transition"
               disabled={loading}
             >
-              {loading ? "Sending..." : "Send"}
+              {loading ? "Sending..." : "Send Message"}
             </button>
-          </form>
+          </motion.form>
 
-          {/* Contact Info */}
-          <div className="text-sm text-gray-700 space-y-5 max-w-sm">
-            <div>
-              <h3 className="font-semibold text-violet-700 text-sm mb-1">Email</h3>
-              <p>
-                <a href="mailto:shreyay4060@gmail.com" className="hover:underline">
-                  shreyay4060@gmail.com
-                </a>
-              </p>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-violet-700 text-sm mb-1">Phone</h3>
-              <p>
-                <a href="tel:8421915279" className="hover:underline">
-                  8421915279
-                </a>
-              </p>
-            </div>
+          {/* Info Box */}
+          <motion.div
+            className="text-gray-300 w-full max-w-md space-y-5 p-6 rounded-2xl border border-gray-700 bg-black/40 shadow-lg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.7 }}
+          >
+            <h2 className="text-2xl text-yellow-300 font-semibold">Company Info</h2>
+            <p><strong>Address:</strong> Office No. 12, Galaxy Complex, Sangli, Maharashtra</p>
+            <p><strong>Email:</strong> admin@mkenterprises.com</p>
+            <p><strong>Phone:</strong> +91 98765 43210</p>
+            <p><strong>Hours:</strong> Mon – Sat, 9:00 AM – 6:00 PM</p>
 
             <div>
-              <h3 className="font-semibold text-violet-700 text-sm mb-1">Location</h3>
-              <p>Kadepur, Sangli, Maharashtra</p>
+              <h3 className="text-yellow-400 font-medium text-lg">Follow Us</h3>
+              <div className="flex gap-4 mt-2 text-yellow-300">
+                <a href="#" className="hover:underline">🌐 Website</a>
+                <a href="#" className="hover:underline">📘 Facebook</a>
+                <a href="https://www.instagram.com/mk_group.mangement27?igsh=bjg5eno2cmk2Ymc0" className="hover:underline">📷 Instagram</a>
+              </div>
             </div>
-
-            <div>
-              <h3 className="font-semibold text-violet-700 text-sm mb-1">Socials</h3>
-              <p>
-                <a
-                  href="https://github.com/shreyay4060"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-violet-600 hover:underline"
-                >
-                  GitHub
-                </a>{" "}
-                |{" "}
-                <a
-                  href="https://www.linkedin.com/in/shreya-yadav-53286028b"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-violet-600 hover:underline"
-                >
-                  LinkedIn
-                </a>
-              </p>
-            </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </Layout>

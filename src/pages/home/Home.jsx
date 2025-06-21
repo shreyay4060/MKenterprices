@@ -38,7 +38,10 @@ export default function Home() {
   }, []);
 
   return (
-    <div id="home" className="relative mt-12 lg:mt-0 min-h-screen overflow-hidden">
+    <div
+      id="home"
+      className="relative mt-20 lg:mt-0 min-h-screen overflow-hidden"
+    >
       {/* Background Carousel */}
       <div
         className="absolute inset-0 bg-cover bg-center transition-all duration-[2000ms]"
@@ -73,18 +76,18 @@ export default function Home() {
           transition={{ delay: 1.2, duration: 1 }}
           className="mt-6 text-lg max-w-2xl text-white leading-relaxed drop-shadow"
         >
-          We specialize in delivering tailored business services, workforce solutions,
-          and operational excellence across industries.
+          We specialize in delivering tailored business services, workforce
+          solutions, and operational excellence across industries.
         </motion.p>
 
-        <motion.a
-          href="#about"
+        <motion.button
+          
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="mt-8 inline-block bg-yellow-400 hover:bg-yellow-400 text-black font-semibold px-6 py-3 rounded-full shadow-md transition-all duration-300"
+          className="mt-8 inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-3 rounded-full shadow-md transition-all duration-300"
         >
-          Explore Services
-        </motion.a>
+          Get Started
+        </motion.button>
       </div>
     </div>
   );

@@ -1,9 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
+import Layout from "../../components/layout/Layout";
 
 export default function WorkforceService() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-violet-100 via-white to-violet-200 px-6 py-20 text-gray-800">
+    <Layout>
+
+    <div className="min-h-screen bg-gradient-to-br mt-35 lg:mt-5  from-violet-100 via-white to-violet-200 px-6 py-20 text-gray-800">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -20,8 +23,9 @@ export default function WorkforceService() {
           src="/images/business-bg.jpg"
           alt="Workforce Management"
           className="rounded-xl shadow-lg w-full max-h-[400px] object-cover"
-        />
+          />
       </motion.div>
     </div>
+          </Layout>
   );
 }

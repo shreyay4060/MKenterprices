@@ -7,13 +7,11 @@ import { auth, fireDB } from "../../firebase/FirebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import Loader from "../../components/loader/Loader";
 
-export default function Signup() {
-  // navigation
+export default function Signup({ onClose }) {
   const navigate = useNavigate();
   const context = useContext(myContext);
   const { loading, setLoading } = context;
 
-  // signup state
   const [userSignup, setUserSignup] = useState({
     name: "",
     email: "",
@@ -21,23 +19,16 @@ export default function Signup() {
     role: "user",
   });
 
-  // handleChange function
   function handleChangeFun(event) {
     const { name, value } = event.target;
-
-    setUserSignup((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-    // console.log(signup)
+    setUserSignup((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   }
 
-  // signup function
   const userSignupFun = async (e) => {
-    e.preventDefault(); // ✅ This prevents page reload
-
+    e.preventDefault();
     const { name, email, password } = userSignup;
     if (!name || !email || !password) {
       return toast.error("Please fill all the fields");
@@ -46,7 +37,6 @@ export default function Signup() {
     setLoading(true);
     try {
       const users = await createUserWithEmailAndPassword(auth, email, password);
-
       const user = {
         name,
         email,
@@ -63,12 +53,7 @@ export default function Signup() {
       const userSignupRef = collection(fireDB, "user");
       await addDoc(userSignupRef, user);
 
-      setUserSignup({
-        name: "",
-        email: "",
-        password: "",
-      });
-
+      setUserSignup({ name: "", email: "", password: "" });
       toast.success("You are signed up successfully");
       navigate("/homePage");
     } catch (error) {
@@ -80,22 +65,26 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-100 via-white to-violet-200 px-4">
-      {/* loader */}
-      <div className=" flex justify-center mt-10">{loading && <Loader />}</div>
-      <div className="w-70 max-w-md bg-white px-5 py-8 rounded-xl shadow-xl">
-        <h2 className="text-2xl font-bold text-center text-violet-700 mb-6">
-          Create a new account
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-xs bg-black/60">
+      {loading && <Loader />}
+      <div className="relative w-full max-w-md bg-gradient-to-br from-gray-900 via-gray-800 to-black px-6 py-8 rounded-xl shadow-2xl border border-violet-600">
+        <button
+          className="absolute top-2 right-3 text-gray-300 hover:text-white text-xl"
+          onClick={onClose}
+        >
+          &times;
+        </button>
+        <h2 className="text-2xl font-bold text-center text-yellow-400 mb-6">
+          Create a New Account
         </h2>
         <form onSubmit={userSignupFun} className="space-y-4">
-
           <input
             type="text"
             onChange={handleChangeFun}
             value={userSignup.name}
             name="name"
             placeholder="Full Name"
-            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-violet-400"
+            className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
           <input
             type="email"
@@ -103,7 +92,7 @@ export default function Signup() {
             onChange={handleChangeFun}
             name="email"
             placeholder="Email"
-            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-violet-400"
+            className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
           <input
             type="password"
@@ -111,20 +100,20 @@ export default function Signup() {
             name="password"
             value={userSignup.password}
             placeholder="Password"
-            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-violet-400"
+            className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
           <button
             type="submit"
-            className="w-full bg-violet-600 text-white py-2 rounded hover:bg-violet-700 transition duration-200"
+            className="w-full bg-yellow-500 text-black font-semibold py-2 rounded hover:bg-yellow-600 transition duration-200"
           >
             Sign Up
           </button>
         </form>
-        <p className="mt-4 text-center text-sm text-gray-600">
-          Already have an account?{" "}
+        <p className="mt-4 text-center text-sm text-gray-400">
+          Already have an account?{' '}
           <span
             onClick={() => navigate("/login")}
-            className="text-violet-700 font-semibold cursor-pointer hover:underline"
+            className="text-yellow-400 font-semibold cursor-pointer hover:underline"
           >
             Login
           </span>
