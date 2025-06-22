@@ -24,7 +24,7 @@ export default function Navbar() {
 
         {/* Links */}
         <ul className="flex gap-6 text-white">
-          {["homePage", "about", "service", "contact"].map((route, index) => (
+          {["homePage", "about", "service", "contact" ,"adminDashboard"].map((route, index) => (
             <li
               key={index}
               className="relative group transition duration-300 hover:scale-110 hover:text-yellow-300"
