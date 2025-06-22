@@ -5,6 +5,7 @@ import Contact from "../contact/Contact";
 import Home from "../home/Home";
 import Service from "../service/Service";
 import Signup from "../registration/signup";
+import AvailableWork from "../work/AvailableWork";
 
 export default function HomePage() {
  
@@ -14,13 +15,18 @@ export default function HomePage() {
       <Home />
 
       {/* About */}
-      <div style={{ marginTop: "-60px" }} id="about">
+      <div style={{ marginTop: "-30px" }} id="about">
         <About />
       </div>
 
       {/* Service */}
-      <div style={{ marginTop: "-100px" }} id="services">
+      <div  id="services">
         <Service />
+      </div>
+
+      {/* workInfo Page */}
+      <div  id="availableWork">
+    <AvailableWork />
       </div>
 
       {/* Contact */}

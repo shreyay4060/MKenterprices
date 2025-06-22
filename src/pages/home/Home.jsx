@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion"; // ✅ For animation
+import { useNavigate } from "react-router";
 
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -8,6 +9,8 @@ export default function Home() {
     "/images/business-bg2.jpg",
     "/images/business-bg3.jpg",
   ];
+
+  const navigate = useNavigate();
 
   // Typed.js animation
   useEffect(() => {
@@ -84,6 +87,7 @@ export default function Home() {
           
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          onClick={()=>navigate("/workInfo")}
           className="mt-8 inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-3 rounded-full shadow-md transition-all duration-300"
         >
           Get Started

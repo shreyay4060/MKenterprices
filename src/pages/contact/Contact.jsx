@@ -29,7 +29,7 @@ export default function Contact() {
     setLoading(true);
 
     try {
-      const contactRef = collection(fireDB, "portfolioContacts");
+      const contactRef = collection(fireDB, "contactMsg");
       await addDoc(contactRef, contact);
       toast.success("Message sent successfully");
 

@@ -14,6 +14,11 @@ import Facilyty from './pages/service/Facility'
 import Logistics from './pages/service/Logistics'
 import Admin from './pages/service/Admin'
 import ScrollTop from './components/scrollTop/ScrollTop'
+import UserDashboard from './pages/user/UserDashboard'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import WorkInfo from './pages/work/WorkInfo'
+import AddWork from './pages/addWork/AddWork'
+import UserWorkInfo from './pages/work/UserWorkInfo'
 
 
 export default function App() {
@@ -33,9 +38,17 @@ export default function App() {
         <Route path = "/signup" element={<Signup />} />
         <Route path = "/workforce" element={<WorkforceService />} />
         <Route path="/facility" element={<Facilyty />} />
-        {/* <Route path = "/facility" element={<Facility />} /> */}
         <Route path = "/logistics" element={<Logistics />} />
         <Route path='/admin' element={<Admin />} />
+
+        <Route path = "/workInfo" element={<WorkInfo />} />
+        <Route path="/addWork" element={<AddWork />} />
+
+        <Route path="/work/:id" element={<UserWorkInfo />} />
+
+
+        <Route path="/userDashboard" element={<UserDashboard />} />
+        <Route path="/adminDashboard" element = {<AdminDashboard />} />
       </Routes>
     </Router>
       
