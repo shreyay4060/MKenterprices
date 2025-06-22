@@ -2,7 +2,7 @@ import React from 'react'
 import {BrowserRouter as Router , Routes , Route} from "react-router-dom"
 import HomePage from './pages/homePage/HomePage'
 import Login from './pages/registration/Login'
-import Signup from './pages/registration/signup'
+import Signup from './pages/registration/Signup'
 import { Toaster } from 'react-hot-toast';
 import MyState from "./context/myState"
 import WorkforceService from './pages/service/WorkforceService'
