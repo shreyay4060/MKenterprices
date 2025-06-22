@@ -4,7 +4,6 @@ import About from "../about/About";
 import Contact from "../contact/Contact";
 import Home from "../home/Home";
 import Service from "../service/Service";
-import Signup from "../registration/signup";
 import AvailableWork from "../work/AvailableWork";
 
 export default function HomePage() {
