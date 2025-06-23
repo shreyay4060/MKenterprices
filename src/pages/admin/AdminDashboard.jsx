@@ -16,13 +16,7 @@ export default function AdminDashboard() {
   const { getAllUser , getAllWork , getAllContactMsg} = context;
 
 
-  const admin = {
-    name: "Mukund Kumbhar",
-    role: "Admin & Manager",
-    email: "mkenterprises@gmail.com",
-    joined: "March 2024",
-    profilePic: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-  };
+  const admin = JSON.parse(localStorage.getItem("users"))
 
   return (
     <Layout>
@@ -51,7 +45,7 @@ export default function AdminDashboard() {
             transition={{ delay: 0.2, duration: 0.6 }}
           >
             <img
-              src={admin.profilePic}
+              src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
               alt="Admin"
               className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-yellow-400 shadow-md object-cover"
             />
@@ -61,7 +55,7 @@ export default function AdminDashboard() {
               </h2>
               <p className="text-sm text-gray-300">{admin.role}</p>
               <p className="text-sm text-gray-400 mt-1">Email: {admin.email}</p>
-              <p className="text-sm text-gray-400">Joined: {admin.joined}</p>
+              <p className="text-sm text-gray-400">Joined: {admin.date}</p>
             </div>
           </motion.div>
 

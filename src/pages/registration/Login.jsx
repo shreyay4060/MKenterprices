@@ -3,8 +3,10 @@ import { useNavigate } from "react-router";
 import Loader from "../../components/loader/Loader";
 import myContext from "../../context/myContext";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase/FirebaseConfig";
+import { auth, fireDB } from "../../firebase/FirebaseConfig";
 import toast from "react-hot-toast";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import Layout from "../../components/layout/Layout";
 
 export default function Login({ onClose }) {
   const navigate = useNavigate();
@@ -28,28 +30,50 @@ export default function Login({ onClose }) {
     const { email, password } = userLogin;
 
     if (!email || !password) {
-      return toast.error("Please fill in all fields");
+      toast.error("Please fill in all fields");
+      return;
     }
 
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      toast.success("Login successful");
-      navigate("/homePage");
+      // Firebase auth
+      const users = await signInWithEmailAndPassword(auth, email, password);
+      const q = query(
+        collection(fireDB, "user"),
+        where("uid", "==", users.user.uid)
+      );
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0].data();
+        localStorage.setItem("users", JSON.stringify(userDoc));
+        toast.success("Login successful");
+
+        setUserLogin({ email: "", password: "" });
+
+        if (userDoc.role === "user") {
+          navigate("/userDashboard");
+        } else {
+          navigate("/adminDashboard");
+        }
+      } else {
+        toast.error("User not found in Firestore");
+      }
     } catch (error) {
-      console.error(error);
-      toast.error("Invalid credentials or user not found");
+      console.error("Login Error:", error);
+      toast.error("Invalid credentials or network error");
     } finally {
       setLoading(false);
     }
   };
 
+  
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/60">
+    <Layout>
       {loading && <Loader />}
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/60">
       <div className="relative w-full max-w-md bg-gradient-to-br from-gray-900 via-gray-800 to-black px-6 py-8 rounded-xl shadow-2xl border border-yellow-500">
-        
-        {/* Close button */}
         <button
           onClick={onClose}
           className="absolute top-2 right-3 text-gray-300 hover:text-white text-xl"
@@ -80,7 +104,7 @@ export default function Login({ onClose }) {
           />
           <button
             type="submit"
-            className="w-full bg-yellow-500 text-black font-semibold py-2 rounded hover:bg-yellow-600 transition"
+            className="w-full bg-yellow-500 active:bg-orange-600 text-black font-semibold py-2 rounded hover:bg-yellow-600 transition"
           >
             Login
           </button>
@@ -89,10 +113,7 @@ export default function Login({ onClose }) {
         <p className="mt-4 text-center text-sm text-gray-400">
           Don’t have an account?{" "}
           <span
-            onClick={() => {
-              onClose(); 
-              navigate("/signup");
-            }}
+            onClick={() => navigate("/signup")}
             className="text-yellow-400 font-semibold cursor-pointer hover:underline"
           >
             Sign up
@@ -100,5 +121,6 @@ export default function Login({ onClose }) {
         </p>
       </div>
     </div>
+    </Layout>
   );
 }

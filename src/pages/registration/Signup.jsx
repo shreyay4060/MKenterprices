@@ -6,6 +6,7 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { auth, fireDB } from "../../firebase/FirebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import Loader from "../../components/loader/Loader";
+import Layout from "../../components/layout/Layout";
 
 export default function Signup({ onClose }) {
   const navigate = useNavigate();
@@ -64,9 +65,9 @@ export default function Signup({ onClose }) {
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-xs bg-black/60">
+  return (<Layout>
       {loading && <Loader />}
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-xs bg-black/60">
       <div className="relative w-full max-w-md bg-gradient-to-br from-gray-900 via-gray-800 to-black px-6 py-8 rounded-xl shadow-2xl border border-violet-600">
         <button
           className="absolute top-2 right-3 text-gray-300 hover:text-white text-xl"
@@ -120,5 +121,6 @@ export default function Signup({ onClose }) {
         </p>
       </div>
     </div>
+    </Layout>
   );
 }

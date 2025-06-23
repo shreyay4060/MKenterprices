@@ -11,7 +11,7 @@ export default function AvailableWork() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-35 pb-20 px-4 sm:px-10 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
+      <div className="min-h-screen pt-50 lg:pt-26 pb-20 px-4 sm:px-10 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
         <div className="max-w-7xl mx-auto">
           {/* Header Section */}
           <div className="flex justify-between items-center mb-10">
@@ -43,7 +43,7 @@ export default function AvailableWork() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {getAllWork &&
               getAllWork.map((item) => (
-                <Link to={`/work/${item.id}`}>
+                <Link to={`/work/${item.id}`} key={item.id}>
                   <motion.div
                     key={item.id}
                     initial={{ opacity: 0, scale: 0.95 }}

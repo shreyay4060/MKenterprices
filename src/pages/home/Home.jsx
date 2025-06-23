@@ -87,7 +87,7 @@ export default function Home() {
           
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={()=>navigate("/workInfo")}
+          onClick={()=>navigate("/availableWork")}
           className="mt-8 inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-3 rounded-full shadow-md transition-all duration-300"
         >
           Get Started

@@ -6,13 +6,28 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const links = [
+  const user = JSON.parse(localStorage.getItem("users"));
+  const role = user?.role;
+
+  // ✅ Define links based on role
+  const baseLinks = [
     { path: "/homePage", label: "Home" },
     { path: "/about", label: "About" },
     { path: "/service", label: "Service" },
     { path: "/contact", label: "Contact" },
-    { path: "/adminDashboard", label: "Admin" },
   ];
+
+  // ✅ Add dashboard link conditionally
+  if (role === "admin") {
+    baseLinks.push({ path: "/adminDashboard", label: user?.name || "Admin" });
+  } else if (role === "user") {
+    baseLinks.push({ path: "/userDashboard", label: user?.name || "User" });
+  }
+
+  const logoutFun = () => {
+    localStorage.clear("users");
+    navigate("/login");
+  };
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a] border-b shadow-md">
@@ -33,17 +48,22 @@ export default function Navbar() {
 
         {/* Navigation Links */}
         <ul className="flex gap-6 text-white">
-          {links.map((link, index) => {
+          {baseLinks.map((link, index) => {
             const isActive = location.pathname === link.path;
 
             return (
               <li
                 key={index}
                 className={`relative group transition duration-300 ${
-                  isActive ? "text-yellow-400 scale-110" : "hover:text-yellow-300 hover:scale-105"
+                  isActive
+                    ? "text-yellow-400 scale-110"
+                    : "hover:text-yellow-300 hover:scale-105"
                 }`}
               >
-                <Link to={link.path} className="inline-block capitalize font-semibold">
+                <Link
+                  to={link.path}
+                  className="inline-block capitalize font-semibold"
+                >
                   {link.label}
                   {isActive && (
                     <motion.div
@@ -57,13 +77,22 @@ export default function Navbar() {
           })}
         </ul>
 
-        {/* Login Button */}
-        <button
-          onClick={() => navigate("/login")}
-          className="transition duration-300 hover:scale-105 hover:bg-yellow-500 bg-yellow-400 text-black px-4 py-1.5 rounded-md font-semibold shadow-sm"
-        >
-          Login
-        </button>
+        {/* Login / Logout Button */}
+        {user ? (
+          <button
+            onClick={logoutFun}
+            className="transition duration-300 hover:scale-105 hover:bg-yellow-500 bg-yellow-400 text-black px-4 py-1.5 rounded-md font-semibold shadow-sm"
+          >
+            Logout
+          </button>
+        ) : (
+          <button
+            onClick={() => navigate("/login")}
+            className="transition duration-300 hover:scale-105 hover:bg-yellow-500 bg-yellow-400 text-black px-4 py-1.5 rounded-md font-semibold shadow-sm"
+          >
+            Login
+          </button>
+        )}
       </div>
     </div>
   );
