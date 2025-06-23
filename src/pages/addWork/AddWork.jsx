@@ -86,7 +86,7 @@ export default function AddWork() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-[100px] px-8 lg:px-90 lg:mt-10 mt-30 pb-20  bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
+      <div className="min-h-screen pt-[100px] px-4 lg:px-90 lg:mt-10 mt-30 pb-20  bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
