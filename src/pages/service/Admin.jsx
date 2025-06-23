@@ -15,7 +15,7 @@ export default function Admin() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-37 lg:pt-18 mb-9 bg-gradient-to-br from-black via-gray-900 to-gray-800 px-3 py-8 text-white">
+      <div className="min-h-screen pt-37 lg:pt-18 mt-20 lg:mt-10 mb-9 bg-gradient-to-br from-black via-gray-900 to-gray-800 px-3 py-8 text-white">
         <div className="max-w-2xl mx-auto bg-gray-900 shadow-xl rounded-xl p-6 border border-violet-700">
           
           {/* Heading */}

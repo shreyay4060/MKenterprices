@@ -26,7 +26,7 @@ export default function AdminDashboard() {
 
   return (
     <Layout>
-      <div className="min-h-screen mb-9 pt-[100px] px-4  py-8 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
+      <div className="min-h-screen pb-20 pt-[100px] px-4  py-8 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
         <div className="max-w-6xl mx-auto space-y-10">
           {/* Header */}
           <motion.div

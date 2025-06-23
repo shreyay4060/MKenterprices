@@ -28,7 +28,7 @@ export default function HomePage() {
       </div>
 
       {/* Contact */}
-      <div style={{ paddingTop:"-300px" }} id="contact">
+      <div style={{marginTop:"-70px" }} id="contact">
         <Contact />
       </div>
     </Layout>
