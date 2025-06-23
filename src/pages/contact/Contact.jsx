@@ -49,7 +49,7 @@ export default function Contact() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white py-20 px-4">
+      <div className="min-h-screen pt-52 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white  px-4">
         {/* Header */}
         <motion.h1
           className="text-4xl font-bold text-center text-yellow-400 mb-3"

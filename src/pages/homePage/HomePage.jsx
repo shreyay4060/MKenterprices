@@ -7,33 +7,30 @@ import Service from "../service/Service";
 import AvailableWork from "../work/AvailableWork";
 
 export default function HomePage() {
- 
   return (
     <Layout>
       {/* Homepage */}
       <Home />
 
       {/* About */}
-      <div style={{ marginTop: "-30px" }} id="about">
+      <div style={{ marginTop: "-150px" }} id="about">
         <About />
       </div>
 
       {/* Service */}
-      <div  id="services">
+      <div id="services" style={{ marginTop: "-150px" }}>
         <Service />
       </div>
 
-      {/* workInfo Page */}
-      <div  id="availableWork">
-    <AvailableWork />
+      {/* Available workInfo Page */}
+      <div id="availableWork" style={{ marginTop: "-150px" }}>
+        <AvailableWork />
       </div>
 
       {/* Contact */}
-      <div style={{ marginTop: "-100px" }} id="contact">
+      <div style={{ paddingTop:"-300px" }} id="contact">
         <Contact />
       </div>
-
-
     </Layout>
   );
 }

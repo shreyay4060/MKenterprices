@@ -11,7 +11,7 @@ export default function AvailableWork() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-20 pb-20 px-4 sm:px-10 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
+      <div className="min-h-screen pt-35 pb-20 px-4 sm:px-10 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
         <div className="max-w-7xl mx-auto">
           {/* Header Section */}
           <div className="flex justify-between items-center mb-10">

@@ -36,7 +36,7 @@ export default function WorkInfo() {
           )}
 
           {/* Work Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
             {getAllWork && getAllWork.map((item) => (
               <div
                 key={item.id}
@@ -47,7 +47,7 @@ export default function WorkInfo() {
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-48 object-cover rounded-lg border border-violet-600 mb-3"
+                    className=" h-48 object-cover rounded-lg my-6 mb-3"
                   />
                 )}
                 <p className="text-sm text-gray-400 mb-1">

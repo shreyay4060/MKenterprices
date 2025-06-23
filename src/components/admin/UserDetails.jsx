@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import myContext from '../../context/myContext';
+import { useNavigate } from 'react-router';
 
 export default function UserDetails() {
   const context = useContext(myContext);
   const { getAllUser, deleteUserFun } = context;
+  const navigate = useNavigate();
 
   return (
     <div className="overflow-x-auto mt-4">
@@ -17,13 +19,14 @@ export default function UserDetails() {
             <th className="px-6 py-3 border-r border-violet-600">Email</th>
             <th className="px-6 py-3 border-r border-violet-600">Role</th>
             <th className="px-6 py-3 border-r border-violet-600">Joined Date</th>
-            <th className="px-6 py-3">Action</th>
+            <th className="px-6 py-3">Edit</th>
+            <th className="px-6 py-3">Delete</th>
           </tr>
         </thead>
         <tbody className="bg-gray-800 divide-y divide-violet-600">
           {getAllUser.length === 0 ? (
             <tr>
-              <td colSpan="7" className="text-center py-4 text-red-400">
+              <td colSpan="8" className="text-center py-4 text-red-400">
                 No users found.
               </td>
             </tr>
@@ -37,6 +40,14 @@ export default function UserDetails() {
                 <td className="px-6 py-3 border-r border-violet-700">{item.role || 'User'}</td>
                 <td className="px-6 py-3 border-r border-violet-700">
                   {item?.time?.toDate?.().toLocaleDateString() || 'N/A'}
+                </td>
+                <td className="px-6 py-3">
+                  <button
+                    onClick={() => navigate(`/updateUserDetail/${item.id}`)}
+                    className="text-blue-400 hover:underline"
+                  >
+                    Edit
+                  </button>
                 </td>
                 <td className="px-6 py-3">
                   <button

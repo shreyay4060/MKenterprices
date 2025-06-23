@@ -37,7 +37,8 @@ export default function UserWorkInfo() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white pt-20 px-4 pb-16">
+      <div className="min-h-screen mt-30 lg:mt-5 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white pt-20 px-4 pb-16">
+         <div className='text-2xl mb-6'> Available Work :</div>
         <div className="max-w-3xl mx-auto bg-gray-900  rounded-xl shadow-lg p-6">
           {work ? (
             <>

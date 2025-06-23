@@ -5,7 +5,7 @@ import Layout from "../../components/layout/Layout";
 export default function About() {
   return (
     <Layout>
-      <div id="about" className="min-h-screen pt-25  lg:pt-25 bg-gradient-to-br from-black via-slate-900 to-gray-800 text-white px-6  lg:py-28 ">
+      <div id="about" className="min-h-screen pt-47  lg:pt-25 bg-gradient-to-br from-black via-slate-900 to-gray-800 text-white px-6  lg:py-28 ">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row  gap-12">
 
           {/* Text Section */}

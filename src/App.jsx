@@ -19,6 +19,7 @@ import AdminDashboard from './pages/admin/AdminDashboard'
 import WorkInfo from './pages/work/WorkInfo'
 import AddWork from './pages/addWork/AddWork'
 import UserWorkInfo from './pages/work/UserWorkInfo'
+import UpdateUSerDetail from './components/admin/UpdateUSerDetail'
 
 
 export default function App() {
@@ -41,14 +42,17 @@ export default function App() {
         <Route path = "/logistics" element={<Logistics />} />
         <Route path='/admin' element={<Admin />} />
 
+
+
+        <Route path="/userDashboard" element={<UserDashboard />} />
+        <Route path="/adminDashboard" element = {<AdminDashboard />} />
+
         <Route path = "/workInfo" element={<WorkInfo />} />
         <Route path="/addWork" element={<AddWork />} />
 
         <Route path="/work/:id" element={<UserWorkInfo />} />
 
-
-        <Route path="/userDashboard" element={<UserDashboard />} />
-        <Route path="/adminDashboard" element = {<AdminDashboard />} />
+        <Route path='/updateUSerDetail/:id' element={<UpdateUSerDetail />} />
       </Routes>
     </Router>
       
