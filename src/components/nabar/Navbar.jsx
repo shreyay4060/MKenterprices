@@ -1,11 +1,18 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 export default function Navbar() {
-  
-
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const links = [
+    { path: "/homePage", label: "Home" },
+    { path: "/about", label: "About" },
+    { path: "/service", label: "Service" },
+    { path: "/contact", label: "Contact" },
+    { path: "/adminDashboard", label: "Admin" },
+  ];
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a] border-b shadow-md">
@@ -24,25 +31,30 @@ export default function Navbar() {
           </span>
         </div>
 
-        {/* Links */}
+        {/* Navigation Links */}
         <ul className="flex gap-6 text-white">
-          {["homePage", "about", "service", "contact" ].map((route, index) => (
-            <li
-              key={index}
-              className="relative group transition duration-300 hover:scale-110 hover:text-yellow-300"
-            >
-              <Link to={`/${route}`} className="inline-block relative capitalize">
-                {route === "homePage" ? "Home" : route}
-                <motion.div
-                  layoutId="underline"
-                  className="absolute left-0 -bottom-1 h-0.5 w-full bg-yellow-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"
-                />
-              </Link>
-            </li>
-          ))}
-          <li  className="relative group transition duration-300 hover:scale-110 hover:text-yellow-300">
-            <Link to = {"/adminDashboard"}>Admin</Link>
-          </li>
+          {links.map((link, index) => {
+            const isActive = location.pathname === link.path;
+
+            return (
+              <li
+                key={index}
+                className={`relative group transition duration-300 ${
+                  isActive ? "text-yellow-400 scale-110" : "hover:text-yellow-300 hover:scale-105"
+                }`}
+              >
+                <Link to={link.path} className="inline-block capitalize font-semibold">
+                  {link.label}
+                  {isActive && (
+                    <motion.div
+                      layoutId="underline"
+                      className="absolute left-0 -bottom-1 h-0.5 w-full bg-yellow-400"
+                    />
+                  )}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         {/* Login Button */}
