@@ -14,15 +14,15 @@ export default function WorkerApplication() {
     image: null,
   });
 
-  const navigate = useNavigate()
-
   const [preview, setPreview] = useState(null);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "image" && files[0]) {
-      setWorker((prev) => ({ ...prev, image: files[0] }));
-      setPreview(URL.createObjectURL(files[0]));
+      const file = files[0];
+      setWorker((prev) => ({ ...prev, image: file }));
+      setPreview(URL.createObjectURL(file));
     } else {
       setWorker((prev) => ({ ...prev, [name]: value }));
     }
@@ -56,9 +56,18 @@ export default function WorkerApplication() {
         });
 
         toast.success("Application submitted successfully");
+
+        // Reset form
         setWorker({ name: "", email: "", address: "", contact: "", image: null });
-        navigate("/adminDashboard")
         setPreview(null);
+
+        // Role-based redirection
+        const storedUser = JSON.parse(localStorage.getItem("users"));
+        if (storedUser?.role === "admin") {
+          navigate("/adminDashboard");
+        } else {
+          navigate("/userDashboard");
+        }
       };
 
       reader.readAsDataURL(image);
@@ -70,14 +79,14 @@ export default function WorkerApplication() {
 
   return (
     <Layout>
-      <div className="min-h-screen mt-40 lg:mt-17 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white py-10 px-4">
+      <div className="min-h-screen mt-40 lg:mt-15 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white py-10 px-4">
         <div className="max-w-xl mx-auto bg-gray-900 rounded-xl p-6 shadow-lg border border-yellow-500">
           <h2 className="text-3xl font-bold text-yellow-400 text-center mb-6">
             Worker Application Form
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-             <input
+            <input
               type="file"
               name="image"
               accept="image/*"
@@ -90,10 +99,11 @@ export default function WorkerApplication() {
                 <img
                   src={preview}
                   alt="Preview"
-                  className="w-24 h-24 rounded-full mx-auto border-2 border-yellow-500"
+                  className="w-24 h-24 rounded-full mx-auto border-2 border-yellow-500 object-cover"
                 />
               </div>
             )}
+
             <input
               type="text"
               name="name"
@@ -126,8 +136,6 @@ export default function WorkerApplication() {
               onChange={handleChange}
               className="w-full p-3 bg-gray-800 text-white border border-gray-600 rounded"
             />
-
-           
 
             <button
               type="submit"

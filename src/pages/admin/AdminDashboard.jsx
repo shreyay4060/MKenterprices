@@ -186,7 +186,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Custom tab theme styles */}
-      <style jsx>{`
+      <style>{`
         .tab-custom {
           background-color: #151531;
           border: 1px solid #6708ff;

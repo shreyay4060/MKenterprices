@@ -37,8 +37,11 @@ export default function WorkerDetails() {
                     <h3 className="text-lg font-semibold text-yellow-400">
                       {worker.name}
                     </h3>
-                    <p className="text-sm text-gray-300">{worker.email}</p>
-                    <p className="text-sm text-gray-300">{worker.contact}</p>
+                    <p className="text-sm text-gray-300"> {worker.email}</p>
+                    <p className="text-sm text-gray-300">
+                      {" "}
+                      91+ {worker.contact}
+                    </p>
                   </div>
                 </div>
                 <p className="text-gray-400 mb-2">
@@ -50,19 +53,24 @@ export default function WorkerDetails() {
                 </p>
 
                 <div className="flex gap-6 mt-4">
-                <a href={`mailto:${worker.email}`}>
                   <button className="bg-yellow-500 hover:bg-yellow-700 text-black py-1 px-4 rounded text-sm">
-                    Send Mail
+                    <a
+                      href={`https://wa.me/${worker.contact}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      
+                    >
+                      WhatsApp
+                    </a>
                   </button>
-                </a>
 
-                <button
-                  onClick={() => deleteWorkerFun(worker.id)}
-                  className="bg-red-500 hover:bg-red-700 text-white py-1 px-4 rounded text-sm"
-                >
-                  Delete
-                </button>
-              </div>
+                  <button
+                    onClick={() => deleteWorkerFun(worker.id)}
+                    className="bg-red-500 hover:bg-red-700 text-white py-1 px-4 rounded text-sm"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             ))
           )}
