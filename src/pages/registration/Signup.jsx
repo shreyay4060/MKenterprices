@@ -6,7 +6,6 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { auth, fireDB } from "../../firebase/FirebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import Loader from "../../components/loader/Loader";
-import Layout from "../../components/layout/Layout";
 
 export default function Signup({ onClose }) {
   const navigate = useNavigate();
@@ -54,19 +53,25 @@ export default function Signup({ onClose }) {
       const userSignupRef = collection(fireDB, "user");
       await addDoc(userSignupRef, user);
 
+      // Save user to localStorage
+      localStorage.setItem("users", JSON.stringify(user));
+
+      // Reset form
       setUserSignup({ name: "", email: "", password: "" });
+
       toast.success("You are signed up successfully");
       navigate("/homePage");
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Failed to signup, please try again");
     } finally {
       setLoading(false);
     }
   };
 
-  return (<Layout>
-      {loading && <Loader />}
+  if (loading) return <Loader />;
+
+  return (
     <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-xs bg-black/60">
       <div className="relative w-full max-w-md bg-gradient-to-br from-gray-900 via-gray-800 to-black px-6 py-8 rounded-xl shadow-2xl border border-violet-600">
         <button
@@ -111,7 +116,7 @@ export default function Signup({ onClose }) {
           </button>
         </form>
         <p className="mt-4 text-center text-sm text-gray-400">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <span
             onClick={() => navigate("/login")}
             className="text-yellow-400 font-semibold cursor-pointer hover:underline"
@@ -121,6 +126,5 @@ export default function Signup({ onClose }) {
         </p>
       </div>
     </div>
-    </Layout>
   );
 }

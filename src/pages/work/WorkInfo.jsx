@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import Layout from '../../components/layout/Layout';
-import { useNavigate } from 'react-router';
-import myContext from '../../context/myContext';
+import React, { useContext } from "react";
+import Layout from "../../components/layout/Layout";
+import { useNavigate } from "react-router";
+import myContext from "../../context/myContext";
 import { motion } from "framer-motion";
 
 export default function WorkInfo() {
@@ -26,7 +26,7 @@ export default function WorkInfo() {
               Work Information
             </motion.h2>
             <button
-              onClick={() => navigate('/addWork')}
+              onClick={() => navigate("/addWork")}
               className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-md transition-transform transform hover:scale-105"
             >
               Add Work
@@ -36,8 +36,11 @@ export default function WorkInfo() {
           {/* Admin Contact (Optional Info Bar) */}
           {admin?.phone && (
             <p className="mb-6 text-sm text-gray-300 break-words">
-              <strong className="text-yellow-400">Phone:</strong>{' '}
-              <a href={`tel:${admin.phone}`} className="hover:text-yellow-500 underline break-all">
+              <strong className="text-yellow-400">Phone:</strong>{" "}
+              <a
+                href={`tel:${admin.phone}`}
+                className="hover:text-yellow-500 underline break-all"
+              >
                 {admin.phone}
               </a>
             </p>
@@ -59,58 +62,74 @@ export default function WorkInfo() {
 
           {/* Work Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6">
-            {getAllWork && getAllWork.map((item) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
-                className="bg-gray-900 border border-violet-700 rounded-xl p-4 sm:p-5 shadow-md hover:shadow-violet-700/40 transition-all"
-              >
-                <h3 className="text-lg sm:text-xl font-semibold text-violet-300 mb-2 truncate">
-                  {item.title}
-                </h3>
-                {item.image && (
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className=" h-44 object-cover rounded-lg mb-3"
-                  />
-                )}
-                <div className="text-sm sm:text-base space-y-1 text-gray-300 break-words">
-                  <p>
-                    <span className="text-yellow-500 font-medium">Location:</span>{' '}
-                    <a
-                      href={item.location}
-                      className="break-all inline-block underline text-blue-400  hover:text-blue-500"
-                    >
-                      {item.place}
-                    </a>
-                  </p>
-                  <p>
-                    <span className="text-yellow-500 font-medium">Salary:</span> ₹{item.salary}
-                  </p>
-                  <p>
-                    <span className="text-yellow-500 font-medium">Date:</span> {item.date}
-                  </p>
-                  <p>
-                    <span className="text-yellow-500 font-medium">Time:</span> {item.time}
-                  </p>
-                  <p className="text-gray-300 text-sm line-clamp-2">
-                    {item.description}
-                  </p>
-                </div>
-                <button
-                  onClick={() => deleteWorkFun(item.id)}
-                  className="border px-3 py-1 mt-4 rounded-md text-orange-600 hover:bg-orange-600 hover:border-orange-600 hover:text-white"
+            {getAllWork &&
+              getAllWork.map((item) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-gray-900 border border-violet-700 rounded-xl p-4 sm:p-5 shadow-md hover:shadow-violet-700/40 transition-all"
                 >
-                  Delete
-                </button>
-              </motion.div>
-            ))}
+                  <h3 className="text-lg sm:text-xl font-semibold text-violet-300 mb-2 truncate">
+                    {item.title}
+                  </h3>
+                  {item.image && (
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className=" h-44 object-cover rounded-lg mb-3"
+                    />
+                  )}
+                  <div className="text-sm sm:text-base space-y-1 text-gray-300 break-words">
+                    <p>
+                      <span className="text-yellow-500 font-medium">
+                        Location:
+                      </span>{" "}
+                      <a
+                        href={item.location}
+                        className="break-all inline-block underline text-blue-400  hover:text-blue-500"
+                      >
+                        {item.place}
+                      </a>
+                    </p>
+
+                    <p className="text-gray-300 mb-2">
+                      <span className="text-yellow-400 font-medium">
+                        Dress code :
+                      </span>{" "}
+                       Black shirt , Black formal pant & black formal shoes . .
+                      Black Blazer if you have . .
+                    </p>
+                    <p>
+                      <span className="text-yellow-500 font-medium">
+                        Salary:
+                      </span>{" "}
+                      ₹{item.salary}
+                    </p>
+                    <p>
+                      <span className="text-yellow-500 font-medium">Date:</span>{" "}
+                      {item.date}
+                    </p>
+                    <p>
+                      <span className="text-yellow-500 font-medium">Time:</span>{" "}
+                      {item.time}
+                    </p>
+                    <p className="text-gray-300 text-sm line-clamp-2">
+                      {item.description}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => deleteWorkFun(item.id)}
+                    className="border px-3 py-1 mt-4 rounded-md text-orange-600 hover:bg-orange-600 hover:border-orange-600 hover:text-white"
+                  >
+                    Delete
+                  </button>
+                </motion.div>
+              ))}
           </div>
         </div>
       </div>
     </Layout>
   );
-} 
+}

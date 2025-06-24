@@ -23,6 +23,7 @@ import UpdateUSerDetail from "./components/admin/UpdateUSerDetail";
 import AvailableWork from "./pages/work/AvailableWork";
 import ProtectedRouteForUser from "./protectedRoute/ProtectedRouteUser";
 import ProtectedRouteForAdmin from "./protectedRoute/ProtectedRouteAdmin";
+import WorkerApplication from "./pages/workerApplication/WorkerApplication";
 
 export default function App() {
   return (
@@ -43,6 +44,9 @@ export default function App() {
           <Route path="/facility" element={<Facilyty />} />
           <Route path="/logistics" element={<Logistics />} />
           <Route path="/admin" element={<Admin />} />
+
+          {/* worker application */}
+          <Route path="/workerApplication" element={<WorkerApplication />} />
 
           <Route
             path="/userDashboard"

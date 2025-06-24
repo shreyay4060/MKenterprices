@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { doc, getDoc } from "firebase/firestore";
 import { fireDB } from "../../firebase/FirebaseConfig";
 import Layout from "../../components/layout/Layout";
@@ -10,6 +10,9 @@ export default function UserWorkInfo() {
   const { id } = useParams();
   const [work, setWork] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // navigation 
+  const navigate = useNavigate();
 
   const fetchWorkData = async () => {
     try {
@@ -70,7 +73,12 @@ export default function UserWorkInfo() {
                   {work.location}
                 </a>
               </p>
+                <p className="text-gray-300 mb-2">
+                <span className="text-yellow-400 font-medium">Dress code :</span> 
+                Black shirt , Black formal pant & black formal shoes . . 
+Black Blazer if you have . .
 
+              </p>
               <p className="text-gray-300 mb-2">
                 <span className="text-yellow-400 font-medium">Salary:</span> ₹
                 {work.salary}
@@ -86,7 +94,8 @@ export default function UserWorkInfo() {
               <p className="text-gray-300 mt-4 whitespace-pre-wrap break-words">
                 <span className="text-yellow-400 font-medium">Description:</span>{" "}
                 {work.description || "-"}
-              </p>
+              </p><br />
+              <button onClick={()=>navigate("/workerApplication")} className="border py-1 px-2 rounded-md bg-amber-500 hover:bg-amber-600 text-black hover:scale-105 transition-all active:bg-amber-700">Apply Now</button>
             </>
           ) : (
             <p className="text-red-400 text-center">Work not found</p>

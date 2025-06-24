@@ -75,6 +75,14 @@ export default function AvailableWork() {
                           {item.place}
                         </a>
                       </p>
+
+                      <p className="text-gray-300 mb-2">
+                        <span className="text-yellow-400 font-medium">
+                          Dress code :
+                        </span>{" "}
+                        Black shirt , Black formal pant & black formal shoes .
+                        . Black Blazer if you have . .
+                      </p>
                       <p>
                         <span className="text-yellow-400 font-medium">
                           Salary:
@@ -90,6 +98,13 @@ export default function AvailableWork() {
                       <p className="mt-2 text-gray-400">
                         {item.description.substring(0, 25)}...
                       </p>
+                      <br />
+                      <button
+                        // onClick={() => navigate("/workerApplication")}
+                        className="border py-1 px-2 rounded-md bg-amber-500 hover:bg-amber-600 text-black hover:scale-105 transition-all active:bg-amber-700"
+                      >
+                        Apply Now
+                      </button>
                     </div>
                   </motion.div>
                 </Link>
