@@ -8,9 +8,16 @@ import toast from "react-hot-toast";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import Layout from "../../components/layout/Layout";
 
-export default function Login({ onClose }) {
+export default function Login() {
   const navigate = useNavigate();
   const { loading, setLoading } = useContext(myContext);
+
+  // close state 
+  const [close , setClose] = useState(false)
+  function onClose (){
+    setClose(true);
+    navigate("/")
+  } 
 
   const [userLogin, setUserLogin] = useState({
     email: "",
@@ -69,14 +76,14 @@ export default function Login({ onClose }) {
 
   
 
-  return (
+  return ( !close && (
     <Layout>
       {loading && <Loader />}
     <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/60">
       <div className="relative w-full max-w-md bg-gradient-to-br from-gray-900 via-gray-800 to-black px-6 py-8 rounded-xl shadow-2xl border border-yellow-500">
         <button
           onClick={onClose}
-          className="absolute top-2 right-3 text-gray-300 hover:text-white text-xl"
+          className="absolute top-2 right-3 text-gray-200 hover:scale-125 hover:text-amber-400 text-3xl"
         >
           &times;
         </button>
@@ -122,5 +129,6 @@ export default function Login({ onClose }) {
       </div>
     </div>
     </Layout>
+  )
   );
 }
