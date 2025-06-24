@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "../../components/layout/Layout";
 import About from "../about/About";
 import Contact from "../contact/Contact";
@@ -7,6 +8,19 @@ import Service from "../service/Service";
 import AvailableWork from "../work/AvailableWork";
 
 export default function HomePage() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = localStorage.getItem("users");
+    if (!user) {
+      const timeout = setTimeout(() => {
+        navigate("/login");
+      }, 10000); // 10 seconds delay
+
+      return () => clearTimeout(timeout); // cleanup
+    }
+  }, [navigate]);
+
   return (
     <Layout>
       {/* Homepage */}
@@ -28,7 +42,7 @@ export default function HomePage() {
       </div>
 
       {/* Contact */}
-      <div style={{marginTop:"-200px" }} id="contact">
+      <div style={{ marginTop: "-200px" }} id="contact">
         <Contact />
       </div>
     </Layout>
