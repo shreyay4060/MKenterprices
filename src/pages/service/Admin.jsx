@@ -6,18 +6,17 @@ export default function Admin() {
   const admin = {
     name: "Mukund Kumbhar",
     role: "Admin & Manager",
-    email: "mkenterprises@gmail.com",
-    phone: "+91 98765 43210",
-    address: "Office No. 12, Galaxy Complex, Sangli, Maharashtra",
+    email: "kumbharmukund27@gmail.com",
+    phone: "+91 9325662421",
+    address: "Near Shanivarwada  abc chouk  pune maharashtra",
     joined: "July 2024",
-    profilePic: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+    profilePic: "/images/adminImg.jpg",
   };
 
   return (
     <Layout>
-      <div className="min-h-screen pt-37 lg:pt-18 mt-20 lg:mt-10 mb-9 bg-gradient-to-br from-black via-gray-900 to-gray-800 px-3 py-8 text-white">
+      <div className="min-h-screen pt-33 lg:pt-18 mt-20 lg:mt-10 mb-9 bg-gradient-to-br from-black via-gray-900 to-gray-800 px-3 py-8 text-white">
         <div className="max-w-2xl mx-auto bg-gray-900 shadow-xl rounded-xl p-6 border border-violet-700">
-          
           {/* Heading */}
           <motion.h1
             className="text-2xl font-bold text-center text-yellow-400 mb-6 border-b border-yellow-500 pb-1"
@@ -36,7 +35,7 @@ export default function Admin() {
             transition={{ delay: 0.3, duration: 0.6 }}
           >
             <img
-              src={admin.profilePic}
+              src="/images/adminImg.jpg"
               alt="Admin"
               className="w-24 h-24 rounded-full object-cover border-4 border-yellow-400 shadow-md"
             />
@@ -45,7 +44,9 @@ export default function Admin() {
                 {admin.name}
               </h2>
               <p className="text-gray-300 text-sm">{admin.role}</p>
-              <p className="mt-1 text-xs text-gray-400">Joined: {admin.joined}</p>
+              <p className="mt-1 text-xs text-gray-400">
+                Joined: {admin.joined}
+              </p>
             </div>
           </motion.div>
 
@@ -66,7 +67,13 @@ export default function Admin() {
               transition={{ delay: 0.6 }}
               className="bg-gray-800 p-3 rounded-md shadow-inner border border-violet-600"
             >
-              <strong className="text-yellow-400">Phone:</strong> {admin.phone}
+              <strong className="text-yellow-400">Phone:</strong>
+              <a
+                href={`tel:${admin.phone}`}
+                className="hover:text-yellow-500 "
+              >
+                {admin.phone}
+              </a>
             </motion.div>
 
             <motion.div
@@ -75,7 +82,8 @@ export default function Admin() {
               transition={{ delay: 0.7 }}
               className="bg-gray-800 p-3 rounded-md shadow-inner border border-violet-600"
             >
-              <strong className="text-yellow-400">Address:</strong> {admin.address}
+              <strong className="text-yellow-400">Address:</strong>{" "}
+              {admin.address}
             </motion.div>
           </div>
         </div>

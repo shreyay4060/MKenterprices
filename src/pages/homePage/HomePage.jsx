@@ -13,12 +13,12 @@ export default function HomePage() {
       <Home />
 
       {/* About */}
-      <div style={{ marginTop: "-150px" }} id="about">
+      <div style={{ marginTop: "-120px" }} id="about">
         <About />
       </div>
 
       {/* Service */}
-      <div id="services" style={{ marginTop: "-150px" }}>
+      <div id="services" style={{ marginTop: "-200px" }}>
         <Service />
       </div>
 
@@ -28,7 +28,7 @@ export default function HomePage() {
       </div>
 
       {/* Contact */}
-      <div style={{marginTop:"-70px" }} id="contact">
+      <div style={{marginTop:"-200px" }} id="contact">
         <Contact />
       </div>
     </Layout>

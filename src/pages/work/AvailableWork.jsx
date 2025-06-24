@@ -14,12 +14,12 @@ export default function AvailableWork() {
       <div className="min-h-screen pt-50 lg:pt-26 pb-20 px-4 sm:px-10 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
         <div className="max-w-7xl mx-auto">
           {/* Header Section */}
-          <div className="flex justify-between items-center mb-10">
+          <div className="flex justify-center items-center mb-10">
             <motion.h2
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-3xl font-bold text-yellow-400"
+              className="text-3xl font-bold flex justify-center underline text-yellow-400"
             >
               Available Work
             </motion.h2>
@@ -49,7 +49,7 @@ export default function AvailableWork() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3 }}
-                    className="bg-gray-900   rounded-xl p-5 shadow-lg hover:shadow-violet-700/40 transition-all"
+                    className="bg-gray-900 rounded-xl p-5 shadow-lg hover:shadow-violet-700/40 transition-all"
                   >
                     <h3 className="text-xl font-semibold text-violet-300 mb-3 capitalize">
                       {item.title}
@@ -59,16 +59,21 @@ export default function AvailableWork() {
                       <img
                         src={item.image}
                         alt={item.title}
-                        className=" h-44 object-cover rounded-lg mb-4"
+                        className="h-44 object-cover rounded-lg mb-4 "
                       />
                     )}
 
-                    <div className="text-sm space-y-1 text-gray-300">
+                    <div className="text-sm space-y-1 text-gray-300 break-words">
                       <p>
                         <span className="text-yellow-400 font-medium">
                           Location:
                         </span>{" "}
-                        {item.location}
+                        <a
+                          href={item.location}
+                          className="break-all inline-block underline text-blue-400 hover:text-blue-500"
+                        >
+                          {item.place}
+                        </a>
                       </p>
                       <p>
                         <span className="text-yellow-400 font-medium">

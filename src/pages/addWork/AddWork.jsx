@@ -3,7 +3,7 @@ import Layout from "../../components/layout/Layout";
 import { motion } from "framer-motion";
 import myContext from "../../context/myContext";
 import toast from "react-hot-toast";
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { fireDB } from "../../firebase/FirebaseConfig";
 import { useNavigate } from "react-router";
 
@@ -12,43 +12,31 @@ export default function AddWork() {
   const context = useContext(myContext);
   const { loading, setLoading } = context;
 
-  // work state
   const [work, setWork] = useState({
-    title: "",
-    image: "",
-    location: "",
-    description: "",
-    salary: "",
-    time: Timestamp.now(),
-    date: new Date().toLocaleString("en-US", {
-      month: "short",
-      day: "2-digit",
-      year: "numeric",
-    }),
-  });
+  title: "",
+  image: "",
+  place: "",
+  location: "",
+  description: "",
+  salary: "",
+  time: "",
+  date: "",
+});
 
-  // handle input changes
-  function handleChange(event) {
+
+  const handleChange = (event) => {
     const { name, value, type, files } = event.target;
-
     if (type === "file") {
       const reader = new FileReader();
       reader.onload = () => {
-        setWork((prev) => ({
-          ...prev,
-          image: reader.result,
-        }));
+        setWork((prev) => ({ ...prev, image: reader.result }));
       };
       if (files[0]) reader.readAsDataURL(files[0]);
     } else {
-      setWork((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+      setWork((prev) => ({ ...prev, [name]: value }));
     }
-  }
+  };
 
-  // add work
   const addWorkFun = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -62,19 +50,18 @@ export default function AddWork() {
 
       await addDoc(collection(fireDB, "work"), work);
       toast.success("Work added successfully");
+
       setWork({
         title: "",
         image: "",
+        place:"",
         location: "",
         description: "",
         salary: "",
-        time: Timestamp.now(),
-        date: new Date().toLocaleString("en-US", {
-          month: "short",
-          day: "2-digit",
-          year: "numeric",
-        }),
+        time: "",
+        date: "",
       });
+
       navigate("/adminDashboard");
     } catch (error) {
       console.error(error);
@@ -86,7 +73,7 @@ export default function AddWork() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-[100px] px-4 lg:px-90 lg:mt-10 mt-30 pb-20  bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
+      <div className="min-h-screen pt-[100px] px-4 lg:px-90 lg:mt-10 mt-30 pb-20 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -98,7 +85,7 @@ export default function AddWork() {
           </h2>
 
           <form className="space-y-6" onSubmit={addWorkFun}>
-            {/* Work Title */}
+            {/* Title */}
             <div>
               <label className="block text-violet-300 mb-2">Work Title</label>
               <input
@@ -111,7 +98,7 @@ export default function AddWork() {
               />
             </div>
 
-            {/* Image Upload */}
+            {/* Image */}
             <div>
               <label className="block text-violet-300 mb-2">Image</label>
               <input
@@ -120,6 +107,18 @@ export default function AddWork() {
                 accept="image/*"
                 onChange={handleChange}
                 className="w-full px-4 py-2 text-white bg-gray-800 border border-violet-600 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-violet-700 file:text-white hover:file:bg-violet-600"
+              />
+            </div>
+            {/* Place */}
+            <div>
+              <label className="block text-violet-300 mb-2">Place</label>
+              <input
+                type="text"
+                name="place"
+                onChange={handleChange}
+                value={work.place}
+                placeholder="Enter event place"
+                className="w-full px-4 py-2 bg-gray-800 text-white border border-violet-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
               />
             </div>
 
@@ -132,6 +131,31 @@ export default function AddWork() {
                 onChange={handleChange}
                 value={work.location}
                 placeholder="Enter location"
+                className="w-full px-4 py-2 bg-gray-800 text-white border border-violet-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+              />
+            </div>
+
+            {/* Date */}
+            <div>
+              <label className="block text-violet-300 mb-2">Date</label>
+              <input
+                type="date"
+                name="date"
+                onChange={handleChange}
+                value={work.date}
+                className="w-full px-4 py-2 bg-gray-800 text-white border border-violet-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+              />
+            </div>
+
+            {/* Time */}
+            <div>
+              <label className="block text-violet-300 mb-2">Time</label>
+              <input
+                type="text"
+                name="time"
+                onChange={handleChange}
+                value={work.time}
+                placeholder="e.g. 6 AM to 9 PM"
                 className="w-full px-4 py-2 bg-gray-800 text-white border border-violet-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
               />
             </div>
@@ -162,7 +186,7 @@ export default function AddWork() {
               />
             </div>
 
-            {/* Submit Button */}
+            {/* Submit */}
             <div className="text-center pt-4">
               <button
                 type="submit"

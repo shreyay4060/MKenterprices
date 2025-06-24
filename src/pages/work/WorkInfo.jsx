@@ -9,6 +9,8 @@ export default function WorkInfo() {
   const context = useContext(myContext);
   const { getAllWork, loading, deleteWorkFun } = context;
 
+  const admin = JSON.parse(localStorage.getItem("users"));
+
   return (
     <Layout>
       <div className="min-h-screen pt-28 pb-20 px-4 sm:px-6 md:px-8 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
@@ -30,6 +32,16 @@ export default function WorkInfo() {
               Add Work
             </button>
           </div>
+
+          {/* Admin Contact (Optional Info Bar) */}
+          {admin?.phone && (
+            <p className="mb-6 text-sm text-gray-300 break-words">
+              <strong className="text-yellow-400">Phone:</strong>{' '}
+              <a href={`tel:${admin.phone}`} className="hover:text-yellow-500 underline break-all">
+                {admin.phone}
+              </a>
+            </p>
+          )}
 
           {/* Loader */}
           {loading && (
@@ -62,18 +74,27 @@ export default function WorkInfo() {
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-44 object-cover rounded-lg mb-3"
+                    className=" h-44 object-cover rounded-lg mb-3"
                   />
                 )}
-                <div className="text-sm sm:text-base space-y-1 text-gray-300">
+                <div className="text-sm sm:text-base space-y-1 text-gray-300 break-words">
                   <p>
-                    <span className="text-yellow-500 font-medium">Location:</span> {item.location}
+                    <span className="text-yellow-500 font-medium">Location:</span>{' '}
+                    <a
+                      href={item.location}
+                      className="break-all inline-block underline text-blue-400  hover:text-blue-500"
+                    >
+                      {item.place}
+                    </a>
                   </p>
                   <p>
                     <span className="text-yellow-500 font-medium">Salary:</span> ₹{item.salary}
                   </p>
                   <p>
                     <span className="text-yellow-500 font-medium">Date:</span> {item.date}
+                  </p>
+                  <p>
+                    <span className="text-yellow-500 font-medium">Time:</span> {item.time}
                   </p>
                   <p className="text-gray-300 text-sm line-clamp-2">
                     {item.description}
@@ -92,4 +113,4 @@ export default function WorkInfo() {
       </div>
     </Layout>
   );
-}
+} 
