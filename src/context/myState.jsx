@@ -131,11 +131,50 @@ export default function MyState({ children }) {
     }
   };
 
+  // getAllWorkers
+  const [getAllWorkers , setGetAllWorkers] = useState([])
+
+const getAllWorkersFun = async () => {
+  setLoading(true);
+  try {
+    const q = query(collection(fireDB, "workers"), orderBy("time"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let workerArray = [];
+      querySnapshot.forEach((doc) => {
+        workerArray.push({ ...doc.data(), id: doc.id });
+      });
+      setGetAllWorkers(workerArray);
+      setLoading(false);
+    });
+
+    return unsubscribe;
+  } catch (error) {
+    toast.error("Failed to fetch workers");
+    console.error(error);
+    setLoading(false);
+  }
+};
+
+const deleteWorkerFun = async (id) => {
+  setLoading(true);
+  try {
+    await deleteDoc(doc(fireDB, "workers", id));
+    toast.success("Worker deleted successfully");
+  } catch (error) {
+    toast.error("Failed to delete worker");
+    console.error("Delete Worker Error:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
   // RUN ON MOUNT
   useEffect(() => {
     getAllContactFun();
     getAllUserFun();
     getAllWorkFun();
+    getAllWorkersFun();
   }, []);
 
   return (
@@ -148,7 +187,11 @@ export default function MyState({ children }) {
         getAllUser,
         deleteUserFun,
         getAllWork,
-        deleteWorkFun
+        deleteWorkFun,
+
+        // getAllWorkers
+        getAllWorkers,
+        deleteWorkerFun ,
       }}
     >
       {children}

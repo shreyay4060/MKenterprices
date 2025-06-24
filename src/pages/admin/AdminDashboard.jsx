@@ -13,7 +13,7 @@ export default function AdminDashboard() {
 
   // context 
   const context = useContext(myContext);
-  const { getAllUser , getAllWork , getAllContactMsg} = context;
+  const { getAllUser , getAllWork , getAllContactMsg , getAllWorkers} = context;
 
 
   const admin = JSON.parse(localStorage.getItem("users"))
@@ -66,7 +66,7 @@ export default function AdminDashboard() {
             transition={{ delay: 0.3 }}
           >
             <Tabs>
-              <TabList className="flex flex-wrap gap-10 justify-center mb-6">
+              <TabList className="flex flex-wrap gap-7 justify-center mb-6">
                 <Tab className="tab-custom" selectedClassName="tab-selected">
                   <div className="tab-box">
                     <svg
@@ -111,8 +111,10 @@ export default function AdminDashboard() {
                       <path d="M4 10h2" />
                       <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" />
                     </svg>
-                    <h2 className="text-xl font-bold mt-1">(20)</h2>
-                    <p className="text-sm">Workers</p>
+                    <h2 className="text-xl font-bold mt-1">({getAllWorkers.length})</h2>
+                    <p className="text-sm">
+                      Applicants
+                    </p>
                   </div>
                 </Tab>
                 <Tab className="tab-custom" selectedClassName="tab-selected">
@@ -191,7 +193,7 @@ export default function AdminDashboard() {
           color: #ffffff;
           padding: 1rem;
           border-radius: 1rem;
-          width: 30%;
+          width: 20%;
           cursor: pointer;
           min-width: 150px;
           text-align: center;
