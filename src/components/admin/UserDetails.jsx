@@ -18,7 +18,7 @@ export default function UserDetails() {
             <th className="px-6 py-3 border-r border-violet-600">Name</th>
             <th className="px-6 py-3 border-r border-violet-600">Email</th>
             <th className="px-6 py-3 border-r border-violet-600">Role</th>
-            <th className="px-6 py-3 border-r border-violet-600">Joined Date</th>
+            <th className="px-6 py-3 border-r w-2xl border-violet-600">Joined Date</th>
             <th className="px-6 py-3">Edit</th>
             <th className="px-6 py-3">Delete</th>
           </tr>

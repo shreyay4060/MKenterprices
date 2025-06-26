@@ -95,7 +95,7 @@ export default function AdminDashboard() {
 
   return (
     <Layout>
-      <div className="min-h-screen lg:pt-10 pt-50 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white px-4 py-8">
+      <div className="min-h-screen lg:pt-27 pt-50 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white px-4 py-8">
         <div className="max-w-6xl mx-auto space-y-8">
           <motion.div
             className="text-center"

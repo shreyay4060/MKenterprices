@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { fireDB } from "../../firebase/FirebaseConfig";
 import toast from "react-hot-toast";
 import Layout from "../../components/layout/Layout";
 import { useNavigate } from "react-router";
+import myContext from "../../context/myContext";
+import Loader from "../../components/loader/Loader";
 
 export default function WorkerApplication() {
+
+  const context = useContext(myContext);
+  const {loading , setLoading}  = context;
   const [worker, setWorker] = useState({
     name: "",
     email: "",
@@ -45,57 +50,63 @@ export default function WorkerApplication() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { name, email, address, contact, image } = worker;
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  const { name, email, address, contact, image } = worker;
 
-    if (contact.length !== 10) {
-      return toast.error("Contact must be exactly 10 digits");
-    }
+  if (contact.length !== 10) {
+    return toast.error("Contact must be exactly 10 digits");
+  }
 
-    if (!name || !email || !address || !contact || !image) {
-      return toast.error("Please fill in all fields including image");
-    }
+  if (!name || !email || !address || !contact ) {
+    return toast.error("Please fill in all fields including image");
+  }
 
-    try {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64Image = reader.result;
+  setLoading(true); // Start loader
 
-        await addDoc(collection(fireDB, "workers"), {
-          name,
-          email,
-          address,
-          contact,
-          image: base64Image,
-          time: Timestamp.now(),
-          date: new Date().toLocaleString("en-US", {
-            month: "short",
-            day: "2-digit",
-            year: "numeric",
-          }),
-        });
+  try {
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64Image = reader.result;
 
-        toast.success("Application submitted successfully");
+      await addDoc(collection(fireDB, "workers"), {
+        name,
+        email,
+        address,
+        contact,
+        image: base64Image,
+        time: Timestamp.now(),
+        date: new Date().toLocaleString("en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+        }),
+      });
 
-        setWorker({ name: "", email: "", address: "", contact: "", image: null });
-        setPreview(null);
+      toast.success("Application submitted successfully");
 
-        const storedUser = JSON.parse(localStorage.getItem("users"));
-        if (storedUser?.role === "admin") {
-          navigate("/adminDashboard");
-        } else {
-          navigate("/userDashboard");
-        }
-      };
+      setWorker({ name: "", email: "", address: "", contact: "", image: null });
+      setPreview(null);
 
-      reader.readAsDataURL(image);
-    } catch (error) {
-      console.error("Error submitting application:", error);
-      toast.error("Submission failed");
-    }
-  };
+      const storedUser = JSON.parse(localStorage.getItem("users"));
+      if (storedUser?.role === "admin") {
+        navigate("/adminDashboard");
+      } else {
+        navigate("/userDashboard");
+      }
+    };
 
+    reader.readAsDataURL(image);
+  } catch (error) {
+    console.error("Error submitting application:", error);
+    toast.error("Submission failed");
+  } finally {
+    setLoading(false); // Stop loader
+  }
+};
+
+
+if (loading) return <Loader />;
   return (
     <Layout>
       <div className="min-h-screen mt-40 lg:mt-15 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white py-10 px-4">
@@ -166,12 +177,17 @@ export default function WorkerApplication() {
               />
             </div>
 
-            <button
-              type="submit"
-              className="w-full py-2 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded"
-            >
-              Submit Application
-            </button>
+             <button
+                type="submit"
+                disabled={loading}
+                className={`w-full py-2 font-semibold rounded transition duration-200 ${
+                  loading
+                    ? "bg-yellow-300 cursor-not-allowed"
+                    : "bg-yellow-500 hover:bg-yellow-600 text-black"
+                }`}
+              >
+                {loading ? "Submitting ..." : "Submit Application"}
+              </button>
           </form>
         </div>
       </div>

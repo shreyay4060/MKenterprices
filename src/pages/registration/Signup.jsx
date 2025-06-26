@@ -35,67 +35,66 @@ export default function Signup() {
     }));
   }
 
- const userSignupFun = async (e) => {
-  e.preventDefault();
-  const { name, email, password } = userSignup;
+  const userSignupFun = async (e) => {
+    e.preventDefault();
+    const { name, email, password } = userSignup;
 
-  const nameRegex = /^[A-Za-z\s]{3,}$/;
+    const nameRegex = /^[A-Za-z\s]{3,}$/;
 
-  if (!name || !email || !password) {
-    return toast.error("Please fill all the fields");
-  }
-
-  if (!nameRegex.test(name)) {
-    return toast.error("Name must be at least 3 letters and contain only alphabets and spaces");
-  }
-
-  if (password.length < 6) {
-    return toast.error("Password must be at least 6 characters");
-  }
-
-  if(loading){"Loading data..."}
-
-  setLoading(true);
-  try {
-    const users = await createUserWithEmailAndPassword(auth, email, password);
-    const user = {
-      name,
-      email,
-      uid: users.user.uid,
-      role: userSignup.role,
-      time: Timestamp.now(),
-      date: new Date().toLocaleString("en-US", {
-        month: "short",
-        day: "2-digit",
-        year: "numeric",
-      }),
-    };
-
-    const userSignupRef = collection(fireDB, "user");
-    const userRef = await addDoc(userSignupRef, user);
-    const userWithId = { ...user, id: userRef.id };
-    localStorage.setItem("users", JSON.stringify(userWithId));
-
-    setUserSignup({ name: "", email: "", password: "" });
-
-    toast.success("You are signed up successfully");
-    navigate("/homePage");
-  } catch (error) {
-    console.error(error);
-    if (error.code === "auth/email-already-in-use") {
-      toast.error("Email is already registered");
-    } else if (error.code === "auth/invalid-email") {
-      toast.error("Invalid email format");
-    } else if (error.code === "auth/weak-password") {
-      toast.error("Password should be at least 6 characters");
-    } else {
-      toast.error("Failed to signup, please try again");
+    if (!name || !email || !password) {
+      return toast.error("Please fill all the fields");
     }
-  } finally {
-    setLoading(false);
-  }
-};
 
+    if (!nameRegex.test(name)) {
+      return toast.error(
+        "Name must be at least 3 letters and contain only alphabets and spaces"
+      );
+    }
+
+    if (password.length < 6) {
+      return toast.error("Password must be at least 6 characters");
+    }
+
+    setLoading(true);
+    try {
+      const users = await createUserWithEmailAndPassword(auth, email, password);
+      const user = {
+        name,
+        email,
+        uid: users.user.uid,
+        role: userSignup.role,
+        time: Timestamp.now(),
+        date: new Date().toLocaleString("en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+        }),
+      };
+
+      const userSignupRef = collection(fireDB, "user");
+      const userRef = await addDoc(userSignupRef, user);
+      const userWithId = { ...user, id: userRef.id };
+      localStorage.setItem("users", JSON.stringify(userWithId));
+
+      setUserSignup({ name: "", email: "", password: "" });
+
+      toast.success("You are signed up successfully");
+      navigate("/homePage");
+    } catch (error) {
+      console.error(error);
+      if (error.code === "auth/email-already-in-use") {
+        toast.error("Email is already registered");
+      } else if (error.code === "auth/invalid-email") {
+        toast.error("Invalid email format");
+      } else if (error.code === "auth/weak-password") {
+        toast.error("Password should be at least 6 characters");
+      } else {
+        toast.error("Failed to signup, please try again");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) return <Loader />;
 
@@ -140,9 +139,14 @@ export default function Signup() {
               />
               <button
                 type="submit"
-                className="w-full bg-yellow-500 text-black font-semibold py-2 rounded hover:bg-yellow-600 transition duration-200"
+                disabled={loading}
+                className={`w-full py-2 font-semibold rounded transition duration-200 ${
+                  loading
+                    ? "bg-yellow-300 cursor-not-allowed"
+                    : "bg-yellow-500 hover:bg-yellow-600 text-black"
+                }`}
               >
-                Sign Up
+                {loading ? "Signing up..." : "Sign Up"}
               </button>
             </form>
             <p className="mt-4 text-center text-sm text-gray-400">
