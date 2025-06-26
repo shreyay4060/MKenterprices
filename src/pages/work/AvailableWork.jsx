@@ -43,80 +43,76 @@ export default function AvailableWork() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {getAllWork &&
               getAllWork.map((item) => (
-                <Link to={`/work/${item.id}`} key={item.id}>
+                <div key={item.id}>
                   <motion.div
-                    key={item.id}
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3 }}
                     className="bg-gray-900 rounded-xl p-5 shadow-lg hover:shadow-violet-700/40 transition-all"
                   >
-                    <h3 className="text-xl font-semibold text-violet-300 mb-3 capitalize">
-                      {item.title}
-                    </h3>
+                    <Link to={`/work/${item.id}`} className="block">
+                      <h3 className="text-xl font-semibold text-violet-300 mb-3 capitalize">
+                        {item.title}
+                      </h3>
 
-                    {item.image && (
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="h-44 object-cover rounded-lg mb-4 "
-                      />
-                    )}
+                      {item.image && (
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="h-44 object-cover rounded-lg mb-4 "
+                        />
+                      )}
 
-                    <div className="text-sm space-y-1 text-gray-300 break-words">
-                      <p>
-                        <span className="text-yellow-400 font-medium">
-                          Location:
-                        </span>{" "}
-                        <a
-                          href={item.location}
-                          className="break-all inline-block underline text-blue-400 hover:text-blue-500"
+                      <div className="text-sm space-y-1 text-gray-300 break-words">
+                        <p>
+                          <span className="text-yellow-400 font-medium">
+                            Location:
+                          </span>{" "}
+                          <span className="break-all inline-block underline text-blue-400 hover:text-blue-500">
+                            {item.place}
+                          </span>
+                        </p>
+
+                        <p className="text-gray-300 mb-2">
+                          <span className="text-yellow-400 font-medium">
+                            Dress code :
+                          </span>{" "}
+                          Black shirt , Black formal pant & black formal shoes . .
+                          Black Blazer if you have . .
+                        </p>
+                        <p>
+                          <span className="text-yellow-400 font-medium">
+                            Salary:
+                          </span>{" "}
+                          ₹{item.salary}
+                        </p>
+                        <p>
+                          <span className="text-yellow-400 font-medium">
+                            Date:
+                          </span>{" "}
+                          {item.date}
+                        </p>
+                        <p className="mt-2 text-gray-400">
+                          {item.description.substring(0, 25)}...
+                        </p>
+                        <br />
+                        <button
+                          className="border py-1 px-2 rounded-md bg-amber-500 hover:bg-amber-600 text-black hover:scale-105 transition-all active:bg-amber-700"
                         >
-                          {item.place}
-                        </a>
-                      </p>
-
-                      <p className="text-gray-300 mb-2">
-                        <span className="text-yellow-400 font-medium">
-                          Dress code :
-                        </span>{" "}
-                        Black shirt , Black formal pant & black formal shoes . .
-                        Black Blazer if you have . .
-                      </p>
-                      <p>
-                        <span className="text-yellow-400 font-medium">
-                          Salary:
-                        </span>{" "}
-                        ₹{item.salary}
-                      </p>
-                      <p>
-                        <span className="text-yellow-400 font-medium">
-                          Date:
-                        </span>{" "}
-                        {item.date}
-                      </p>
-                      <p className="mt-2 text-gray-400">
-                        {item.description.substring(0, 25)}...
-                      </p>
-                      <br />
-                      <button
-                        // onClick={() => navigate("/workerApplication")}
-                        className="border py-1 px-2 rounded-md bg-amber-500 hover:bg-amber-600 text-black hover:scale-105 transition-all active:bg-amber-700"
-                      >
-                        Apply Now
-                      </button>
-                      <button className="bg-green-500 hover:bg-green-600 ml-6 transition-all hover:scale-105 text-black py-1 px-4 rounded text-sm">
-                        <div
-                          href={`https://wa.me/${item.contact}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          WhatsApp
-                        </div>
-                      </button>
-                    </div>
+                          Apply Now
+                        </button>
+                      </div>
+                    </Link><br />
+                    <a
+                      href={`https://wa.me/${item.contact}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-green-500 hover:bg-green-600 mt-2 block text-center transition-all hover:scale-105 text-black py-1 px-4 rounded text-sm"
+                    >
+                      WhatsApp
+                    </a>
                   </motion.div>
-                </Link>
+                </div>
               ))}
           </div>
         </div>

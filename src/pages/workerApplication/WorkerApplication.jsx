@@ -19,10 +19,27 @@ export default function WorkerApplication() {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
     if (name === "image" && files[0]) {
       const file = files[0];
+
+      // Validate image size (2MB max)
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error("Image must be less than 2MB");
+        return;
+      }
+
       setWorker((prev) => ({ ...prev, image: file }));
       setPreview(URL.createObjectURL(file));
+    } else if (name === "name") {
+      if (/\d/.test(value)) {
+        toast.error("Name should not contain numbers");
+        return;
+      }
+      setWorker((prev) => ({ ...prev, [name]: value }));
+    } else if (name === "contact") {
+      const cleanedValue = value.replace(/\D/g, "").slice(0, 10);
+      setWorker((prev) => ({ ...prev, contact: cleanedValue }));
     } else {
       setWorker((prev) => ({ ...prev, [name]: value }));
     }
@@ -31,6 +48,10 @@ export default function WorkerApplication() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, address, contact, image } = worker;
+
+    if (contact.length !== 10) {
+      return toast.error("Contact must be exactly 10 digits");
+    }
 
     if (!name || !email || !address || !contact || !image) {
       return toast.error("Please fill in all fields including image");
@@ -45,7 +66,7 @@ export default function WorkerApplication() {
           name,
           email,
           address,
-          contact,
+          contact: "+91" + contact,
           image: base64Image,
           time: Timestamp.now(),
           date: new Date().toLocaleString("en-US", {
@@ -57,11 +78,9 @@ export default function WorkerApplication() {
 
         toast.success("Application submitted successfully");
 
-        // Reset form
         setWorker({ name: "", email: "", address: "", contact: "", image: null });
         setPreview(null);
 
-        // Role-based redirection
         const storedUser = JSON.parse(localStorage.getItem("users"));
         if (storedUser?.role === "admin") {
           navigate("/adminDashboard");
@@ -86,13 +105,18 @@ export default function WorkerApplication() {
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={handleChange}
-              className="w-full p-3 bg-gray-800 text-white border border-gray-600 rounded"
-            />
+            <div>
+              <label className="block text-sm mb-1">
+                Upload Image (Max: 2MB | Format: JPG, PNG)
+              </label>
+              <input
+                type="file"
+                name="image"
+                accept="image/png, image/jpeg"
+                onChange={handleChange}
+                className="w-full p-3 bg-gray-800 text-white border border-gray-600 rounded"
+              />
+            </div>
 
             {preview && (
               <div className="mt-2 text-center">
@@ -128,14 +152,19 @@ export default function WorkerApplication() {
               onChange={handleChange}
               className="w-full p-3 bg-gray-800 text-white border border-gray-600 rounded"
             />
-            <input
-              type="tel"
-              name="contact"
-              placeholder="Contact Number"
-              value={worker.contact}
-              onChange={handleChange}
-              className="w-full p-3 bg-gray-800 text-white border border-gray-600 rounded"
-            />
+            <div className="flex">
+              <span className="inline-flex items-center px-3 rounded-l bg-gray-700 text-white border border-r-0 border-gray-600">
+                +91
+              </span>
+              <input
+                type="tel"
+                name="contact"
+                placeholder="10-digit Mobile Number"
+                value={worker.contact}
+                onChange={handleChange}
+                className="w-full p-3 bg-gray-800 outline-none text-white border border-gray-600 rounded-r"
+              />
+            </div>
 
             <button
               type="submit"

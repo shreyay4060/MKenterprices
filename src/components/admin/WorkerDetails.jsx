@@ -40,7 +40,7 @@ export default function WorkerDetails() {
                     <p className="text-sm text-gray-300"> {worker.email}</p>
                     <p className="text-sm text-gray-300">
                       {" "}
-                      91+ {worker.contact}
+                       {worker.contact}
                     </p>
                   </div>
                 </div>
