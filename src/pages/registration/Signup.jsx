@@ -53,6 +53,8 @@ export default function Signup() {
     return toast.error("Password must be at least 6 characters");
   }
 
+  if(loading){"Loading data..."}
+
   setLoading(true);
   try {
     const users = await createUserWithEmailAndPassword(auth, email, password);
