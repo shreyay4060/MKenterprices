@@ -17,7 +17,7 @@ export default function Signup() {
 
   function onClose() {
     setClose(true);
-    navigate("/")
+    navigate("/");
   }
 
   const [userSignup, setUserSignup] = useState({
@@ -35,45 +35,65 @@ export default function Signup() {
     }));
   }
 
-  const userSignupFun = async (e) => {
-    e.preventDefault();
-    const { name, email, password } = userSignup;
-    if (!name || !email || !password) {
-      return toast.error("Please fill all the fields");
-    }
+ const userSignupFun = async (e) => {
+  e.preventDefault();
+  const { name, email, password } = userSignup;
 
-    setLoading(true);
-    try {
-      const users = await createUserWithEmailAndPassword(auth, email, password);
-      const user = {
-        name,
-        email,
-        uid: users.user.uid,
-        role: userSignup.role,
-        time: Timestamp.now(),
-        date: new Date().toLocaleString("en-US", {
-          month: "short",
-          day: "2-digit",
-          year: "numeric",
-        }),
-      };
+  const nameRegex = /^[A-Za-z\s]{3,}$/;
 
-      const userSignupRef = collection(fireDB, "user");
-      await addDoc(userSignupRef, user);
+  if (!name || !email || !password) {
+    return toast.error("Please fill all the fields");
+  }
 
-      localStorage.setItem("users", JSON.stringify(user));
+  if (!nameRegex.test(name)) {
+    return toast.error("Name must be at least 3 letters and contain only alphabets and spaces");
+  }
 
-      setUserSignup({ name: "", email: "", password: "" });
+  if (password.length < 6) {
+    return toast.error("Password must be at least 6 characters");
+  }
 
-      toast.success("You are signed up successfully");
-      navigate("/homePage");
-    } catch (error) {
-      console.error(error);
+  setLoading(true);
+  try {
+    const users = await createUserWithEmailAndPassword(auth, email, password);
+    const user = {
+      name,
+      email,
+      uid: users.user.uid,
+      role: userSignup.role,
+      time: Timestamp.now(),
+      date: new Date().toLocaleString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      }),
+    };
+
+    const userSignupRef = collection(fireDB, "user");
+    const userRef = await addDoc(userSignupRef, user);
+    const userWithId = { ...user, id: userRef.id };
+    localStorage.setItem("users", JSON.stringify(userWithId));
+
+    setUserSignup({ name: "", email: "", password: "" });
+
+    toast.success("You are signed up successfully");
+    navigate("/homePage");
+  } catch (error) {
+    console.error(error);
+    if (error.code === "auth/email-already-in-use") {
+      toast.error("Email is already registered");
+    } else if (error.code === "auth/invalid-email") {
+      toast.error("Invalid email format");
+    } else if (error.code === "auth/weak-password") {
+      toast.error("Password should be at least 6 characters");
+    } else {
       toast.error("Failed to signup, please try again");
-    } finally {
-      setLoading(false);
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   if (loading) return <Loader />;
 

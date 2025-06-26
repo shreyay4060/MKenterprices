@@ -71,11 +71,12 @@ export default function WorkerDetails() {
                       {worker.name}
                     </h3>
                     <p className="text-sm text-gray-300">{worker.email}</p>
-                    <p className="text-sm text-gray-300">{worker.contact}</p>
+                    <p className="text-sm text-gray-300">+91 {worker.contact}</p>
                   </div>
                 </div>
                 <p className="text-gray-400 mb-2">
-                  <span className="font-medium text-white">Address:</span> {worker.address}
+                  <span className="font-medium text-white">Address:</span>{" "}
+                  {worker.address}
                 </p>
                 <p className="text-gray-500 text-sm">
                   Applied on: {formatDateTime(worker.date, worker.time)}
@@ -84,7 +85,7 @@ export default function WorkerDetails() {
                 <div className="flex gap-6 mt-4">
                   <button className="bg-yellow-500 hover:bg-yellow-700 text-black py-1 px-4 rounded text-sm">
                     <a
-                      href={`https://wa.me/+91${worker.contact}`}
+                      href={`https://wa.me/91${worker.contact}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

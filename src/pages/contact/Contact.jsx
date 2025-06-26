@@ -65,7 +65,8 @@ export default function Contact() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
         >
-          We're here to help. Reach out for partnerships, services, or inquiries.
+          We're here to help. Reach out for partnerships, services, or
+          inquiries.
         </motion.p>
 
         {/* Main Section */}
@@ -78,7 +79,9 @@ export default function Contact() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <h2 className="text-2xl text-yellow-300 font-semibold mb-2">Send a Message</h2>
+            <h2 className="text-2xl text-yellow-300 font-semibold mb-2">
+              Send a Message
+            </h2>
 
             <div>
               <label className="block text-sm text-yellow-100 mb-1">Name</label>
@@ -94,7 +97,9 @@ export default function Contact() {
             </div>
 
             <div>
-              <label className="block text-sm text-yellow-100 mb-1">Email</label>
+              <label className="block text-sm text-yellow-100 mb-1">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -107,7 +112,9 @@ export default function Contact() {
             </div>
 
             <div>
-              <label className="block text-sm text-yellow-100 mb-1">Message</label>
+              <label className="block text-sm text-yellow-100 mb-1">
+                Message
+              </label>
               <textarea
                 name="message"
                 value={contact.message}
@@ -135,18 +142,47 @@ export default function Contact() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.7 }}
           >
-            <h2 className="text-2xl text-yellow-300 font-semibold">Company Info</h2>
-            <p><strong>Address:</strong> Office No. 12, Galaxy Complex, Sangli, Maharashtra</p>
-            <p><strong>Email:</strong> admin@mkenterprises.com</p>
-            <p><strong>Phone:</strong> +91 98765 43210</p>
-            <p><strong>Hours:</strong> Mon – Sat, 9:00 AM – 6:00 PM</p>
+            <h2 className="text-2xl text-yellow-300 font-semibold">
+              Company Info
+            </h2>
+            <p>
+              <strong>Address:</strong> Near Shanivarwada , abc Chouk Pune, Maharashtra
+            </p>
+            <p>
+              <strong>Email:</strong> admin@mkenterprises.com
+            </p>
+            <p>
+              <strong>Phone:</strong>{" "}
+              <a href="tel:+919325662421" className="text-yellow-400 underline">
+                +91 9325662421
+              </a>
+            </p>
+
+            <p>
+              <strong>Hours:</strong> Mon – Sat, 9:00 AM – 6:00 PM
+            </p>
 
             <div>
               <h3 className="text-yellow-400 font-medium text-lg">Follow Us</h3>
               <div className="flex gap-4 mt-2 text-yellow-300">
-                <a href="#" className="hover:underline">🌐 Website</a>
-                <a href="#" className="hover:underline">📘 Facebook</a>
-                <a href="https://www.instagram.com/mk_group.mangement27?igsh=bjg5eno2cmk2Ymc0" className="hover:underline">📷 Instagram</a>
+                <a href="#" className="hover:underline">
+                  🌐 Website
+                </a>
+                <a
+                  href="https://wa.me/919325662421"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline text-green-400"
+                >
+                  🐳 WhatsApp
+                </a>
+
+                <a
+                  href="https://www.instagram.com/mk_group.mangement27?igsh=bjg5eno2cmk2Ymc0"
+                  className="hover:underline"
+                >
+                  📷 Instagram
+                </a>
               </div>
             </div>
           </motion.div>

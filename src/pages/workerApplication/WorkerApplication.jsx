@@ -66,7 +66,7 @@ export default function WorkerApplication() {
           name,
           email,
           address,
-          contact: "+91" + contact,
+          contact,
           image: base64Image,
           time: Timestamp.now(),
           date: new Date().toLocaleString("en-US", {

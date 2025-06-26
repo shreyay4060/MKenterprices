@@ -1,191 +1,224 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import Layout from "../../components/layout/Layout";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import UserDetails from "../../components/admin/UserDetails";
 import WorkerDetails from "../../components/admin/WorkerDetails";
 import ContactDetails from "../../components/admin/ContactDetails";
-import "react-tabs/style/react-tabs.css"; // Ensure this is loaded, then override styles below
+import "react-tabs/style/react-tabs.css";
 import WorkInfo from "../work/WorkInfo";
 import myContext from "../../context/myContext";
+import { doc, updateDoc, getDocs, collection, query, where } from "firebase/firestore";
+import { fireDB } from "../../firebase/FirebaseConfig";
+import toast from "react-hot-toast";
+import Cropper from "react-easy-crop";
+import getCroppedImg from "../../utils/cropImage";
 
 export default function AdminDashboard() {
-
-  // context 
   const context = useContext(myContext);
-  const { getAllUser , getAllWork , getAllContactMsg , getAllWorkers} = context;
+  const { getAllUser, getAllWork, getAllContactMsg, getAllWorkers } = context;
+  const [admin, setAdmin] = useState(() => JSON.parse(localStorage.getItem("users")));
+  const [preview, setPreview] = useState(admin?.profileImage || null);
+  const [cropModal, setCropModal] = useState(false);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [cropImageSrc, setCropImageSrc] = useState(null);
+  const [zoom, setZoom] = useState(1);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("Image must be less than 2MB");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setCropImageSrc(reader.result);
+      setCropModal(true);
+    };
+    reader.readAsDataURL(file);
+  };
 
-  const admin = JSON.parse(localStorage.getItem("users"))
+  const onCropComplete = (_, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
+
+  const getAdminDocId = async () => {
+    const q = query(collection(fireDB, "user"), where("email", "==", admin.email));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs[0]?.id;
+  };
+
+  const handleSaveCroppedImage = async () => {
+    try {
+      const croppedImg = await getCroppedImg(cropImageSrc, croppedAreaPixels);
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64data = reader.result;
+        const adminId = await getAdminDocId();
+        if (!adminId) throw new Error("Admin not found");
+        const adminRef = doc(fireDB, "user", adminId);
+        await updateDoc(adminRef, { profileImage: base64data });
+
+        const updatedAdmin = { ...admin, profileImage: base64data };
+        localStorage.setItem("users", JSON.stringify(updatedAdmin));
+        setAdmin(updatedAdmin);
+        setPreview(base64data);
+        setCropModal(false);
+        toast.success("Profile image updated successfully");
+      };
+      reader.readAsDataURL(croppedImg);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to crop or update profile image");
+    }
+  };
+
+  const handleRemoveImage = async () => {
+    try {
+      const adminId = await getAdminDocId();
+      if (!adminId) throw new Error("Admin not found");
+      const adminRef = doc(fireDB, "user", adminId);
+      await updateDoc(adminRef, { profileImage: null });
+
+      const updatedAdmin = { ...admin, profileImage: null };
+      localStorage.setItem("users", JSON.stringify(updatedAdmin));
+      setAdmin(updatedAdmin);
+      setPreview(null);
+      toast.success("Profile image removed successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to remove profile image");
+    }
+  };
 
   return (
     <Layout>
-      <div className="min-h-screen pb-20 pt-[100px] px-4  py-8 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
-        <div className="max-w-6xl mx-auto space-y-10">
-          {/* Header */}
+      <div className="min-h-screen pt-[100px] bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white px-4 py-8">
+        <div className="max-w-6xl mx-auto space-y-8">
           <motion.div
             className="text-center"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-3xl mt-25 lg:mt-0 font-bold text-yellow-400">
-              Admin Dashboard
-            </h1>
-            <p className="text-sm text-gray-400 mt-1">
-              Manage users, workers, and performance insights
-            </p>
+            <h1 className="text-4xl font-extrabold text-yellow-400">Welcome, {admin.name}!</h1>
+            <p className="text-gray-300 mt-2 text-base tracking-wide">Your personalized admin dashboard</p>
           </motion.div>
 
-          {/* Admin Info */}
           <motion.div
-            className="bg-gray-900 border border-violet-700 rounded-xl p-6 shadow-xl flex flex-col sm:flex-row items-center gap-6"
+            className="bg-gray-900 border border-violet-700 p-8 rounded-3xl shadow-2xl flex flex-col sm:flex-row items-center gap-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
           >
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-              alt="Admin"
-              className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-yellow-400 shadow-md object-cover"
-            />
-            <div className="text-center sm:text-left">
-              <h2 className="text-xl font-semibold text-violet-200">
-                {admin.name}
-              </h2>
-              <p className="text-sm text-gray-300">{admin.role}</p>
-              <p className="text-sm text-gray-400 mt-1">Email: {admin.email}</p>
-              <p className="text-sm text-gray-400">Joined: {admin.date}</p>
+            <div className="text-center">
+              <img
+                src={preview || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
+                alt="Admin"
+                className="w-32 h-32 sm:w-36 sm:h-36 rounded-full object-cover border-4 border-yellow-400 shadow-lg mx-auto"
+              />
+              <div className="mt-4 space-y-2">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="text-sm text-gray-300 file:mr-4 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-700 file:text-white hover:file:bg-violet-800"
+                />
+                {preview && (
+                  <button
+                    onClick={handleRemoveImage}
+                    className="block w-full mt-2 text-sm text-red-400 hover:underline"
+                  >
+                    Remove Image
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="flex-1 space-y-4 text-base sm:text-lg text-left">
+              <h2 className="text-2xl font-bold text-violet-300">{admin.name}</h2>
+              <p><span className="text-yellow-400 font-semibold">Name:</span> {admin.name}</p>
+              <p><span className="text-yellow-400 font-semibold">Email:</span> {admin.email}</p>
+              <p><span className="text-yellow-400 font-semibold">Role:</span> {admin.role}</p>
+              <p><span className="text-yellow-400 font-semibold">Joined:</span> {admin.date}</p>
             </div>
           </motion.div>
 
-          {/* Dashboard Tabs */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
+          {cropModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
+              <div className="bg-white p-4 rounded-lg shadow-2xl w-[90%] max-w-lg">
+                <div className="relative h-64 bg-gray-200">
+                  <Cropper
+                    image={cropImageSrc}
+                    crop={crop}
+                    zoom={zoom}
+                    aspect={1}
+                    onCropChange={setCrop}
+                    onCropComplete={onCropComplete}
+                    onZoomChange={setZoom}
+                  />
+                </div>
+                <div className="flex justify-between mt-4">
+                  <button
+                    onClick={() => setCropModal(false)}
+                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleSaveCroppedImage}
+                    className="bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-600"
+                  >
+                    Save Image
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
             <Tabs>
               <TabList className="flex flex-wrap gap-7 justify-center mb-6">
                 <Tab className="tab-custom" selectedClassName="tab-selected">
                   <div className="tab-box">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={40}
-                      height={50}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="lucide lucide-users"
-                    >
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                      <circle cx={9} cy={7} r={4} />
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
+                    <span className="tab-icon">👥</span>
                     <h2 className="text-xl font-bold mt-1">({getAllUser.length})</h2>
                     <p className="text-sm">Users</p>
                   </div>
                 </Tab>
                 <Tab className="tab-custom" selectedClassName="tab-selected">
                   <div className="tab-box">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={50}
-                      height={50}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="lucide lucide-list-ordered"
-                    >
-                      <line x1={10} x2={21} y1={6} y2={6} />
-                      <line x1={10} x2={21} y1={12} y2={12} />
-                      <line x1={10} x2={21} y1={18} y2={18} />
-                      <path d="M4 6h1v4" />
-                      <path d="M4 10h2" />
-                      <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" />
-                    </svg>
+                    <span className="tab-icon">📄</span>
                     <h2 className="text-xl font-bold mt-1">({getAllWorkers.length})</h2>
-                    <p className="text-sm">
-                      Applicants
-                    </p>
+                    <p className="text-sm">Applicants</p>
                   </div>
                 </Tab>
                 <Tab className="tab-custom" selectedClassName="tab-selected">
                   <div className="tab-box">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={50}
-                      height={50}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="lucide lucide-list-ordered"
-                    >
-                      <line x1={10} x2={21} y1={6} y2={6} />
-                      <line x1={10} x2={21} y1={12} y2={12} />
-                      <line x1={10} x2={21} y1={18} y2={18} />
-                      <path d="M4 6h1v4" />
-                      <path d="M4 10h2" />
-                      <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" />
-                    </svg>
+                    <span className="tab-icon">📝</span>
                     <h2 className="text-xl font-bold mt-1">({getAllWork.length})</h2>
                     <p className="text-sm">Available Work</p>
                   </div>
                 </Tab>
                 <Tab className="tab-custom" selectedClassName="tab-selected">
                   <div className="tab-box">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={50}
-                      height={50}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="lucide lucide-mail"
-                    >
-                      <rect x="3" y="5" width="18" height="14" rx="2" ry="2" />
-                      <polyline points="3 7 12 13 21 7" />
-                    </svg>
-
+                    <span className="tab-icon">✉️</span>
                     <h2 className="text-xl font-bold mt-1">({getAllContactMsg.length})</h2>
                     <p className="text-sm">Contact Msg</p>
                   </div>
                 </Tab>
               </TabList>
-
-              <TabPanel>
-                <UserDetails />
-              </TabPanel>
-              <TabPanel>
-                <WorkerDetails />
-              </TabPanel>
-              <TabPanel>
-                <WorkInfo />
-              </TabPanel>
-              <TabPanel>
-                <ContactDetails />
-              </TabPanel>
+              <TabPanel><UserDetails /></TabPanel>
+              <TabPanel><WorkerDetails /></TabPanel>
+              <TabPanel><WorkInfo /></TabPanel>
+              <TabPanel><ContactDetails /></TabPanel>
             </Tabs>
           </motion.div>
-
-         
         </div>
       </div>
 
-      {/* Custom tab theme styles */}
       <style>{`
         .tab-custom {
           background-color: #151531;
@@ -213,12 +246,11 @@ export default function AdminDashboard() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          font-weight: 600; 
+          font-weight: 600;
         }
         .tab-icon {
           margin-bottom: 0.25rem;
-          color: #ff133e;
-          font-weight: 700;
+          font-size: 24px;
         }
       `}</style>
     </Layout>

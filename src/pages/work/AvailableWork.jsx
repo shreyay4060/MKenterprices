@@ -56,7 +56,7 @@ export default function AvailableWork() {
                     className="bg-gray-900 rounded-xl p-5 shadow-lg hover:shadow-violet-700/40 transition-all"
                   >
                     <Link to={`/work/${item.id}`} className="block">
-                      <h3 className="text-xl font-semibold text-violet-300 mb-3 capitalize">
+                      <h3 className="text-xl font-semibold text-white mb-3 capitalize">
                         {item.title}
                       </h3>
 
@@ -115,8 +115,9 @@ export default function AvailableWork() {
                     >
                       WhatsApp
                     </a>
-                                      <p className="text-sm text-gray-500 mt-7">Posted on : {item.postedDate}</p>
-
+                    <p className="text-sm text-gray-500 mt-7">
+                      Posted on : {item.postedDate}
+                    </p>
                   </motion.div>
                 </div>
               ))}

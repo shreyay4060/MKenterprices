@@ -35,10 +35,10 @@ export default function UserDetails() {
               <tr key={item.id} className="hover:bg-gray-700 transition-all">
                 <td className="px-6 py-3 border-r border-violet-700">{index + 1}</td>
                 <td className="px-6 py-3 border-r border-violet-700">{item.id}</td>
-                <td className="px-6 py-3 border-r border-violet-700">{item.name || 'N/A'}</td>
+                <td className="px-2 py-3 border-r border-violet-700">{item.name || 'N/A'}</td>
                 <td className="px-6 py-3 border-r border-violet-700">{item.email || 'N/A'}</td>
                 <td className="px-6 py-3 border-r border-violet-700">{item.role || 'User'}</td>
-                <td className="px-6 py-3 border-r border-violet-700">
+                <td className="px-1 py-3  border-r border-violet-700">
                   {item?.time?.toDate ? item.time.toDate().toLocaleString("en-US", {
                     year: "numeric",
                     month: "short",
