@@ -80,8 +80,8 @@ export default function AvailableWork() {
                         <span className="text-yellow-400 font-medium">
                           Dress code :
                         </span>{" "}
-                        Black shirt , Black formal pant & black formal shoes .
-                        . Black Blazer if you have . .
+                        Black shirt , Black formal pant & black formal shoes . .
+                        Black Blazer if you have . .
                       </p>
                       <p>
                         <span className="text-yellow-400 font-medium">
@@ -104,6 +104,15 @@ export default function AvailableWork() {
                         className="border py-1 px-2 rounded-md bg-amber-500 hover:bg-amber-600 text-black hover:scale-105 transition-all active:bg-amber-700"
                       >
                         Apply Now
+                      </button>
+                      <button className="bg-green-500 hover:bg-green-600 ml-6 transition-all hover:scale-105 text-black py-1 px-4 rounded text-sm">
+                        <div
+                          href={`https://wa.me/${item.contact}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          WhatsApp
+                        </div>
                       </button>
                     </div>
                   </motion.div>

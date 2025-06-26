@@ -11,7 +11,7 @@ export default function UserWorkInfo() {
   const [work, setWork] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // navigation 
+  // navigation
   const navigate = useNavigate();
 
   const fetchWorkData = async () => {
@@ -41,7 +41,10 @@ export default function UserWorkInfo() {
   return (
     <Layout>
       <div className="min-h-screen mt-30 lg:mt-5 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white pt-20 px-4 pb-16">
-        <div className="text-2xl flex justify-center font-bold mb-6"> Available Work :</div>
+        <div className="text-2xl flex justify-center font-bold mb-6">
+          {" "}
+          Available Work :
+        </div>
         <div className="max-w-4xl mx-auto bg-gray-900 border rounded-xl shadow-lg p-6">
           {work ? (
             <>
@@ -73,11 +76,12 @@ export default function UserWorkInfo() {
                   {work.location}
                 </a>
               </p>
-                <p className="text-gray-300 mb-2">
-                <span className="text-yellow-400 font-medium">Dress code :</span> 
-                Black shirt , Black formal pant & black formal shoes . . 
-Black Blazer if you have . .
-
+              <p className="text-gray-300 mb-2">
+                <span className="text-yellow-400 font-medium">
+                  Dress code :
+                </span>
+                Black shirt , Black formal pant & black formal shoes . . Black
+                Blazer if you have . .
               </p>
               <p className="text-gray-300 mb-2">
                 <span className="text-yellow-400 font-medium">Salary:</span> ₹
@@ -92,10 +96,29 @@ Black Blazer if you have . .
                 {work.time}
               </p>
               <p className="text-gray-300 mt-4 whitespace-pre-wrap break-words">
-                <span className="text-yellow-400 font-medium">Description:</span>{" "}
+                <span className="text-yellow-400 font-medium">
+                  Description:
+                </span>{" "}
                 {work.description || "-"}
-              </p><br />
-              <button onClick={()=>navigate("/workerApplication")} className="border py-1 px-2 rounded-md bg-amber-500 hover:bg-amber-600 text-black hover:scale-105 transition-all active:bg-amber-700">Apply Now</button>
+              </p>
+              <br />
+              <div className="flex gap-6 mt-4">
+                <button
+                  onClick={() => navigate("/workerApplication")}
+                  className="border py-1 px-2 rounded-md bg-amber-500 hover:bg-amber-600 hover:scale-105 text-black  transition-all active:bg-amber-700"
+                >
+                  Apply Now
+                </button>
+                <button className="bg-green-500 hover:bg-green-600 transition-all hover:scale-105 text-black py-1 px-4 rounded text-sm">
+                  <a
+                    href={`https://wa.me/${work.contact}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    WhatsApp
+                  </a>
+                </button>
+              </div>
             </>
           ) : (
             <p className="text-red-400 text-center">Work not found</p>
