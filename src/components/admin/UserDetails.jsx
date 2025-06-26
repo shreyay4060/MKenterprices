@@ -39,9 +39,15 @@ export default function UserDetails() {
                 <td className="px-6 py-3 border-r border-violet-700">{item.email || 'N/A'}</td>
                 <td className="px-6 py-3 border-r border-violet-700">{item.role || 'User'}</td>
                 <td className="px-6 py-3 border-r border-violet-700">
-                  {item?.time?.toDate?.().toLocaleDateString() || 'N/A'}
+                  {item?.time?.toDate ? item.time.toDate().toLocaleString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  }) : 'N/A'}
                 </td>
-                <td className="px-6 py-3">
+                <td className="px-6 py-3  border-r border-violet-700">
                   <button
                     onClick={() => navigate(`/updateUserDetail/${item.id}`)}
                     className="text-blue-400 hover:underline"
@@ -49,7 +55,7 @@ export default function UserDetails() {
                     Edit
                   </button>
                 </td>
-                <td className="px-6 py-3">
+                <td className="px-6  border-r border-violet-700 py-3">
                   <button
                     onClick={() => deleteUserFun(item.id)}
                     className="text-red-500 hover:underline"
