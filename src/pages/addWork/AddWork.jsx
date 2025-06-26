@@ -21,6 +21,13 @@ export default function AddWork() {
   salary: "",
   time: "",
   date: "",
+  postedDate:new Date().toLocaleString(
+    "en-US",{
+      month:"short",
+      day:"2-digit",
+      year:"numeric"
+    }
+  )
 });
 
 
@@ -60,6 +67,7 @@ export default function AddWork() {
         salary: "",
         time: "",
         date: "",
+        postedDate:""
       });
 
       navigate("/adminDashboard");

@@ -9,11 +9,19 @@ export default function AvailableWork() {
   const context = useContext(myContext);
   const { getAllWork, loading } = context;
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    });
+  };
+
   return (
     <Layout>
       <div className="min-h-screen pt-50 lg:pt-26 pb-20 px-4 sm:px-10 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
         <div className="max-w-7xl mx-auto">
-          {/* Header Section */}
           <div className="flex justify-center items-center mb-10">
             <motion.h2
               initial={{ opacity: 0, y: -20 }}
@@ -25,21 +33,18 @@ export default function AvailableWork() {
             </motion.h2>
           </div>
 
-          {/* Loader */}
           {loading && (
             <p className="text-center text-violet-400 font-medium">
               Loading work data...
             </p>
           )}
 
-          {/* No Work */}
           {!loading && (!getAllWork || getAllWork.length === 0) && (
             <p className="text-center text-gray-400 font-medium">
               No work available.
             </p>
           )}
 
-          {/* Work Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {getAllWork &&
               getAllWork.map((item) => (
@@ -77,8 +82,8 @@ export default function AvailableWork() {
                           <span className="text-yellow-400 font-medium">
                             Dress code :
                           </span>{" "}
-                          Black shirt , Black formal pant & black formal shoes . .
-                          Black Blazer if you have . .
+                          Black shirt , Black formal pant & black formal shoes .
+                          . Black Blazer if you have . .
                         </p>
                         <p>
                           <span className="text-yellow-400 font-medium">
@@ -90,27 +95,28 @@ export default function AvailableWork() {
                           <span className="text-yellow-400 font-medium">
                             Date:
                           </span>{" "}
-                          {item.date}
+                          {formatDate(item.date)}
                         </p>
                         <p className="mt-2 text-gray-400">
                           {item.description.substring(0, 25)}...
                         </p>
                         <br />
-                        <button
-                          className="border py-1 px-2 rounded-md bg-amber-500 hover:bg-amber-600 text-black hover:scale-105 transition-all active:bg-amber-700"
-                        >
+                        <button className="border py-1 px-2 rounded-md bg-amber-500 hover:bg-amber-600 text-black hover:scale-105 transition-all active:bg-amber-700">
                           Apply Now
                         </button>
                       </div>
-                    </Link><br />
+                    </Link>
+                    <br />
                     <a
-                      href={`https://wa.me/${item.contact}`}
+                      href={`https://wa.me/9325662421`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="bg-green-500 hover:bg-green-600 mt-2 block text-center transition-all hover:scale-105 text-black py-1 px-4 rounded text-sm"
                     >
                       WhatsApp
                     </a>
+                                      <p className="text-sm text-gray-500 mt-7">Posted on : {item.postedDate}</p>
+
                   </motion.div>
                 </div>
               ))}

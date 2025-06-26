@@ -11,7 +11,6 @@ export default function UserWorkInfo() {
   const [work, setWork] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // navigation
   const navigate = useNavigate();
 
   const fetchWorkData = async () => {
@@ -36,13 +35,21 @@ export default function UserWorkInfo() {
     fetchWorkData();
   }, [id]);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    });
+  };
+
   if (loading) return <Loader />;
 
   return (
     <Layout>
       <div className="min-h-screen mt-30 lg:mt-5 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white pt-20 px-4 pb-16">
         <div className="text-2xl flex justify-center font-bold mb-6">
-          {" "}
           Available Work :
         </div>
         <div className="max-w-4xl mx-auto bg-gray-900 border rounded-xl shadow-lg p-6">
@@ -79,7 +86,7 @@ export default function UserWorkInfo() {
               <p className="text-gray-300 mb-2">
                 <span className="text-yellow-400 font-medium">
                   Dress code :
-                </span>
+                </span>{" "}
                 Black shirt , Black formal pant & black formal shoes . . Black
                 Blazer if you have . .
               </p>
@@ -89,7 +96,7 @@ export default function UserWorkInfo() {
               </p>
               <p className="text-gray-300 mb-2">
                 <span className="text-yellow-400 font-medium">Date:</span>{" "}
-                {work.date}
+                {formatDate(work.date)}
               </p>
               <p className="text-gray-300 mb-2">
                 <span className="text-yellow-400 font-medium">Time:</span>{" "}
@@ -111,14 +118,18 @@ export default function UserWorkInfo() {
                 </button>
                 <button className="bg-green-500 hover:bg-green-600 transition-all hover:scale-105 text-black py-1 px-4 rounded text-sm">
                   <a
-                    href={`https://wa.me/${work.contact}`}
+                    href={`https://wa.me/9325662421`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="block text-center"
                   >
                     WhatsApp
                   </a>
                 </button>
               </div>
+              <p className="text-sm text-gray-500 mt-7">
+                Posted on : {work.postedDate}
+              </p>
             </>
           ) : (
             <p className="text-red-400 text-center">Work not found</p>

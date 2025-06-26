@@ -125,6 +125,7 @@ export default function WorkInfo() {
                   >
                     Delete
                   </button>
+                  <p className="text-sm text-gray-500 mt-7">Posted on : {item.postedDate}</p>
                 </motion.div>
               ))}
           </div>

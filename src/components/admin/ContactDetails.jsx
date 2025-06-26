@@ -5,6 +5,40 @@ export default function ContactDetails() {
   const context = useContext(myContext);
   const { getAllContactMsg, deleteContactMsgFun } = context;
 
+  // Helper to format Firestore Timestamp or ISO date string
+  const formatDateTime = (date, time) => {
+    try {
+      let jsDate;
+
+      if (date?.seconds) {
+        jsDate = new Date(date.seconds * 1000); // Convert Firestore Timestamp to JS Date
+      } else {
+        jsDate = new Date(date); // Fallback for plain date string
+      }
+
+      const formattedDate = jsDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      });
+
+      let formattedTime = "N/A";
+      if (time?.seconds) {
+        const timeObj = new Date(time.seconds * 1000);
+        formattedTime = timeObj.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      } else if (typeof time === "string") {
+        formattedTime = time;
+      }
+
+      return `${formattedDate} at ${formattedTime}`;
+    } catch (err) {
+      return "Invalid date/time";
+    }
+  };
+
   return (
     <div className="px-4 py-6 text-white">
       <h2 className="text-xl font-bold text-yellow-400 mb-6">
@@ -32,7 +66,9 @@ export default function ContactDetails() {
                 <span className="text-yellow-400 font-medium">Message:</span>{" "}
                 {item.message}
               </p>
-              <p className="text-sm text-gray-400 mt-1">Time: {item.date}</p>
+              <p className="text-sm text-gray-400 mt-1">
+                Time: {formatDateTime(item.date, item.time)}
+              </p>
 
               <div className="flex gap-6 mt-4">
                 <a href={`mailto:${item.email}`}>
