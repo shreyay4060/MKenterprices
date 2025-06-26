@@ -78,7 +78,7 @@ export default function About() {
               className="rounded-xl shadow-lg object-cover w-full h-60"
             />
             <img
-              src="/images/business-bg2.jpg"
+              src="/images/business_women.jpg"
               alt="Team Collaboration"
               className="rounded-xl shadow-lg object-cover w-full h-60"
             />
