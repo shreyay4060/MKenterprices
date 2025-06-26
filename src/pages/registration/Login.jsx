@@ -74,7 +74,7 @@ export default function Login() {
     }
   };
 
-  
+  if(loading){"Loading data..."}
 
   return ( !close && (
     <Layout>
