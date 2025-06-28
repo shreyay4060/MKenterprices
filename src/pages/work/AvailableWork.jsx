@@ -20,7 +20,7 @@ export default function AvailableWork() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-50 lg:pt-26 pb-20 px-4 sm:px-10 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
+      <div className="min-h-screen pt-10 lg:pt-6 pb-20 px-4 sm:px-10 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-center items-center mb-10">
             <motion.h2

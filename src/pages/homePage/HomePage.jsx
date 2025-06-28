@@ -63,7 +63,7 @@ export default function HomePage() {
         <Service />
       </div> */}
 
-      <div id="availableWork" style={{ marginTop: "-150px" }}>
+      <div id="availableWork" style={{ marginTop: "-80px" }}>
         <AvailableWork />
       </div>
 
