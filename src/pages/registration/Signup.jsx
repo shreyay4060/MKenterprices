@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import myContext from "../../context/myContext";
 import toast from "react-hot-toast";
-import { addDoc, collection, Timestamp } from "firebase/firestore";
-import { auth, fireDB } from "../../firebase/FirebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { addDoc, collection, Timestamp, getDocs, query, where } from "firebase/firestore";
+import { auth, fireDB, googleProvider } from "../../firebase/FirebaseConfig";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import Loader from "../../components/loader/Loader";
 import Layout from "../../components/layout/Layout";
 
@@ -34,6 +34,52 @@ export default function Signup() {
       [name]: value,
     }));
   }
+
+  const handleGoogleSignup = async () => {
+    setLoading(true);
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+
+      const q = query(collection(fireDB, "user"), where("uid", "==", user.uid));
+      const querySnapshot = await getDocs(q);
+
+      let userData;
+
+      if (querySnapshot.empty) {
+        userData = {
+          name: user.displayName,
+          email: user.email,
+          uid: user.uid,
+          role: "user",
+          time: Timestamp.now(),
+          date: new Date().toLocaleString("en-US", {
+            month: "short",
+            day: "2-digit",
+            year: "numeric",
+          }),
+        };
+
+        const userRef = await addDoc(collection(fireDB, "user"), userData);
+        userData = { ...userData, id: userRef.id };
+      } else {
+        userData = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+      }
+
+      localStorage.setItem("users", JSON.stringify(userData));
+      toast.success("Signed in with Google");
+      navigate("/homePage");
+    } catch (error) {
+      
+    
+  console.error("Google Signup Error", error);
+  toast.error(`Google Signup Failed: ${error.message}`);
+
+
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const userSignupFun = async (e) => {
     e.preventDefault();
@@ -158,6 +204,21 @@ export default function Signup() {
                 Login
               </span>
             </p>
+            <div className="mt-4 text-center">
+              <p className="text-gray-400 text-sm mb-2">or</p>
+              <button
+                type="button"
+                onClick={handleGoogleSignup}
+                className="w-full py-2 px-4 flex items-center justify-center gap-2 rounded bg-white text-black font-semibold hover:bg-gray-200 transition"
+              >
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/281/281764.png"
+                  alt="Google"
+                  className="w-5 h-5"
+                />
+                Continue with Google
+              </button>
+            </div>
           </div>
         </div>
       </Layout>
