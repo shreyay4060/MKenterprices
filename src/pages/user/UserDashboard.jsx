@@ -14,6 +14,8 @@ export default function UserDashboard() {
   const [cropModal, setCropModal] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropImageSrc, setCropImageSrc] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -148,12 +150,12 @@ export default function UserDashboard() {
               <div className="relative h-64 bg-gray-200">
                 <Cropper
                   image={cropImageSrc}
-                  crop={{ x: 0, y: 0 }}
-                  zoom={1}
+                  crop={crop}
+                  zoom={zoom}
                   aspect={1}
-                  onCropChange={() => {}}
+                  onCropChange={setCrop}
                   onCropComplete={onCropComplete}
-                  onZoomChange={() => {}}
+                  onZoomChange={setZoom}
                 />
               </div>
               <div className="flex justify-between mt-4">

@@ -49,7 +49,7 @@ export default function Contact() {
 
   return (
     <Layout>
-      <div className="min-h-screen pb-20 pt-52 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white  px-4">
+      <div className="min-h-screen pb-20 pt-52 bg-gradient-to-br from-black via-gray-800 to-gray-800 text-white  px-4">
         {/* Header */}
         <motion.h1
           className="text-4xl font-bold text-center text-yellow-400 mb-3"
@@ -91,7 +91,7 @@ export default function Contact() {
                 value={contact.name}
                 onChange={handleChange}
                 placeholder="name"
-                className="w-full px-4 py-2 rounded bg-black/40 border border-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                className="w-full px-4 py-2 rounded bg-black/40 border border-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-yellow-800"
                 required
               />
             </div>
@@ -106,7 +106,7 @@ export default function Contact() {
                 value={contact.email}
                 onChange={handleChange}
                 placeholder="name@example.com"
-                className="w-full px-4 py-2 rounded bg-black/40 border border-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                className="w-full px-4 py-2 rounded bg-black/40 border border-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-yellow-800"
                 required
               />
             </div>
@@ -121,7 +121,7 @@ export default function Contact() {
                 onChange={handleChange}
                 placeholder="Your message here..."
                 rows="4"
-                className="w-full px-4 py-2 rounded bg-black/40 border border-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                className="w-full px-4 py-2 rounded bg-black/40 border border-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-yellow-800"
                 required
               />
             </div>
@@ -149,7 +149,7 @@ export default function Contact() {
               <strong>Address:</strong> Near Shanivarwada , abc Chouk Pune, Maharashtra
             </p>
             <p>
-              <strong>Email:</strong> admin@mkenterprises.com
+              <strong>Email:</strong> kumbharmukund27@gmail.com
             </p>
             <p>
               <strong>Phone:</strong>{" "}
@@ -159,27 +159,27 @@ export default function Contact() {
             </p>
 
             <p>
-              <strong>Hours:</strong> Mon – Sat, 9:00 AM – 6:00 PM
+              <strong>Hours:</strong> Mon – Sat, 10:00 AM – 07:00 PM
             </p>
 
             <div>
               <h3 className="text-yellow-400 font-medium text-lg">Follow Us</h3>
-              <div className="flex gap-4 mt-2 text-yellow-300">
-                <a href="#" className="hover:underline">
+              <div className="flex justify-between mt-2 text-yellow-300">
+                {/* <a href="https://mkenterprices.vercel.app/" className="hover:underline">
                   🌐 Website
-                </a>
+                </a> */}
                 <a
                   href="https://wa.me/919325662421"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:underline text-green-400"
+                  className="hover:underline hover:scale-105 text-green-400"
                 >
                   🐳 WhatsApp
                 </a>
 
                 <a
                   href="https://www.instagram.com/mk_group.mangement27?igsh=bjg5eno2cmk2Ymc0"
-                  className="hover:underline"
+                  className="hover:underline hover:scale-105"
                 >
                   📷 Instagram
                 </a>
