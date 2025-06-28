@@ -24,6 +24,7 @@ import AvailableWork from "./pages/work/AvailableWork";
 import ProtectedRouteForUser from "./protectedRoute/ProtectedRouteUser";
 import ProtectedRouteForAdmin from "./protectedRoute/ProtectedRouteAdmin";
 import WorkerApplication from "./pages/workerApplication/WorkerApplication";
+import Review from "./pages/review/Review";
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/service" element={<Service />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/review" element={<Review />} />
 
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
