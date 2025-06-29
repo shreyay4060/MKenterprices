@@ -13,7 +13,7 @@ export default function WorkInfo() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-10 pb-20 px-4 sm:px-6 md:px-8 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
+      <div className="min-h-screen pt-10 pb-20 px-4 sm:px-6 md:px-8 bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] text-white">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex justify-between items-center mb-8 flex-wrap gap-2">
@@ -45,6 +45,7 @@ export default function WorkInfo() {
               </a>
             </p>
           )}
+
 
           {/* Loader */}
           {loading && (
@@ -128,6 +129,7 @@ export default function WorkInfo() {
                   <p className="text-sm text-gray-500 mt-7">Posted on : {item.postedDate}</p>
                 </motion.div>
               ))}
+              
           </div>
         </div>
       </div>

@@ -109,7 +109,7 @@ export default function WorkerApplication() {
 if (loading) return <Loader />;
   return (
     <Layout>
-      <div className="min-h-screen mt-40 lg:mt-15 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white py-10 px-4">
+      <div className="min-h-screen mt-40 lg:mt-15 bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] text-white py-10 px-4">
         <div className="max-w-xl mx-auto bg-gray-900 rounded-xl p-6 shadow-lg border border-yellow-500">
           <h2 className="text-3xl font-bold text-yellow-400 text-center mb-6">
             Worker Application Form

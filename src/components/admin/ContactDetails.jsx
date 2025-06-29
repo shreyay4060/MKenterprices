@@ -52,7 +52,7 @@ export default function ContactDetails() {
           {getAllContactMsg.map((item, index) => (
             <div
               key={index}
-              className="bg-gray-900 p-5 rounded-xl border border-violet-600 shadow-md"
+              className="bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] p-5 rounded-xl border border-violet-600 shadow-md"
             >
               <p>
                 <span className="text-yellow-400 font-medium">Name:</span>{" "}

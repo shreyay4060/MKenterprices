@@ -30,7 +30,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a] border-b shadow-md">
+    <div className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] border-b shadow-md">
       <div className="flex font-medium text-md justify-between items-center flex-col lg:flex-row gap-4 px-6 py-4">
         {/* Logo */}
         <div className="flex items-center gap-2">

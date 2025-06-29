@@ -11,6 +11,7 @@ import Home from "../home/Home";
 import Service from "../service/Service";
 import AvailableWork from "../work/AvailableWork";
 import ReviewMsg from "../review/ReviewMsg";
+import FooterLogo from "../../components/FooterLogo";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function HomePage() {
     if (!user) {
       const timeout = setTimeout(() => {
         navigate("/login");
-      }, 10000);
+      }, 25000);
       return () => clearTimeout(timeout);
     }
   }, [navigate]);
@@ -55,23 +56,24 @@ export default function HomePage() {
     <Layout>
       <Home />
 
-      <div style={{ marginTop: "-120px" }} id="about">
+      {/* <div style={{ marginTop: "-120px" }} id="about">
         <About />
-      </div>
+      </div> */}
 
       {/* <div id="services" style={{ marginTop: "-200px" }}>
         <Service />
       </div> */}
 
-      <div id="availableWork" style={{ marginTop: "-80px" }}>
+      <div id="availableWork" style={{ marginTop: "-120px" }}>
         <AvailableWork />
       </div>
 
       <div style={{ marginTop: "-200px" }} id="contact">
         <Contact />
       </div>
+      <hr  className="text-white"/>
 
-      <div className="pb-30 px-4 py-14 bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+      <div className=" px-4 pb-25 pt-10 bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57]">
         <h1 className="text-4xl font-extrabold text-center text-yellow-400 mb-12 drop-shadow-lg">
           What Our Users Say
         </h1>
@@ -79,7 +81,7 @@ export default function HomePage() {
         {loading ? (
           <p className="text-center text-gray-400 text-lg">Loading reviews...</p>
         ) : reviews.length === 0 ? (
-          <p className="text-center text-gray-400 text-lg">No reviews found.</p>
+          <p className="text-center  text-gray-400 text-lg">No reviews found.</p>
         ) : (
           <>
             <motion.div
@@ -90,7 +92,7 @@ export default function HomePage() {
               <ReviewMsg reviews={reviews.slice(0, visibleCount)} />
             </motion.div>
 
-            <div className="flex justify-center gap-4 mt-8">
+            <div className="flex  justify-center gap-4 mt-8">
               {visibleCount < reviews.length && (
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -128,7 +130,9 @@ export default function HomePage() {
             ✍️ Write a Review
           </motion.button>
         </div>
+        <FooterLogo />
       </div>
+
     </Layout>
   );
 }

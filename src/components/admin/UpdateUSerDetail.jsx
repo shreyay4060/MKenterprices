@@ -80,7 +80,7 @@ export default function UpdateUserDetail() {
     <div className="flex  justify-center items-center min-h-screen bg-gradient-to-b from-[#0f172a] to-[#1e293b] p-4">
       
 
-      <div className="bg-[#111827] border border-yellow-500 text-white rounded-xl shadow-xl px-8 py-6 w-full max-w-md relative">
+      <div className="bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] border border-yellow-500 text-white rounded-xl shadow-xl px-8 py-6 w-full max-w-md relative">
         <h2 className="text-2xl font-bold text-center text-yellow-400 mb-6">
           Update User Role
         </h2>

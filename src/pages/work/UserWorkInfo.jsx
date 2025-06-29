@@ -48,11 +48,11 @@ export default function UserWorkInfo() {
 
   return (
     <Layout>
-      <div className="min-h-screen mt-30 lg:mt-5 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white pt-20 px-4 pb-16">
+      <div className="min-h-screen mt-30 lg:mt-5 bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] text-white pt-20 px-4 pb-16">
         <div className="text-2xl flex justify-center font-bold mb-6">
           Available Work :
         </div>
-        <div className="max-w-4xl mx-auto bg-gray-900 border rounded-xl shadow-lg p-6">
+        <div className="max-w-4xl mx-auto  border rounded-xl shadow-lg p-6">
           {work ? (
             <>
               <h2 className="text-3xl font-bold text-yellow-400 mb-4 capitalize">
@@ -134,6 +134,13 @@ export default function UserWorkInfo() {
           ) : (
             <p className="text-red-400 text-center">Work not found</p>
           )}
+          <p>
+            For more info call -
+            <a href="tel:+919325662421" className="text-yellow-400 underline">
+              +91 9325662421
+            </a>
+          </p>
+          
         </div>
       </div>
     </Layout>

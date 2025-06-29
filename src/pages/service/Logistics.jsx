@@ -5,7 +5,7 @@ import Layout from "../../components/layout/Layout";
 export default function Logistics() {
   return (
     <Layout>
-      <div className="min-h-screen pt-[190px] bg-gradient-to-br from-black via-gray-900 to-gray-800 px-6 py-16 text-white">
+      <div className="min-h-screen pt-[190px] bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] px-6 py-16 text-white">
         {/* Header */}
         <div className="max-w-6xl mx-auto text-center">
           <motion.h1

@@ -5,9 +5,9 @@ import { useNavigate } from "react-router";
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const images = [
-    "/images/business-bg.jpg",
-    "/images/business-bg2.jpg",
-    "/images/business-bg3.jpg",
+    // "/images/business-bg.jpg",
+    // "/images/business-bg2.jpg",
+    // "/images/business-bg3.jpg",
   ];
 
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ export default function Home() {
   return (
     <div
       id="home"
-      className="relative mt-20 lg:mt-0 min-h-screen overflow-hidden"
+      className="relative mt-20 lg:mt-0 min-h-screen bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] overflow-hidden"
     >
       {/* Background Carousel */}
       <div

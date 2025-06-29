@@ -92,7 +92,7 @@ export default function UserDashboard() {
 
   return (
     <Layout>
-      <div className="min-h-screen lg:pt-30 pt-50 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white px-4 py-8">
+      <div className="min-h-screen lg:pt-30 pt-50 bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] text-white px-4 py-8">
         <div className="max-w-6xl mx-auto space-y-8">
           <motion.div
             className="text-center"

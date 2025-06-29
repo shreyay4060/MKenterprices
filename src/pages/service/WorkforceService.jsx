@@ -5,7 +5,7 @@ import Layout from "../../components/layout/Layout";
 export default function WorkforceService() {
   return (
     <Layout>
-      <div className="min-h-screen pt-48 lg:pt-30 px-4 pb-20 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
+      <div className="min-h-screen pt-48 lg:pt-30 px-4 pb-20 bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] text-white">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
