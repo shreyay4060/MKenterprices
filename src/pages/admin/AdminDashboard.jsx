@@ -5,6 +5,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import UserDetails from "../../components/admin/UserDetails";
 import WorkerDetails from "../../components/admin/WorkerDetails";
 import ContactDetails from "../../components/admin/ContactDetails";
+import ReviewsDetails from "../../components/admin/ReviewsDetails";
 import "react-tabs/style/react-tabs.css";
 import WorkInfo from "../work/WorkInfo";
 import myContext from "../../context/myContext";
@@ -16,7 +17,7 @@ import getCroppedImg from "../../utils/cropImage";
 
 export default function AdminDashboard() {
   const context = useContext(myContext);
-  const { getAllUser, getAllWork, getAllContactMsg, getAllWorkers } = context;
+  const { getAllUser, getAllWork, getAllContactMsg,getAllReviews,  getAllWorkers } = context;
   const [admin, setAdmin] = useState(() => JSON.parse(localStorage.getItem("users")));
   const [preview, setPreview] = useState(admin?.profileImage || null);
   const [cropModal, setCropModal] = useState(false);
@@ -209,11 +210,19 @@ export default function AdminDashboard() {
                     <p className="text-sm">Contact Msg</p>
                   </div>
                 </Tab>
+                <Tab className="tab-custom" selectedClassName="tab-selected">
+                  <div className="tab-box">
+                    <span className="tab-icon">✉️</span>
+                    <h2 className="text-xl font-bold mt-1">({getAllReviews.length})</h2>
+                    <p className="text-sm">Reviews</p>
+                  </div>
+                </Tab>
               </TabList>
               <TabPanel><UserDetails /></TabPanel>
               <TabPanel><WorkerDetails /></TabPanel>
               <TabPanel><WorkInfo /></TabPanel>
               <TabPanel><ContactDetails /></TabPanel>
+              <TabPanel><ReviewsDetails /> </TabPanel>
             </Tabs>
           </motion.div>
         </div>

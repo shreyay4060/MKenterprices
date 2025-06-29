@@ -17,19 +17,36 @@ export default async function getCroppedImg(imageSrc, pixelCrop) {
     pixelCrop.height
   );
 
-  return new Promise((resolve) => {
-    canvas.toBlob((blob) => {
-      resolve(blob);
-    }, "image/jpeg");
+  return new Promise((resolve, reject) => {
+    // First, get the Blob
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) {
+          return reject(new Error("Canvas is empty"));
+        }
+        // Then convert to base64
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          resolve({
+            blob,
+            base64: reader.result, // Data URL string
+          });
+        };
+        reader.onerror = (err) => reject(err);
+        reader.readAsDataURL(blob);
+      },
+      "image/jpeg",
+      0.9
+    );
   });
 }
 
 function createImage(url) {
   return new Promise((resolve, reject) => {
     const image = new Image();
-    image.addEventListener("load", () => resolve(image));
-    image.addEventListener("error", (error) => reject(error));
     image.setAttribute("crossOrigin", "anonymous");
+    image.onload = () => resolve(image);
+    image.onerror = (error) => reject(error);
     image.src = url;
   });
 }

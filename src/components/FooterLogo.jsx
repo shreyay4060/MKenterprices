@@ -6,7 +6,7 @@ export default function FooterLogo() {
        <div className='flex justify-center text-3xl mt-10 font-bold text-yellow-500 mb-7'>
          <span >Our team ✈️</span>
         </div>
-      <div className='flex justify-between '>
+      <div className='flex justify-between lg:justify-evenly '>
         <div>
              <img
             src="/images/footerLogo1.jpg"

@@ -8,7 +8,6 @@ import {
   onSnapshot,
   orderBy,
   query,
-  QuerySnapshot,
 } from "firebase/firestore";
 import { fireDB } from "../firebase/FirebaseConfig";
 
@@ -23,18 +22,15 @@ export default function MyState({ children }) {
     try {
       const q = query(collection(fireDB, "contactMsg"), orderBy("time"));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        let contactArray = [];
-        querySnapshot.forEach((doc) => {
-          contactArray.push({ ...doc.data(), id: doc.id });
-        });
+        const contactArray = [];
+        querySnapshot.forEach((doc) => contactArray.push({ ...doc.data(), id: doc.id }));
         setGetAllContactMsg(contactArray);
         setLoading(false);
       });
-
       return unsubscribe;
     } catch (error) {
       toast.error("Failed to fetch contact messages");
-      console.log(error);
+      console.error(error);
       setLoading(false);
     }
   };
@@ -44,10 +40,10 @@ export default function MyState({ children }) {
     try {
       await deleteDoc(doc(fireDB, "contactMsg", id));
       toast.success("Contact message deleted successfully");
-      setLoading(false);
     } catch (error) {
       toast.error("Failed to delete contact message");
-      console.log(error);
+      console.error(error);
+    } finally {
       setLoading(false);
     }
   };
@@ -60,18 +56,15 @@ export default function MyState({ children }) {
     try {
       const q = query(collection(fireDB, "user"), orderBy("time"));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        let userArray = [];
-        querySnapshot.forEach((doc) => {
-          userArray.push({ ...doc.data(), id: doc.id });
-        });
+        const userArray = [];
+        querySnapshot.forEach((doc) => userArray.push({ ...doc.data(), id: doc.id }));
         setGetAllUser(userArray);
         setLoading(false);
       });
-
       return unsubscribe;
     } catch (error) {
       toast.error("Failed to fetch users");
-      console.log(error);
+      console.error(error);
       setLoading(false);
     }
   };
@@ -81,33 +74,61 @@ export default function MyState({ children }) {
     try {
       await deleteDoc(doc(fireDB, "user", id));
       toast.success("User deleted successfully");
-      setLoading(false);
     } catch (error) {
       toast.error("Failed to delete user");
-      console.log(error);
+      console.error(error);
+    } finally {
       setLoading(false);
     }
   };
 
-  // updateUser
- 
+  // REVIEWS SECTION
+  const [getAllReviews, setGetAllReviews] = useState([]);
 
-  // work info function
-  const [getAllWork , setGetAllWork] = useState([])
+  const getAllReviewsFun = async () => {
+    setLoading(true);
+    try {
+      const q = query(collection(fireDB, "reviews"), orderBy("time"));
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const reviewArray = [];
+        querySnapshot.forEach((doc) => reviewArray.push({ ...doc.data(), id: doc.id }));
+        setGetAllReviews(reviewArray);
+        setLoading(false);
+      });
+      return unsubscribe;
+    } catch (error) {
+      toast.error("Failed to fetch reviews");
+      console.error(error);
+      setLoading(false);
+    }
+  };
+
+  const deleteReviewFun = async (id) => {
+    setLoading(true);
+    try {
+      await deleteDoc(doc(fireDB, "reviews", id));
+      toast.success("Review deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete review");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // WORK INFO SECTION
+  const [getAllWork, setGetAllWork] = useState([]);
 
   const getAllWorkFun = async () => {
     setLoading(true);
     try {
       const q = query(collection(fireDB, "work"), orderBy("time"));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        let workArray = [];
-        querySnapshot.forEach((doc) => {
-          workArray.push({ ...doc.data(), id: doc.id });
-        });
+        const workArray = [];
+        querySnapshot.forEach((doc) => workArray.push({ ...doc.data(), id: doc.id }));
         setGetAllWork(workArray);
         setLoading(false);
       });
-
       return unsubscribe;
     } catch (error) {
       console.error("Error fetching work data:", error);
@@ -115,59 +136,52 @@ export default function MyState({ children }) {
     }
   };
 
-  // ====================
-  // Delete Work Function
-  // ====================
   const deleteWorkFun = async (id) => {
     setLoading(true);
     try {
       await deleteDoc(doc(fireDB, "work", id));
       toast.success("Work deleted successfully");
-      setLoading(false);
     } catch (error) {
       toast.error("Try again, work details are not deleted");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // WORKERS SECTION
+  const [getAllWorkers, setGetAllWorkers] = useState([]);
+
+  const getAllWorkersFun = async () => {
+    setLoading(true);
+    try {
+      const q = query(collection(fireDB, "workers"), orderBy("time"));
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const workerArray = [];
+        querySnapshot.forEach((doc) => workerArray.push({ ...doc.data(), id: doc.id }));
+        setGetAllWorkers(workerArray);
+        setLoading(false);
+      });
+      return unsubscribe;
+    } catch (error) {
+      toast.error("Failed to fetch workers");
       console.error(error);
       setLoading(false);
     }
   };
 
-  // getAllWorkers
-  const [getAllWorkers , setGetAllWorkers] = useState([])
-
-const getAllWorkersFun = async () => {
-  setLoading(true);
-  try {
-    const q = query(collection(fireDB, "workers"), orderBy("time"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let workerArray = [];
-      querySnapshot.forEach((doc) => {
-        workerArray.push({ ...doc.data(), id: doc.id });
-      });
-      setGetAllWorkers(workerArray);
+  const deleteWorkerFun = async (id) => {
+    setLoading(true);
+    try {
+      await deleteDoc(doc(fireDB, "workers", id));
+      toast.success("Worker deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete worker");
+      console.error("Delete Worker Error:", error);
+    } finally {
       setLoading(false);
-    });
-
-    return unsubscribe;
-  } catch (error) {
-    toast.error("Failed to fetch workers");
-    console.error(error);
-    setLoading(false);
-  }
-};
-
-const deleteWorkerFun = async (id) => {
-  setLoading(true);
-  try {
-    await deleteDoc(doc(fireDB, "workers", id));
-    toast.success("Worker deleted successfully");
-  } catch (error) {
-    toast.error("Failed to delete worker");
-    console.error("Delete Worker Error:", error);
-  } finally {
-    setLoading(false);
-  }
-};
-
+    }
+  };
 
   // RUN ON MOUNT
   useEffect(() => {
@@ -175,6 +189,7 @@ const deleteWorkerFun = async (id) => {
     getAllUserFun();
     getAllWorkFun();
     getAllWorkersFun();
+    getAllReviewsFun();
   }, []);
 
   return (
@@ -188,10 +203,10 @@ const deleteWorkerFun = async (id) => {
         deleteUserFun,
         getAllWork,
         deleteWorkFun,
-
-        // getAllWorkers
         getAllWorkers,
-        deleteWorkerFun ,
+        deleteWorkerFun,
+        getAllReviews,
+        deleteReviewFun,
       }}
     >
       {children}

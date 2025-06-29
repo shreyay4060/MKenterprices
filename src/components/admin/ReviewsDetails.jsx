@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import MyContext from "../../context/myContext";
 import { motion } from "framer-motion";
 
-export default function ReviewMsg() {
+export default function ReviewsDetails() {
   const { getAllReviews, deleteReviewFun } = useContext(MyContext);
   const reviews = getAllReviews;
 
@@ -60,7 +60,12 @@ export default function ReviewMsg() {
                     })
                   : ""}
               </p>
-             
+              <button
+                onClick={() => deleteReviewFun(id)}
+                className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded-full transition"
+              >
+                Delete
+              </button>
             </div>
           </motion.div>
         ))}
