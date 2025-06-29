@@ -7,7 +7,7 @@ export default function About() {
     <Layout>
       <div
         id="about"
-        className="min-h-screen pt-47 lg:pt-33  bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] text-white px-6  lg:py-28 "
+        className="min-h-screen pt-47 lg:pt-33  bg-gradient-to-br from-black via-slate-900 to-gray-800 text-white px-6  lg:py-28 "
       >
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row  gap-12">
           {/* Text Section */}

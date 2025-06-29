@@ -37,7 +37,7 @@ export default function Service() {
     <Layout>
       <div
         id="service"
-        className="min-h-screen bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] px-6 pt-47 py-18 lg:py-25 text-white"
+        className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-gray-800 px-6 pt-47 py-18 lg:py-25 text-white"
       >
         <div className="max-w-7xl mx-auto text-center mb-16">
           <motion.h2

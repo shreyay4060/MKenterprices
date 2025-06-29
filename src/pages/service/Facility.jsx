@@ -5,7 +5,7 @@ import Layout from "../../components/layout/Layout";
 export default function Facility() {
   return (
     <Layout>
-      <div className="min-h-screen pt-[200px] bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] text-white">
+      <div className="min-h-screen pt-[200px] bg-gradient-to-br from-black via-slate-900 to-gray-800 text-white">
         <div className="max-w-6xl mx-auto text-center">
           <motion.h1
             className="text-4xl sm:text-5xl font-bold text-yellow-400 mb-6"

@@ -6,7 +6,7 @@ export default function ReviewMsg({ reviews }) {
       {reviews.map(({ id, name, email, message, date }) => (
         <div
           key={id}
-          className="bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] text-white border border-yellow-500 p-6 rounded-2xl shadow-lg hover:shadow-gray-600 transition-all duration-300"
+          className="bg-gradient-to-br from-black via-slate-900 to-gray-800 text-white border border-yellow-500 p-6 rounded-2xl shadow-lg hover:shadow-gray-600 transition-all duration-300"
         >
           <h3 className="text-xl font-bold  mb-1"> <span className="text-yellow-600">Name : </span>{name}</h3>
           <p className="text-sm text-gray-400 mb-3">{email}</p><br />

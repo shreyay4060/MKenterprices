@@ -2,40 +2,43 @@ import React from 'react'
 
 export default function FooterLogo() {
   return (
-    <div className='bg-gradient-to-r mt-15 from-[#010320] via-[#010e50] to-[#021b57] text-white'>
-      <div className='flex justify-evenly'>
+    <div className='bg-transparent border-t  mt-15  text-white'>
+       <div className='flex justify-center text-3xl mt-10 font-bold text-yellow-500 mb-7'>
+         <span >Our team ✈️</span>
+        </div>
+      <div className='flex justify-between '>
         <div>
              <img
-            src="/images/logo.jpg"
+            src="/images/footerLogo1.jpg"
             alt="MK Enterprises Logo"
             width="80"
             height="80"
             className="rounded-full border border-yellow-400"
           />
           <br />
-          <span className='flex justify-center w-full'>Lotus Events and Productions</span>
+          {/* <span className='flex justify-center w-full'>Lotus Events and Productions</span> */}
         </div>
         <div>
              <img
-            src="/images/logo.jpg"
+            src="/images/footerLogo.jpg"
             alt="MK Enterprises Logo"
             width="80"
             height="80"
             className="rounded-full border border-yellow-400"
             />
             <br />
-            <span>Lotus Events and Productions</span>
+            {/* <span>Lotus Events and Productions</span> */}
         </div>
         <div>
              <img
-            src="/images/logo.jpg"
+            src="/images/footerLogo3.jpg"
             alt="MK Enterprises Logo"
-            width="80"
+            width="85"
             height="80"
             className="rounded-full border border-yellow-400"
             />
             <br />
-            <span>Lotus Events and Productions</span>
+            {/* <span>Lotus Events and Productions</span> */}
         </div>
       </div>
     </div>

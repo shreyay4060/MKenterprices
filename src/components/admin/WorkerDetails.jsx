@@ -44,7 +44,7 @@ export default function WorkerDetails() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] p-6 text-white">
+      <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-gray-800 p-6 text-white">
         <h1 className="text-3xl font-bold text-yellow-400 text-center mb-8">
           All Worker Applications
         </h1>

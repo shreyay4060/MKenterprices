@@ -15,8 +15,8 @@ export default function Admin() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-33 lg:pt-18 mt-20 lg:mt-10 mb-9 bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] px-3 py-8 text-white">
-        <div className="max-w-2xl mx-auto bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] shadow-xl rounded-xl p-6 border border-violet-700">
+      <div className="min-h-screen pt-33 lg:pt-18 mt-20 lg:mt-10 mb-9 bg-gradient-to-br from-black via-slate-900 to-gray-800 px-3 py-8 text-white">
+        <div className="max-w-2xl mx-auto bg-gradient-to-br from-black via-slate-900 to-gray-800 shadow-xl rounded-xl p-6 border border-violet-700">
           {/* Heading */}
           <motion.h1
             className="text-2xl font-bold text-center text-yellow-400 mb-6 border-b border-yellow-500 pb-1"

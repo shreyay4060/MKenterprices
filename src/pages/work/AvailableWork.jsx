@@ -20,7 +20,7 @@ export default function AvailableWork() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-50 lg:pt-40 pb-20 px-4 sm:px-10 bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] text-white">
+      <div className="min-h-screen pt-50 lg:pt-40 pb-20 px-4 sm:px-10 bg-gradient-to-br from-black via-slate-900 to-gray-800 text-white">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-center items-center mb-10">
             <motion.h2
@@ -53,7 +53,7 @@ export default function AvailableWork() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3 }}
-                    className="bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] border rounded-xl p-5 shadow-lg hover:shadow-violet-700/40 transition-all"
+                    className="bg-gradient-to-br from-black via-slate-900 to-gray-800 border rounded-xl p-5 shadow-lg hover:shadow-violet-700/40 transition-all"
                   >
                     <Link to={`/work/${item.id}`} className="block">
                       <h3 className="text-xl font-semibold text-white mb-3 capitalize">

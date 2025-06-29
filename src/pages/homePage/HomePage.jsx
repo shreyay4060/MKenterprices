@@ -73,7 +73,7 @@ export default function HomePage() {
       </div>
       <hr  className="text-white"/>
 
-      <div className=" px-4 pb-25 pt-10 bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57]">
+      <div className=" px-4 pb-25 pt-10 bg-gradient-to-br from-black via-slate-900 to-gray-800">
         <h1 className="text-4xl font-extrabold text-center text-yellow-400 mb-12 drop-shadow-lg">
           What Our Users Say
         </h1>
