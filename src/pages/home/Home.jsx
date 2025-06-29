@@ -43,7 +43,7 @@ export default function Home() {
   return (
     <div
       id="home"
-      className="relative mt-20 lg:mt-0 min-h-screen bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] overflow-hidden"
+      className="relative mt-16 lg:mt-0 min-h-screen bg-gradient-to-r from-[#010320] via-[#010e50] to-[#021b57] overflow-hidden"
     >
       {/* Background Carousel */}
       <div
