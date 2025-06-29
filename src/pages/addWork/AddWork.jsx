@@ -20,7 +20,8 @@ export default function AddWork() {
   description: "",
   salary: "",
   time: "",
-  date: "",
+  fromDate: "",
+  toDate: "",
   postedDate:new Date().toLocaleString(
     "en-US",{
       month:"short",
@@ -49,7 +50,7 @@ export default function AddWork() {
     setLoading(true);
     try {
       const { title, image, location, salary } = work;
-      if (!title || !image || !location || !salary) {
+      if (!title  || !location || !salary) {
         toast.error("Please fill all the required fields");
         setLoading(false);
         return;
@@ -66,7 +67,8 @@ export default function AddWork() {
         description: "",
         salary: "",
         time: "",
-        date: "",
+        fromDate: "",
+        toDate: "",
         postedDate:""
       });
 
@@ -145,12 +147,22 @@ export default function AddWork() {
 
             {/* Date */}
             <div>
-              <label className="block text-violet-300 mb-2">Date</label>
+              <label className="block text-violet-300 mb-2">From Date</label>
               <input
                 type="date"
-                name="date"
+                name="fromDate"
                 onChange={handleChange}
-                value={work.date}
+                value={work.fromDate}
+                className="w-full px-4 py-2 bg-gray-800 text-white border border-violet-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+              />
+            </div>
+            <div>
+              <label className="block text-violet-300 mb-2">To Date</label>
+              <input
+                type="date"
+                name="toDate"
+                onChange={handleChange}
+                value={work.toDate}
                 className="w-full px-4 py-2 bg-gray-800 text-white border border-violet-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
               />
             </div>

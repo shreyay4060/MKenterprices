@@ -10,9 +10,10 @@ export default function AvailableWork() {
   const { getAllWork, loading } = context;
 
   const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
     const date = new Date(dateString);
+    if (isNaN(date)) return "Invalid Date";
     return date.toLocaleDateString("en-US", {
-      year: "numeric",
       month: "short",
       day: "2-digit",
     });
@@ -64,7 +65,7 @@ export default function AvailableWork() {
                         <img
                           src={item.image}
                           alt={item.title}
-                          className="h-44 object-cover rounded-lg mb-4 "
+                          className="h-44 object-cover rounded-lg mb-4"
                         />
                       )}
 
@@ -82,23 +83,23 @@ export default function AvailableWork() {
                           <span className="text-yellow-400 font-medium">
                             Dress code :
                           </span>{" "}
-                          Black shirt , Black formal pant & black formal shoes .
-                          . Black Blazer if you have . .
+                          Black shirt , Black formal pant & black formal shoes . .
+                          Black Blazer if you have . .
                         </p>
                         <p>
                           <span className="text-yellow-400 font-medium">
-                            Salary:
+                            Salary :
                           </span>{" "}
                           ₹{item.salary}
                         </p>
-                        <p>
+                        <p className=" text-lg">
                           <span className="text-yellow-400 font-medium">
-                            Date:
+                            Date :
                           </span>{" "}
-                          {formatDate(item.date)}
+                          {formatDate(item.fromDate)} - {formatDate(item.toDate)}
                         </p>
                         <p className="mt-2 text-gray-400">
-                          {item.description.substring(0, 25)}...
+                          {item.description?.substring(0, 25)}...
                         </p>
                         <br />
                         <button className="border py-1 px-2 rounded-md bg-amber-500 hover:bg-amber-600 text-black hover:scale-105 transition-all active:bg-amber-700">
@@ -119,18 +120,15 @@ export default function AvailableWork() {
                       Posted on : {item.postedDate}
                     </p>
                   </motion.div>
-                  
                 </div>
-                
               ))}
-              <br />
-              <p>
-            For more info call -
-            <a href="tel:+919325662421" className="text-yellow-400 underline">
-              +91 9325662421
-            </a>
-          </p>
-              
+            <br />
+            <p>
+              For more info call -{" "}
+              <a href="tel:+919325662421" className="text-yellow-400 underline">
+                +91 9325662421
+              </a>
+            </p>
           </div>
         </div>
       </div>

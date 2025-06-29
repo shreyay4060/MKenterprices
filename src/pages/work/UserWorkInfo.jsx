@@ -35,13 +35,16 @@ export default function UserWorkInfo() {
     fetchWorkData();
   }, [id]);
 
+  // ✅ Only Month + Day
   const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "2-digit",
-    });
+    return isNaN(date)
+      ? "Invalid Date"
+      : date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "2-digit",
+        });
   };
 
   if (loading) return <Loader />;
@@ -52,7 +55,7 @@ export default function UserWorkInfo() {
         <div className="text-2xl flex justify-center font-bold mb-6">
           Available Work :
         </div>
-        <div className="max-w-4xl mx-auto  border rounded-xl shadow-lg p-6">
+        <div className="max-w-4xl mx-auto border rounded-xl shadow-lg p-6">
           {work ? (
             <>
               <h2 className="text-3xl font-bold text-yellow-400 mb-4 capitalize">
@@ -63,7 +66,7 @@ export default function UserWorkInfo() {
                 <img
                   src={work.image}
                   alt={work.title}
-                  className=" h-60 object-cover rounded-md  mb-6"
+                  className="h-60 object-cover rounded-md mb-6"
                 />
               )}
 
@@ -87,16 +90,16 @@ export default function UserWorkInfo() {
                 <span className="text-yellow-400 font-medium">
                   Dress code :
                 </span>{" "}
-                Black shirt , Black formal pant & black formal shoes . . Black
-                Blazer if you have . .
+                Black shirt , Black formal pant & black formal shoes. Black
+                Blazer if you have.
               </p>
               <p className="text-gray-300 mb-2">
                 <span className="text-yellow-400 font-medium">Salary:</span> ₹
                 {work.salary}
               </p>
               <p className="text-gray-300 mb-2">
-                <span className="text-yellow-400 font-medium">Date:</span>{" "}
-                {formatDate(work.date)}
+                <span className="text-yellow-400 font-medium">Date : </span>{" "}
+                {formatDate(work.fromDate)} - {formatDate(work.toDate)}
               </p>
               <p className="text-gray-300 mb-2">
                 <span className="text-yellow-400 font-medium">Time:</span>{" "}
@@ -112,7 +115,7 @@ export default function UserWorkInfo() {
               <div className="flex gap-6 mt-4">
                 <button
                   onClick={() => navigate("/workerApplication")}
-                  className="border py-1 px-2 rounded-md bg-amber-500 hover:bg-amber-600 hover:scale-105 text-black  transition-all active:bg-amber-700"
+                  className="border py-1 px-2 rounded-md bg-amber-500 hover:bg-amber-600 hover:scale-105 text-black transition-all active:bg-amber-700"
                 >
                   Apply Now
                 </button>
@@ -135,12 +138,11 @@ export default function UserWorkInfo() {
             <p className="text-red-400 text-center">Work not found</p>
           )}
           <p>
-            For more info call -
+            For more info call -{" "}
             <a href="tel:+919325662421" className="text-yellow-400 underline">
               +91 9325662421
             </a>
           </p>
-          
         </div>
       </div>
     </Layout>

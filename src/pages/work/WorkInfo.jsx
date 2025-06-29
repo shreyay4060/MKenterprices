@@ -11,6 +11,18 @@ export default function WorkInfo() {
 
   const admin = JSON.parse(localStorage.getItem("users"));
 
+  // ✅ Only month + day (e.g. "Jun 29")
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    const d = new Date(dateString);
+    return isNaN(d.getTime())
+      ? "Invalid Date"
+      : d.toLocaleDateString("en-US", {
+          month: "short",
+          day: "2-digit",
+        });
+  };
+
   return (
     <Layout>
       <div className="min-h-screen pt-10 pb-20 px-4 sm:px-6 md:px-8 bg-gradient-to-br from-black via-slate-900 to-gray-800 text-white">
@@ -33,7 +45,7 @@ export default function WorkInfo() {
             </button>
           </div>
 
-          {/* Admin Contact (Optional Info Bar) */}
+          {/* Admin Contact */}
           {admin?.phone && (
             <p className="mb-6 text-sm text-gray-300 break-words">
               <strong className="text-yellow-400">Phone:</strong>{" "}
@@ -45,7 +57,6 @@ export default function WorkInfo() {
               </a>
             </p>
           )}
-
 
           {/* Loader */}
           {loading && (
@@ -79,7 +90,7 @@ export default function WorkInfo() {
                     <img
                       src={item.image}
                       alt={item.title}
-                      className=" h-44 object-cover rounded-lg mb-3"
+                      className="h-44 object-cover rounded-lg mb-3"
                     />
                   )}
                   <div className="text-sm sm:text-base space-y-1 text-gray-300 break-words">
@@ -89,7 +100,7 @@ export default function WorkInfo() {
                       </span>{" "}
                       <a
                         href={item.location}
-                        className="break-all inline-block underline text-blue-400  hover:text-blue-500"
+                        className="break-all inline-block underline text-blue-400 hover:text-blue-500"
                       >
                         {item.place}
                       </a>
@@ -99,7 +110,7 @@ export default function WorkInfo() {
                       <span className="text-yellow-400 font-medium">
                         Dress code :
                       </span>{" "}
-                       Black shirt , Black formal pant & black formal shoes . .
+                      Black shirt , Black formal pant & black formal shoes . .
                       Black Blazer if you have . .
                     </p>
                     <p>
@@ -109,11 +120,15 @@ export default function WorkInfo() {
                       ₹{item.salary}
                     </p>
                     <p>
-                      <span className="text-yellow-500 font-medium">Date:</span>{" "}
-                      {item.date}
+                      <span className="text-yellow-500 font-medium">
+                        Date :
+                      </span>{" "}
+                      {formatDate(item.fromDate)} - {formatDate(item.toDate)}
                     </p>
                     <p>
-                      <span className="text-yellow-500 font-medium">Time:</span>{" "}
+                      <span className="text-yellow-500 font-medium">
+                        Time:
+                      </span>{" "}
                       {item.time}
                     </p>
                     <p className="text-gray-300 text-sm line-clamp-2">
@@ -126,10 +141,11 @@ export default function WorkInfo() {
                   >
                     Delete
                   </button>
-                  <p className="text-sm text-gray-500 mt-7">Posted on : {item.postedDate}</p>
+                  <p className="text-sm text-gray-500 mt-7">
+                    Posted on : {item.postedDate}
+                  </p>
                 </motion.div>
               ))}
-              
           </div>
         </div>
       </div>
