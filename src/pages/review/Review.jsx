@@ -105,7 +105,7 @@ export default function Review() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-74 md:pt-26 bg-gray-100 dark:bg-gray-900 px-4 py-10 text-white">
+      <div className="min-h-screen pt-24 md:pt-32 bg-gray-100 dark:bg-gray-900 px-4 py-10">
         <div className="max-w-md mx-auto">
           <form onSubmit={submitReview} className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full transition-all">
             <h2 className="text-2xl font-bold mb-6 text-yellow-500 text-center">
