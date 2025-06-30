@@ -1,10 +1,14 @@
 import React from 'react'
+import { useNavigate } from 'react-router'
 
 export default function FooterLogo() {
+
+  // navigation
+  const navigate= useNavigate()
   return (
     <div className='bg-transparent border-t  mt-15  text-white'>
-       <div className='flex justify-center text-3xl mt-10 font-bold text-yellow-500 mb-7'>
-         <span >Our team ✈️</span>
+       <div className='flex justify-center text-3xl mt-10 font-bold text-yellow-500 mb-8'>
+         <span >Our Clients ✈️</span>
         </div>
       <div className='flex justify-between lg:justify-evenly '>
         <div>
@@ -41,6 +45,7 @@ export default function FooterLogo() {
             {/* <span>Lotus Events and Productions</span> */}
         </div>
       </div>
+        <button className='border px-2 py-1 ' onClick={()=>navigate("/clientApplicationForm")}>Apply</button>
     </div>
   )
 }

@@ -90,7 +90,7 @@ export default function AvailableWork() {
                           <span className="text-yellow-400 font-medium">
                             Salary :
                           </span>{" "}
-                          ₹{item.salary}
+                          ₹{item.salary} / day
                         </p>
                         <p className=" text-lg">
                           <span className="text-yellow-400 font-medium">

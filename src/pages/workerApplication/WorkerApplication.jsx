@@ -7,10 +7,15 @@ import { useNavigate } from "react-router";
 import myContext from "../../context/myContext";
 import Loader from "../../components/loader/Loader";
 
-export default function WorkerApplication() {
+// NEW imports
+import Cropper from "react-easy-crop";
+import Modal from "react-modal";
+import getCroppedImg from "../../utils/cropImage";
 
+export default function WorkerApplication() {
   const context = useContext(myContext);
-  const {loading , setLoading}  = context;
+  const { loading, setLoading } = context;
+
   const [worker, setWorker] = useState({
     name: "",
     email: "",
@@ -20,6 +25,12 @@ export default function WorkerApplication() {
   });
 
   const [preview, setPreview] = useState(null);
+  const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [rawImage, setRawImage] = useState(null);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -28,14 +39,14 @@ export default function WorkerApplication() {
     if (name === "image" && files[0]) {
       const file = files[0];
 
-      // Validate image size (2MB max)
       if (file.size > 2 * 1024 * 1024) {
         toast.error("Image must be less than 2MB");
         return;
       }
 
-      setWorker((prev) => ({ ...prev, image: file }));
-      setPreview(URL.createObjectURL(file));
+      const imageURL = URL.createObjectURL(file);
+      setRawImage(imageURL);
+      setCropModalOpen(true);
     } else if (name === "name") {
       if (/\d/.test(value)) {
         toast.error("Name should not contain numbers");
@@ -50,63 +61,78 @@ export default function WorkerApplication() {
     }
   };
 
- const handleSubmit = async (e) => {
+  const onCropComplete = (_, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
+
+  const handleCropSave = async () => {
+    try {
+      const { base64 } = await getCroppedImg(rawImage, croppedAreaPixels);
+      const croppedBlob = await fetch(base64).then((r) => r.blob());
+      const croppedFile = new File([croppedBlob], "cropped.jpg", { type: "image/jpeg" });
+
+      setWorker((prev) => ({ ...prev, image: croppedFile }));
+      setPreview(base64);
+      setCropModalOpen(false);
+    } catch (err) {
+      toast.error("Image crop failed");
+      console.error(err);
+    }
+  };
+
+  const handleSubmit = async (e) => {
   e.preventDefault();
-  const { name, email, address, contact, image } = worker;
+  const { name, email, address, contact } = worker;
 
   if (contact.length !== 10) {
     return toast.error("Contact must be exactly 10 digits");
   }
 
   if (!name || !email || !address || !contact ) {
-    return toast.error("Please fill in all fields including image");
+    return toast.error("Please fill in all fields ");
   }
 
-  setLoading(true); // Start loader
+  setLoading(true);
 
   try {
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64Image = reader.result;
+    const { base64 } = await getCroppedImg(preview, croppedAreaPixels);
 
-      await addDoc(collection(fireDB, "workers"), {
-        name,
-        email,
-        address,
-        contact,
-        image: base64Image,
-        time: Timestamp.now(),
-        date: new Date().toLocaleString("en-US", {
-          month: "short",
-          day: "2-digit",
-          year: "numeric",
-        }),
-      });
+    await addDoc(collection(fireDB, "workers"), {
+      name,
+      email,
+      address,
+      contact,
+      image: base64, // ✅ Save cropped image directly
+      time: Timestamp.now(),
+      date: new Date().toLocaleString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      }),
+    });
 
-      toast.success("Application submitted successfully");
+    toast.success("Application submitted successfully");
+    setWorker({ name: "", email: "", address: "", contact: "", image: null });
+    setPreview(null);
+    setShowCropper(false);
 
-      setWorker({ name: "", email: "", address: "", contact: "", image: null });
-      setPreview(null);
-
-      const storedUser = JSON.parse(localStorage.getItem("users"));
-      if (storedUser?.role === "admin") {
-        navigate("/adminDashboard");
-      } else {
-        navigate("/userDashboard");
-      }
-    };
-
-    reader.readAsDataURL(image);
+    const storedUser = JSON.parse(localStorage.getItem("users"));
+    if (storedUser?.role === "admin") {
+      navigate("/adminDashboard");
+    } else {
+      navigate("/userDashboard");
+    }
   } catch (error) {
     console.error("Error submitting application:", error);
     toast.error("Submission failed");
   } finally {
-    setLoading(false); // Stop loader
+    setLoading(false);
   }
 };
 
 
-if (loading) return <Loader />;
+  if (loading) return <Loader />;
+
   return (
     <Layout>
       <div className="min-h-screen mt-40 lg:mt-15 bg-gradient-to-br from-black via-slate-900 to-gray-800 text-white py-10 px-4">
@@ -177,20 +203,57 @@ if (loading) return <Loader />;
               />
             </div>
 
-             <button
-                type="submit"
-                disabled={loading}
-                className={`w-full py-2 font-semibold rounded transition duration-200 ${
-                  loading
-                    ? "bg-yellow-300 cursor-not-allowed"
-                    : "bg-yellow-500 hover:bg-yellow-600 text-black"
-                }`}
-              >
-                {loading ? "Submitting ..." : "Submit Application"}
-              </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full py-2 font-semibold rounded transition duration-200 ${
+                loading
+                  ? "bg-yellow-300 cursor-not-allowed"
+                  : "bg-yellow-500 hover:bg-yellow-600 text-black"
+              }`}
+            >
+              {loading ? "Submitting ..." : "Submit Application"}
+            </button>
           </form>
         </div>
       </div>
+
+      {/* Cropper Modal */}
+      <Modal
+        isOpen={cropModalOpen}
+        onRequestClose={() => setCropModalOpen(false)}
+        contentLabel="Crop Image"
+        className="fixed inset-0 flex items-center justify-center z-50"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-70 z-40"
+      >
+        <div className="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
+          <div className="relative h-64 w-full">
+            <Cropper
+              image={rawImage}
+              crop={crop}
+              zoom={zoom}
+              aspect={1}
+              onCropChange={setCrop}
+              onZoomChange={setZoom}
+              onCropComplete={onCropComplete}
+            />
+          </div>
+          <div className="flex justify-between mt-4">
+            <button
+              onClick={() => setCropModalOpen(false)}
+              className="px-4 py-2 bg-gray-300 rounded"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleCropSave}
+              className="px-4 py-2 bg-yellow-500 rounded text-black font-semibold"
+            >
+              Crop & Save
+            </button>
+          </div>
+        </div>
+      </Modal>
     </Layout>
   );
 }

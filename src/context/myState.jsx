@@ -23,7 +23,9 @@ export default function MyState({ children }) {
       const q = query(collection(fireDB, "contactMsg"), orderBy("time"));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const contactArray = [];
-        querySnapshot.forEach((doc) => contactArray.push({ ...doc.data(), id: doc.id }));
+        querySnapshot.forEach((doc) =>
+          contactArray.push({ ...doc.data(), id: doc.id })
+        );
         setGetAllContactMsg(contactArray);
         setLoading(false);
       });
@@ -57,7 +59,9 @@ export default function MyState({ children }) {
       const q = query(collection(fireDB, "user"), orderBy("time"));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const userArray = [];
-        querySnapshot.forEach((doc) => userArray.push({ ...doc.data(), id: doc.id }));
+        querySnapshot.forEach((doc) =>
+          userArray.push({ ...doc.data(), id: doc.id })
+        );
         setGetAllUser(userArray);
         setLoading(false);
       });
@@ -91,7 +95,9 @@ export default function MyState({ children }) {
       const q = query(collection(fireDB, "reviews"), orderBy("time"));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const reviewArray = [];
-        querySnapshot.forEach((doc) => reviewArray.push({ ...doc.data(), id: doc.id }));
+        querySnapshot.forEach((doc) =>
+          reviewArray.push({ ...doc.data(), id: doc.id })
+        );
         setGetAllReviews(reviewArray);
         setLoading(false);
       });
@@ -125,7 +131,9 @@ export default function MyState({ children }) {
       const q = query(collection(fireDB, "work"), orderBy("time"));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const workArray = [];
-        querySnapshot.forEach((doc) => workArray.push({ ...doc.data(), id: doc.id }));
+        querySnapshot.forEach((doc) =>
+          workArray.push({ ...doc.data(), id: doc.id })
+        );
         setGetAllWork(workArray);
         setLoading(false);
       });
@@ -158,7 +166,9 @@ export default function MyState({ children }) {
       const q = query(collection(fireDB, "workers"), orderBy("time"));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const workerArray = [];
-        querySnapshot.forEach((doc) => workerArray.push({ ...doc.data(), id: doc.id }));
+        querySnapshot.forEach((doc) =>
+          workerArray.push({ ...doc.data(), id: doc.id })
+        );
         setGetAllWorkers(workerArray);
         setLoading(false);
       });
@@ -183,6 +193,42 @@ export default function MyState({ children }) {
     }
   };
 
+  // CLIENT APPLICATION SECTION
+  const [getAllClientApplications, setGetAllClientApplications] = useState([]);
+
+  const getAllClientApplicationsFun = async () => {
+    setLoading(true);
+    try {
+      const q = query(collection(fireDB, "clients"), orderBy("submittedAt"));
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const clientArray = [];
+        querySnapshot.forEach((doc) =>
+          clientArray.push({ ...doc.data(), id: doc.id })
+        );
+        setGetAllClientApplications(clientArray);
+        setLoading(false);
+      });
+      return unsubscribe;
+    } catch (error) {
+      toast.error("Failed to fetch client applications");
+      console.error(error);
+      setLoading(false);
+    }
+  };
+
+  const deleteClientApplicationFun = async (id) => {
+    setLoading(true);
+    try {
+      await deleteDoc(doc(fireDB, "clients", id));
+      toast.success("Client application deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete client application");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // RUN ON MOUNT
   useEffect(() => {
     getAllContactFun();
@@ -190,6 +236,7 @@ export default function MyState({ children }) {
     getAllWorkFun();
     getAllWorkersFun();
     getAllReviewsFun();
+    getAllClientApplicationsFun();
   }, []);
 
   return (
@@ -207,6 +254,9 @@ export default function MyState({ children }) {
         deleteWorkerFun,
         getAllReviews,
         deleteReviewFun,
+        getAllClientApplications, // ✅ Already added
+        deleteClientApplicationFun, // ✅ Already added
+        getAllClientApplicationsFun, // ✅ ADD THIS LINE
       }}
     >
       {children}

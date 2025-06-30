@@ -15,10 +15,9 @@ import FooterLogo from "../../components/FooterLogo";
 
 export default function HomePage() {
   const navigate = useNavigate();
-
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(3);
+  const [visibleCount, setVisibleCount] = useState(2); // Start with 2 reviews
 
   useEffect(() => {
     const user = localStorage.getItem("users");
@@ -49,20 +48,12 @@ export default function HomePage() {
     fetchReviews();
   }, []);
 
-  const handleShowMore = () => setVisibleCount((prev) => prev + 3);
-  const handleShowLess = () => setVisibleCount(3);
+  const handleShowMore = () => setVisibleCount((prev) => prev + 2);
+  const handleShowLess = () => setVisibleCount(2);
 
   return (
     <Layout>
       <Home />
-
-      {/* <div style={{ marginTop: "-120px" }} id="about">
-        <About />
-      </div> */}
-
-      {/* <div id="services" style={{ marginTop: "-200px" }}>
-        <Service />
-      </div> */}
 
       <div id="availableWork" style={{ marginTop: "-120px" }}>
         <AvailableWork />
@@ -71,9 +62,10 @@ export default function HomePage() {
       <div style={{ marginTop: "-200px" }} id="contact">
         <Contact />
       </div>
-      <hr  className="text-white"/>
 
-      <div className=" px-4 pb-25 pt-10 bg-gradient-to-br from-black via-slate-900 to-gray-800">
+      <hr className="text-white" />
+
+      <div className="px-4 pb-25 pt-10 bg-gradient-to-br from-black via-slate-900 to-gray-800">
         <h1 className="text-4xl font-extrabold text-center text-yellow-400 mb-12 drop-shadow-lg">
           What Our Users Say
         </h1>
@@ -81,7 +73,7 @@ export default function HomePage() {
         {loading ? (
           <p className="text-center text-gray-400 text-lg">Loading reviews...</p>
         ) : reviews.length === 0 ? (
-          <p className="text-center  text-gray-400 text-lg">No reviews found.</p>
+          <p className="text-center text-gray-400 text-lg">No reviews found.</p>
         ) : (
           <>
             <motion.div
@@ -92,7 +84,7 @@ export default function HomePage() {
               <ReviewMsg reviews={reviews.slice(0, visibleCount)} />
             </motion.div>
 
-            <div className="flex  justify-center gap-4 mt-8">
+            <div className="flex justify-center gap-4 mt-8">
               {visibleCount < reviews.length && (
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -103,7 +95,7 @@ export default function HomePage() {
                   Show More
                 </motion.button>
               )}
-              {visibleCount > 3 && (
+              {visibleCount > 2 && (
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -130,9 +122,9 @@ export default function HomePage() {
             ✍️ Write a Review
           </motion.button>
         </div>
+
         <FooterLogo />
       </div>
-
     </Layout>
   );
 }

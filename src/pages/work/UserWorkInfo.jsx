@@ -95,7 +95,7 @@ export default function UserWorkInfo() {
               </p>
               <p className="text-gray-300 mb-2">
                 <span className="text-yellow-400 font-medium">Salary:</span> ₹
-                {work.salary}
+                {work.salary} / day
               </p>
               <p className="text-gray-300 mb-2">
                 <span className="text-yellow-400 font-medium">Date : </span>{" "}

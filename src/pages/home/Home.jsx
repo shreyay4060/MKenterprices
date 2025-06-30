@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion"; // ✅ For animation
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 
 export default function Home() {
@@ -18,17 +18,20 @@ export default function Home() {
     script.src = "https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js";
     script.onload = () => {
       const Typed = window.Typed;
-      new Typed("#element", {
-        strings: [
-          "Empowering Businesses",
-          "Smart Workforce Management",
-          "Reliable Enterprise Solutions",
-        ],
-        typeSpeed: 40,
-        backSpeed: 10,
-        loop: true,
-        showCursor: false,
-      });
+      const target = document.getElementById("element");
+      if (Typed && target) {
+        new Typed("#element", {
+          strings: [
+            "Empowering Businesses",
+            "Smart Workforce Management",
+            "Reliable Enterprise Solutions",
+          ],
+          typeSpeed: 40,
+          backSpeed: 10,
+          loop: true,
+          showCursor: false,
+        });
+      }
     };
     document.body.appendChild(script);
   }, []);
@@ -43,7 +46,7 @@ export default function Home() {
   return (
     <div
       id="home"
-      className="relative mt-16 lg:mt-0 min-h-screen  overflow-hidden"
+      className="relative mt-35 min-h-screen lg:mt-0 overflow-hidden"
     >
       {/* Background Carousel */}
       <div
@@ -84,10 +87,9 @@ export default function Home() {
         </motion.p>
 
         <motion.button
-          
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={()=>navigate("/availableWork")}
+          onClick={() => navigate("/availableWork")}
           className="mt-8 inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-3 rounded-full shadow-md transition-all duration-300"
         >
           Get Started

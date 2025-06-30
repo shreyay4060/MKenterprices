@@ -14,10 +14,11 @@ import { fireDB } from "../../firebase/FirebaseConfig";
 import toast from "react-hot-toast";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "../../utils/cropImage";
+import ClientApplications from "../../components/admin/ClientApplications";
 
 export default function AdminDashboard() {
   const context = useContext(myContext);
-  const { getAllUser, getAllWork, getAllContactMsg,getAllReviews,  getAllWorkers } = context;
+  const { getAllUser, getAllWork, getAllContactMsg,getAllReviews,  getAllWorkers , getAllClientApplications} = context;
   const [admin, setAdmin] = useState(() => JSON.parse(localStorage.getItem("users")));
   const [preview, setPreview] = useState(admin?.profileImage || null);
   const [cropModal, setCropModal] = useState(false);
@@ -217,12 +218,20 @@ export default function AdminDashboard() {
                     <p className="text-sm">Reviews</p>
                   </div>
                 </Tab>
+                <Tab className="tab-custom" selectedClassName="tab-selected">
+                  <div className="tab-box">
+                    <span className="tab-icon">✉️</span>
+                    <h2 className="text-xl font-bold mt-1">({getAllClientApplications.length})</h2>
+                    <p className="text-sm">Client Applications</p>
+                  </div>
+                </Tab>
               </TabList>
               <TabPanel><UserDetails /></TabPanel>
               <TabPanel><WorkerDetails /></TabPanel>
               <TabPanel><WorkInfo /></TabPanel>
               <TabPanel><ContactDetails /></TabPanel>
               <TabPanel><ReviewsDetails /> </TabPanel>
+              <TabPanel><ClientApplications /> </TabPanel>
             </Tabs>
           </motion.div>
         </div>
@@ -235,7 +244,7 @@ export default function AdminDashboard() {
           color: #ffffff;
           padding: 1rem;
           border-radius: 1rem;
-          width: 20%;
+          width: 0%;
           cursor: pointer;
           min-width: 150px;
           text-align: center;

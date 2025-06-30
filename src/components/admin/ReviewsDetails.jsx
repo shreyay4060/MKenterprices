@@ -13,7 +13,7 @@ export default function ReviewsDetails() {
   }, [theme]);
 
   return (
-    <div className="py-8 px-4 bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <div className="py-8 px-4 bg-transparent">
       <div className="flex justify-end mb-6">
         <button
           onClick={() => setTheme(prev => prev === "light" ? "dark" : "light")}

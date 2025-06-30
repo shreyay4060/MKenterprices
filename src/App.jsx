@@ -25,6 +25,7 @@ import ProtectedRouteForUser from "./protectedRoute/ProtectedRouteUser";
 import ProtectedRouteForAdmin from "./protectedRoute/ProtectedRouteAdmin";
 import WorkerApplication from "./pages/workerApplication/WorkerApplication";
 import Review from "./pages/review/Review";
+import ClientApplicationForm from "./pages/clientApplication/ClientApplicationForm";
 
 export default function App() {
   return (
@@ -49,6 +50,9 @@ export default function App() {
 
           {/* worker application */}
           <Route path="/workerApplication" element={<WorkerApplication />} />
+
+          {/* client application form */}
+          <Route path="/clientApplicationForm" element={<ClientApplicationForm />} />
 
           <Route
             path="/userDashboard"
