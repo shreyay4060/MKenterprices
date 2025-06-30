@@ -81,55 +81,53 @@ export default function WorkerApplication() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  const { name, email, address, contact } = worker;
+    e.preventDefault();
+    const { name, email, address, contact } = worker;
 
-  if (contact.length !== 10) {
-    return toast.error("Contact must be exactly 10 digits");
-  }
-
-  if (!name || !email || !address || !contact ) {
-    return toast.error("Please fill in all fields ");
-  }
-
-  setLoading(true);
-
-  try {
-    const { base64 } = await getCroppedImg(preview, croppedAreaPixels);
-
-    await addDoc(collection(fireDB, "workers"), {
-      name,
-      email,
-      address,
-      contact,
-      image: base64, // ✅ Save cropped image directly
-      time: Timestamp.now(),
-      date: new Date().toLocaleString("en-US", {
-        month: "short",
-        day: "2-digit",
-        year: "numeric",
-      }),
-    });
-
-    toast.success("Application submitted successfully");
-    setWorker({ name: "", email: "", address: "", contact: "", image: null });
-    setPreview(null);
-    setShowCropper(false);
-
-    const storedUser = JSON.parse(localStorage.getItem("users"));
-    if (storedUser?.role === "admin") {
-      navigate("/adminDashboard");
-    } else {
-      navigate("/userDashboard");
+    if (contact.length !== 10) {
+      return toast.error("Contact must be exactly 10 digits");
     }
-  } catch (error) {
-    console.error("Error submitting application:", error);
-    toast.error("Submission failed");
-  } finally {
-    setLoading(false);
-  }
-};
 
+    if (!name || !email || !address || !contact) {
+      return toast.error("Please fill in all fields ");
+    }
+
+    setLoading(true);
+
+    try {
+      const base64 = preview;
+
+      await addDoc(collection(fireDB, "workers"), {
+        name,
+        email,
+        address,
+        contact,
+        image: base64,
+        time: Timestamp.now(),
+        date: new Date().toLocaleString("en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+        }),
+      });
+
+      toast.success("Application submitted successfully");
+      setWorker({ name: "", email: "", address: "", contact: "", image: null });
+      setPreview(null);
+
+      const storedUser = JSON.parse(localStorage.getItem("users"));
+      if (storedUser?.role === "admin") {
+        navigate("/adminDashboard");
+      } else {
+        navigate("/userDashboard");
+      }
+    } catch (error) {
+      console.error("Error submitting application:", error);
+      toast.error("Submission failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) return <Loader />;
 
