@@ -92,7 +92,7 @@ export default function About() {
         </div>
 
         {/* section 2 admin details */}
-        <div className="max-w-6xl pb-20 border-t pt-10 mx-auto mt-10 flex flex-col lg:flex-row  gap-12">
+        <div className="max-w-6xl pb-20 border-t pt-10 mx-auto mt-10 flex flex-col-reverse lg:flex-row  gap-12">
           {/* Text Section */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
