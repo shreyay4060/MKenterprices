@@ -129,6 +129,18 @@ export default function AvailableWork() {
                 +91 9325662421
               </a>
             </p>
+            <div className="mt-10">
+            <h3 className="text-center text-3xl text-yellow-400 underline mb-9">Client Application</h3>
+            <p className="text-center text-white mb-4">If you want to post your own work, please fill out our application form.</p>
+            <div className="flex justify-center">
+              <Link
+                to="/clientApplicationForm"
+                className="bg-yellow-500 active:bg-yellow-500 hover:bg-white font-bold hover:text-violet-700 text-black py-2 px-6 rounded-md transition duration-200"
+              >
+                 Client Application Form
+              </Link>
+            </div>
+          </div>
           </div>
         </div>
       </div>

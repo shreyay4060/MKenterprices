@@ -46,7 +46,7 @@ export default function Home() {
   return (
     <div
       id="home"
-      className="relative mt-35 min-h-screen lg:mt-0 overflow-hidden"
+      className="relative mt-15  lg:mt-0 overflow-hidden"
     >
       {/* Background Carousel */}
       <div

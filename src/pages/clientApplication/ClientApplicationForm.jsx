@@ -26,7 +26,7 @@ export default function ClientApplicationForm() {
     contact: "",
     description: "",
     countryCode: "+91",
-    location: ""
+    location: "",
   });
 
   const handleChange = (e) => {
@@ -58,7 +58,7 @@ export default function ClientApplicationForm() {
       address,
       contact,
       description,
-      location
+      location,
     } = client;
 
     const nameRegex = /^[A-Za-z\s]+$/;
@@ -89,7 +89,9 @@ export default function ClientApplicationForm() {
     }
 
     if (!nameRegex.test(companyName)) {
-      toast.error("Company name must not contain numbers or special characters");
+      toast.error(
+        "Company name must not contain numbers or special characters"
+      );
       return false;
     }
 
@@ -147,7 +149,7 @@ export default function ClientApplicationForm() {
         contact: "",
         description: "",
         countryCode: "+91",
-        location: ""
+        location: "",
       });
 
       navigate("/");
@@ -163,68 +165,176 @@ export default function ClientApplicationForm() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-28 px-4 bg-gradient-to-br from-slate-900 via-black to-gray-800 text-white py-10 overflow-x-hidden">
+      <div className="min-h-screen pt-48 lg:pt-28 px-4 bg-gradient-to-br from-slate-900 via-black to-gray-800 text-white py-10 overflow-x-hidden">
         <div className="max-w-2xl mx-auto bg-gray-900 rounded-xl p-6 shadow-lg border border-yellow-500">
           <h2 className="text-3xl font-bold text-yellow-400 text-center mb-6">
             Client Application Form
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-
             <label className="block text-sm">Company Name</label>
-            <input type="text" name="companyName" placeholder="Company Name" value={client.companyName} onChange={handleChange} className="w-full p-3 bg-gray-800 border border-gray-600 rounded" />
+            <input
+              type="text"
+              name="companyName"
+              placeholder="Company Name"
+              value={client.companyName}
+              onChange={handleChange}
+              className="w-full p-3 bg-gray-800 border border-gray-600 rounded"
+            />
 
             <label className="block text-sm">Client Name</label>
-            <input type="text" name="clientName" placeholder="Client Name" value={client.clientName} onChange={handleChange} className="w-full p-3 bg-gray-800 border border-gray-600 rounded" />
+            <input
+              type="text"
+              name="clientName"
+              placeholder="Client Name"
+              value={client.clientName}
+              onChange={handleChange}
+              className="w-full p-3 bg-gray-800 border border-gray-600 rounded"
+            />
 
             <label className="block text-sm">Email</label>
-            <input type="email" name="email" placeholder="Client/Company Email" value={client.email} onChange={handleChange} className="w-full p-3 bg-gray-800 border border-gray-600 rounded" />
+            <input
+              type="email"
+              name="email"
+              placeholder="Client/Company Email"
+              value={client.email}
+              onChange={handleChange}
+              className="w-full p-3 bg-gray-800 border border-gray-600 rounded"
+            />
 
             <label className="block text-sm">Work Name</label>
-            <input type="text" name="workName" placeholder="Work Name" value={client.workName} onChange={handleChange} className="w-full p-3 bg-gray-800 border border-gray-600 rounded" />
+            <input
+              type="text"
+              name="workName"
+              placeholder="Work Name"
+              value={client.workName}
+              onChange={handleChange}
+              className="w-full p-3 bg-gray-800 border border-gray-600 rounded"
+            />
 
             <label className="block text-sm">Work Address</label>
-            <input type="text" name="address" placeholder="Work Address" value={client.address} onChange={handleChange} className="w-full p-3 bg-gray-800 border border-gray-600 rounded" />
+            <input
+              type="text"
+              name="address"
+              placeholder="Work Address"
+              value={client.address}
+              onChange={handleChange}
+              className="w-full p-3 bg-gray-800 border border-gray-600 rounded"
+            />
             <label className="block text-sm">Location</label>
-            <input type="text" name="location" placeholder="Location" value={client.location} onChange={handleChange} className="w-full p-3 bg-gray-800 border border-gray-600 rounded" />
+            <input
+              type="text"
+              name="location"
+              placeholder="Location"
+              value={client.location}
+              onChange={handleChange}
+              className="w-full p-3 bg-gray-800 border border-gray-600 rounded"
+            />
             <label className="block text-sm">Work Description</label>
-            <textarea name="description" placeholder="Work Description" value={client.description} onChange={handleChange} className="w-full p-3 bg-gray-800 border border-gray-600 rounded resize-none" rows={4} />
-
+            <textarea
+              name="description"
+              placeholder="Work Description"
+              value={client.description}
+              onChange={handleChange}
+              className="w-full p-3 bg-gray-800 border border-gray-600 rounded resize-none"
+              rows={4}
+            />
 
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <label className="block text-sm">From Date</label>
-                <input type="date" name="fromDate" value={client.fromDate} onChange={handleChange} className="w-full p-3 bg-gray-800 border border-gray-600 rounded" />
+                <input
+                  type="date"
+                  name="fromDate"
+                  value={client.fromDate}
+                  onChange={handleChange}
+                  className="w-full p-3 bg-gray-800 border border-gray-600 rounded"
+                />
               </div>
               <div className="flex-1">
                 <label className="block text-sm">To Date</label>
-                <input type="date" name="toDate" value={client.toDate} onChange={handleChange} className="w-full p-3 bg-gray-800 border border-gray-600 rounded" />
+                <input
+                  type="date"
+                  name="toDate"
+                  value={client.toDate}
+                  onChange={handleChange}
+                  className="w-full p-3 bg-gray-800 border border-gray-600 rounded"
+                />
               </div>
             </div>
 
             <div className="flex flex-col md:flex-row gap-4">
-              <input type="text" name="salaryPerPerson" placeholder="Salary Per Person (INR)" value={client.salaryPerPerson} onChange={handleChange} className="w-full p-3 bg-gray-800 border border-gray-600 rounded" />
-              <input type="text" name="numberOfWorkers" placeholder="Number of Workers" value={client.numberOfWorkers} onChange={handleChange} className="w-full p-3 bg-gray-800 border border-gray-600 rounded" />
+              <input
+                type="text"
+                name="salaryPerPerson"
+                placeholder="Salary Per Person (INR)"
+                value={client.salaryPerPerson}
+                onChange={handleChange}
+                className="w-full p-3 bg-gray-800 border border-gray-600 rounded"
+              />
+              <input
+                type="text"
+                name="numberOfWorkers"
+                placeholder="Number of Workers"
+                value={client.numberOfWorkers}
+                onChange={handleChange}
+                className="w-full p-3 bg-gray-800 border border-gray-600 rounded"
+              />
             </div>
 
             <div className="flex flex-col md:flex-row gap-4">
-              <input type="time" name="timeFrom" value={client.timeFrom} onChange={handleChange} className="w-full p-3 bg-gray-800 border border-gray-600 rounded" />
-              <input type="time" name="timeTo" value={client.timeTo} onChange={handleChange} className="w-full p-3 bg-gray-800 border border-gray-600 rounded" />
+              <div className="flex-1">
+                <label className="block text-sm">From Time</label>
+                <input
+                  type="time"
+                  name="timeFrom"
+                  value={client.timeFrom}
+                  onChange={handleChange}
+                  className="w-full p-3 bg-gray-800 border border-gray-600 rounded"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="block text-sm">To Time</label>
+                <input
+                  type="time"
+                  name="timeTo"
+                  value={client.timeTo}
+                  onChange={handleChange}
+                  className="w-full p-3 bg-gray-800 border border-gray-600 rounded"
+                />
+              </div>
             </div>
 
-
             <div className="flex gap-4">
-              <select name="countryCode" value={client.countryCode} onChange={handleChange} className="w-28 p-3 bg-gray-800 border border-gray-600 rounded">
+              <select
+                name="countryCode"
+                value={client.countryCode}
+                onChange={handleChange}
+                className="w-28 p-3 bg-gray-800 border border-gray-600 rounded"
+              >
                 <option value="+91">🇮🇳 +91</option>
                 <option value="+1">🇺🇸 +1</option>
                 <option value="+44">🇬🇧 +44</option>
                 <option value="+61">🇦🇺 +61</option>
               </select>
-              <input type="tel" name="contact" placeholder="Contact Number" value={client.contact} onChange={handleChange} className="flex-1 p-3 bg-gray-800 border border-gray-600 rounded" />
+              <input
+                type="tel"
+                name="contact"
+                placeholder="Contact Number"
+                value={client.contact}
+                onChange={handleChange}
+                className="flex-1 p-3 bg-gray-800 border border-gray-600 rounded"
+              />
             </div>
 
-            <button type="submit" disabled={loading} className={`w-full py-2 font-semibold rounded transition duration-200 ${
-              loading ? "bg-yellow-300 cursor-not-allowed" : "bg-yellow-500 hover:bg-yellow-600 text-black"
-            }`}>
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full py-2 font-semibold rounded transition duration-200 ${
+                loading
+                  ? "bg-yellow-300 cursor-not-allowed"
+                  : "bg-yellow-500 hover:bg-yellow-600 text-black"
+              }`}
+            >
               {loading ? "Submitting..." : "Submit Request"}
             </button>
           </form>
