@@ -12,12 +12,11 @@ export default function Review() {
     name: "",
     email: "",
     message: "",
-    image: "", // final base64
+    image: "",
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // Crop state
   const [cropModal, setCropModal] = useState(false);
   const [srcImage, setSrcImage] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -106,133 +105,129 @@ export default function Review() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-47 lg:pt-27 flex items-center text-white justify-center bg-gray-100 dark:bg-gray-900 px-4 py-10">
-        <form onSubmit={submitReview} className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-90 max-w-lg transition-all">
-          <h2 className="text-2xl font-bold mb-6 text-yellow-500 text-center">
-            Submit Your Review
-          </h2>
+      <div className="min-h-screen pt-74 md:pt-26 bg-gray-100 dark:bg-gray-900 px-4 py-10 text-white">
+        <div className="max-w-md mx-auto">
+          <form onSubmit={submitReview} className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full transition-all">
+            <h2 className="text-2xl font-bold mb-6 text-yellow-500 text-center">
+              Submit Your Review
+            </h2>
 
-          {/* Name Field */}
-          <input
-            type="text"
-            name="name"
-            value={reviewData.name}
-            onChange={handleChange}
-            placeholder="Your Name"
-            className={`w-full mb-2 px-4 py-2 border outline-none border-white rounded bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 ${
-              errors.name
-                ? "border-red-500 focus:ring-red-400"
-                : "focus:ring-violet-500"
-            }`}
-          />
-          {errors.name && <p className="text-sm text-red-500 mb-2">{errors.name}</p>}
-
-          {/* Email Field */}
-          <input
-            type="email"
-            name="email"
-            value={reviewData.email}
-            onChange={handleChange}
-            placeholder="Your Email"
-            className={`w-full mb-2 px-4 py-2 border border-white outline-none rounded bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 ${
-              errors.email
-                ? "border-red-500 focus:ring-red-400"
-                : "focus:ring-yellow-500"
-            }`}
-          />
-          {errors.email && <p className="text-sm text-red-500 mb-2">{errors.email}</p>}
-
-          {/* Message Field */}
-          <textarea
-            name="message"
-            value={reviewData.message}
-            onChange={handleChange}
-            placeholder="Write your review here..."
-            rows="5"
-            className={`w-full mb-1 px-4 py-2 border rounded bg-white outline-none dark:bg-gray-700 focus:outline-none focus:ring-2 ${
-              errors.message
-                ? "border-red-500 focus:ring-red-400"
-                : "focus:ring-yellow-500"
-            }`}
-          />
-          <div className="text-sm text-gray-600 dark:text-gray-300 mb-2 text-right">
-            {reviewData.message.length}/{messageMaxLength}
-          </div>
-          {errors.message && <p className="text-sm text-red-500 mb-2">{errors.message}</p>}
-
-          {/* Image upload & preview */}
-          <div className="mb-4">
-            <label className="block mb-1 text-sm">Upload Image (optional)</label>
             <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-yellow-600 file:text-white hover:file:bg-yellow-700"
+              type="text"
+              name="name"
+              value={reviewData.name}
+              onChange={handleChange}
+              placeholder="Your Name"
+              className={`w-full mb-2 px-4 py-2 border outline-none border-white rounded bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 ${
+                errors.name
+                  ? "border-red-500 focus:ring-red-400"
+                  : "focus:ring-violet-500"
+              }`}
             />
-            {reviewData.image && (
-              <img
-                src={reviewData.image}
-                alt="Preview"
-                className="mt-2 h-24 rounded"
+            {errors.name && <p className="text-sm text-red-500 mb-2">{errors.name}</p>}
+
+            <input
+              type="email"
+              name="email"
+              value={reviewData.email}
+              onChange={handleChange}
+              placeholder="Your Email"
+              className={`w-full mb-2 px-4 py-2 border border-white outline-none rounded bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 ${
+                errors.email
+                  ? "border-red-500 focus:ring-red-400"
+                  : "focus:ring-yellow-500"
+              }`}
+            />
+            {errors.email && <p className="text-sm text-red-500 mb-2">{errors.email}</p>}
+
+            <textarea
+              name="message"
+              value={reviewData.message}
+              onChange={handleChange}
+              placeholder="Write your review here..."
+              rows="5"
+              className={`w-full mb-1 px-4 py-2 border rounded bg-white outline-none dark:bg-gray-700 focus:outline-none focus:ring-2 ${
+                errors.message
+                  ? "border-red-500 focus:ring-red-400"
+                  : "focus:ring-yellow-500"
+              }`}
+            />
+            <div className="text-sm text-gray-600 dark:text-gray-300 mb-2 text-right">
+              {reviewData.message.length}/{messageMaxLength}
+            </div>
+            {errors.message && <p className="text-sm text-red-500 mb-2">{errors.message}</p>}
+
+            <div className="mb-4">
+              <label className="block mb-1 text-sm">Upload Image (optional)</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-yellow-600 file:text-white hover:file:bg-yellow-700"
               />
-            )}
-          </div>
-
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full py-2 font-semibold rounded transition duration-200 ${
-              loading
-                ? "bg-violet-300 cursor-not-allowed"
-                : "bg-yellow-600 hover:bg-yellow-700 text-white"
-            }`}
-          >
-            {loading ? "Submitting..." : "Submit Review"}
-          </button>
-        </form>
-
-        {/* Crop Modal */}
-        {cropModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-            <div className="bg-white p-4 rounded-lg w-11/12 max-w-md">
-              <div className="relative h-60 bg-gray-200">
-                <Cropper
-                  image={srcImage}
-                  crop={crop}
-                  zoom={zoom}
-                  aspect={4 / 3}
-                  onCropChange={setCrop}
-                  onCropComplete={onCropComplete}
-                  onZoomChange={setZoom}
+              {reviewData.image && (
+                <img
+                  src={reviewData.image}
+                  alt="Preview"
+                  className="mt-2 h-24 rounded"
                 />
-              </div>
-              <div className="flex items-center mt-4 space-x-4">
-                <input
-                  type="range"
-                  value={zoom}
-                  min={1}
-                  max={3}
-                  step={0.1}
-                  onChange={(e) => setZoom(e.target.value)}
-                />
-                <button
-                  onClick={() => setCropModal(false)}
-                  className="px-4 py-2 bg-gray-300 rounded"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={applyCrop}
-                  className="px-4 py-2 bg-blue-600 text-white rounded"
-                >
-                  Crop & Save
-                </button>
-              </div>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full py-2 font-semibold rounded transition duration-200 ${
+                loading
+                  ? "bg-violet-300 cursor-not-allowed"
+                  : "bg-yellow-600 hover:bg-yellow-700 text-white"
+              }`}
+            >
+              {loading ? "Submitting..." : "Submit Review"}
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {cropModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+          <div className="bg-white p-4 rounded-lg w-11/12 max-w-md">
+            <div className="relative h-60 bg-gray-200">
+              <Cropper
+                image={srcImage}
+                crop={crop}
+                zoom={zoom}
+                aspect={4 / 3}
+                onCropChange={setCrop}
+                onCropComplete={onCropComplete}
+                onZoomChange={setZoom}
+              />
+            </div>
+            <div className="flex items-center mt-4 space-x-4">
+              <input
+                type="range"
+                value={zoom}
+                min={1}
+                max={3}
+                step={0.1}
+                onChange={(e) => setZoom(e.target.value)}
+              />
+              <button
+                onClick={() => setCropModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={applyCrop}
+                className="px-4 py-2 bg-blue-600 text-white rounded"
+              >
+                Crop & Save
+              </button>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </Layout>
   );
 }
