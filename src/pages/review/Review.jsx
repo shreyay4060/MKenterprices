@@ -46,12 +46,12 @@ export default function Review() {
     try {
       const { base64 } = await getCroppedImg(srcImage, croppedAreaPixels);
       setReviewData((prev) => ({ ...prev, image: base64 }));
+      URL.revokeObjectURL(srcImage);
     } catch (err) {
       console.error(err);
       toast.error("Failed to crop image");
     } finally {
       setCropModal(false);
-      URL.revokeObjectURL(srcImage);
     }
   }, [srcImage, croppedAreaPixels]);
 
@@ -105,9 +105,9 @@ export default function Review() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-24 md:pt-32 bg-gray-100 dark:bg-gray-900 px-4 py-10">
+      <div className="min-h-screen pt-24 md:pt-32 bg-gray-100 px-4 py-10">
         <div className="max-w-md mx-auto">
-          <form onSubmit={submitReview} className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full transition-all">
+          <form onSubmit={submitReview} className="bg-white p-8 rounded-lg shadow-lg w-full transition-all">
             <h2 className="text-2xl font-bold mb-6 text-yellow-500 text-center">
               Submit Your Review
             </h2>
@@ -118,7 +118,7 @@ export default function Review() {
               value={reviewData.name}
               onChange={handleChange}
               placeholder="Your Name"
-              className={`w-full mb-2 px-4 py-2 border outline-none border-white rounded bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 ${
+              className={`w-full mb-2 px-4 py-2 border outline-none border-white rounded bg-white focus:outline-none focus:ring-2 ${
                 errors.name
                   ? "border-red-500 focus:ring-red-400"
                   : "focus:ring-violet-500"
@@ -132,7 +132,7 @@ export default function Review() {
               value={reviewData.email}
               onChange={handleChange}
               placeholder="Your Email"
-              className={`w-full mb-2 px-4 py-2 border border-white outline-none rounded bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 ${
+              className={`w-full mb-2 px-4 py-2 border border-white outline-none rounded bg-white focus:outline-none focus:ring-2 ${
                 errors.email
                   ? "border-red-500 focus:ring-red-400"
                   : "focus:ring-yellow-500"
@@ -146,13 +146,13 @@ export default function Review() {
               onChange={handleChange}
               placeholder="Write your review here..."
               rows="5"
-              className={`w-full mb-1 px-4 py-2 border rounded bg-white outline-none dark:bg-gray-700 focus:outline-none focus:ring-2 ${
+              className={`w-full mb-1 px-4 py-2 border rounded bg-white outline-none focus:outline-none focus:ring-2 ${
                 errors.message
                   ? "border-red-500 focus:ring-red-400"
                   : "focus:ring-yellow-500"
               }`}
             />
-            <div className="text-sm text-gray-600 dark:text-gray-300 mb-2 text-right">
+            <div className="text-sm text-gray-600 mb-2 text-right">
               {reviewData.message.length}/{messageMaxLength}
             </div>
             {errors.message && <p className="text-sm text-red-500 mb-2">{errors.message}</p>}
@@ -165,11 +165,14 @@ export default function Review() {
                 onChange={handleFileChange}
                 className="file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-yellow-600 file:text-white hover:file:bg-yellow-700"
               />
+              <small className="block text-gray-500 mt-1">
+                Max 2MB, JPG/PNG format only
+              </small>
               {reviewData.image && (
                 <img
                   src={reviewData.image}
                   alt="Preview"
-                  className="mt-2 h-24 rounded"
+                  className="mt-2 h-24 rounded border"
                 />
               )}
             </div>
@@ -191,7 +194,13 @@ export default function Review() {
 
       {cropModal && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-          <div className="bg-white p-4 rounded-lg w-11/12 max-w-md">
+          <div className="bg-white p-4 rounded-lg w-11/12 max-w-md relative">
+            <button
+              className="absolute top-2 right-3 text-gray-500 hover:text-red-600 text-lg"
+              onClick={() => setCropModal(false)}
+            >
+              &times;
+            </button>
             <div className="relative h-60 bg-gray-200">
               <Cropper
                 image={srcImage}
@@ -210,7 +219,7 @@ export default function Review() {
                 min={1}
                 max={3}
                 step={0.1}
-                onChange={(e) => setZoom(e.target.value)}
+                onChange={(e) => setZoom(Number(e.target.value))}
               />
               <button
                 onClick={() => setCropModal(false)}
