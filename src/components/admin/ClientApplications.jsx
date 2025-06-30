@@ -4,9 +4,6 @@ import Layout from "../../components/layout/Layout";
 import Loader from "../../components/loader/Loader";
 import { FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router";
-import { addDoc, collection } from "firebase/firestore";
-import { fireDB } from "../../firebase/FirebaseConfig";
 
 export default function ClientApplications() {
   const {
@@ -15,8 +12,6 @@ export default function ClientApplications() {
     loading,
     getAllClientApplicationsFun,
   } = useContext(myContext);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     getAllClientApplicationsFun();
@@ -41,38 +36,6 @@ export default function ClientApplications() {
       day: "2-digit",
       month: "long",
     });
-  };
-
-  const handleAddToWork = async (app) => {
-    try {
-      const newWork = {
-        title: app.workName || "",
-        image: "", // Optional: populate if image data is available
-        place: app.address || "",
-        location: app.location || "",
-        description: app.description || "",
-        salary: app.salaryPerPerson || "",
-        time: `${app.timeFrom || ""} - ${app.timeTo || ""}`,
-        fromDate: app.fromDate || "",
-        toDate: app.toDate || "",
-        postedDate: new Date().toLocaleString("en-US", {
-          month: "short",
-          day: "2-digit",
-          year: "numeric",
-        }),
-      };
-
-      if (!newWork.title || !newWork.location || !newWork.salary) {
-        toast.error("Missing required fields: title, location, or salary");
-        return;
-      }
-
-      await addDoc(collection(fireDB, "work"), newWork);
-      toast.success("Work added successfully");
-    } catch (error) {
-      console.error("Error adding to work:", error);
-      toast.error("Failed to add to work");
-    }
   };
 
   if (loading) return <Loader />;
@@ -144,21 +107,13 @@ export default function ClientApplications() {
                     </p>
                   )}
 
-                  <div className="flex gap-4 items-center">
-                    <button
-                      onClick={() => deleteClientApplicationFun(app.id)}
-                      className="mt-2 text-red-500 hover:text-red-700 flex items-center gap-1 text-sm"
-                    >
-                      <FaTrash />
-                      Delete
-                    </button>
-                    <button
-                      onClick={() => handleAddToWork(app)}
-                      className="mt-2 text-green-400 hover:text-green-600 text-sm underline"
-                    >
-                      Add to Work
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => deleteClientApplicationFun(app.id)}
+                    className="mt-2 text-red-500 hover:text-red-700 flex items-center gap-1 text-sm"
+                  >
+                    <FaTrash />
+                    Delete
+                  </button>
                 </div>
               ))}
             </div>
