@@ -42,7 +42,7 @@ export default function ClientApplications() {
 
   return (
     <Layout>
-      <div className="min-h-screen mt-24 bg-gradient-to-br from-gray-900 to-black text-white px-4 py-10">
+      <div className=" mt-24 bg-gradient-to-br from-gray-900 to-black text-white px-4 py-10">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-yellow-400 text-center mb-10">
             All Client Applications
