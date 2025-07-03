@@ -36,6 +36,19 @@ app.post("/sendNotification", async (req, res) => {
 
     const message = {
       notification: { title, body },
+      android: {
+        priority: "high",
+        notification: {
+          sound: "default",
+        },
+      },
+      apns: {
+        payload: {
+          aps: {
+            sound: "default",
+          },
+        },
+      },
     };
 
     const response = await admin.messaging().sendEachForMulticast({
