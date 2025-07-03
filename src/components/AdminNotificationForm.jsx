@@ -2,11 +2,15 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast"; // ✅ Optional but recommended
 import Layout from "./layout/Layout"
+import { useNavigate } from "react-router";
 
 export default function AdminNotificationForm() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // navigation
+  const navigate = useNavigate()
 
   const handleSend = async () => {
     if (!title.trim() || !body.trim()) {
@@ -27,6 +31,7 @@ export default function AdminNotificationForm() {
         toast.success("✅ Notification sent successfully!");
         setTitle("");
         setBody("");
+        navigate("/adminDashboard")
       } else {
         toast.error("❌ Failed to send notification.");
       }
