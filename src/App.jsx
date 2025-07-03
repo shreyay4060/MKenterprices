@@ -34,16 +34,21 @@ import { messaging } from "./firebase/messaging";
 import { onMessage } from "firebase/messaging";
 
 
-
-
 export default function App() {
   useEffect(() => {
-  onMessage(messaging, (payload) => {
-    console.log("📨 Message received in foreground: ", payload);
-    alert(`${payload.notification.title} - ${payload.notification.body}`);
-    // Optionally use custom toast or browser notification
-  });
-}, []);
+    // Show foreground message (desktop + mobile)
+    onMessage(messaging, (payload) => {
+      console.log("📨 Message received in foreground: ", payload);
+      alert(`${payload.notification.title} - ${payload.notification.body}`);
+    });
+
+    // Ask for permission (and save token) on any platform
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        requestNotificationPermission(user.uid);
+      }
+    });
+  }, []);
   return (
     <MyState>
       <Router>
