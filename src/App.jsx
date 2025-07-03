@@ -27,10 +27,11 @@ import WorkerApplication from "./pages/workerApplication/WorkerApplication";
 import Review from "./pages/review/Review";
 import ClientApplicationForm from "./pages/clientApplication/ClientApplicationForm";
 import AdminNotificationForm from "./components/AdminNotificationForm";
+import { onAuthStateChanged } from "firebase/auth";
 
 
 // In App.jsx or wherever messaging is initialized
-import { messaging } from "./firebase/messaging";
+import { messaging, requestNotificationPermission } from "./firebase/messaging";
 import { onMessage } from "firebase/messaging";
 import { auth } from "./firebase/FirebaseConfig";
 
