@@ -26,6 +26,7 @@ import ProtectedRouteForAdmin from "./protectedRoute/ProtectedRouteAdmin";
 import WorkerApplication from "./pages/workerApplication/WorkerApplication";
 import Review from "./pages/review/Review";
 import ClientApplicationForm from "./pages/clientApplication/ClientApplicationForm";
+import AdminNotificationForm from "./components/AdminNotificationForm";
 
 export default function App() {
   return (
@@ -52,7 +53,10 @@ export default function App() {
           <Route path="/workerApplication" element={<WorkerApplication />} />
 
           {/* client application form */}
-          <Route path="/clientApplicationForm" element={<ClientApplicationForm />} />
+          <Route
+            path="/clientApplicationForm"
+            element={<ClientApplicationForm />}
+          />
 
           <Route
             path="/userDashboard"
@@ -91,12 +95,16 @@ export default function App() {
 
           <Route path="/work/:id" element={<UserWorkInfo />} />
 
-          <Route path="/updateUSerDetail/:id" element={
-            <ProtectedRouteForAdmin>
+          <Route
+            path="/updateUSerDetail/:id"
+            element={
+              <ProtectedRouteForAdmin>
+                <UpdateUSerDetail />
+              </ProtectedRouteForAdmin>
+            }
+          />
 
-            <UpdateUSerDetail />
-            </ProtectedRouteForAdmin>
-            } />
+          <Route path="/adminNotificationForm" element={<AdminNotificationForm />} />
         </Routes>
       </Router>
     </MyState>

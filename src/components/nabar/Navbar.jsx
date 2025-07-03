@@ -6,7 +6,18 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const user = JSON.parse(localStorage.getItem("users"));
+  // ✅ Safely parse user data from localStorage
+  let user = null;
+  try {
+    const storedUser = localStorage.getItem("users");
+    if (storedUser) {
+      user = JSON.parse(storedUser);
+    }
+  } catch (error) {
+    console.error("Error parsing user data from localStorage:", error);
+    localStorage.removeItem("users");
+  }
+
   const role = user?.role;
 
   // ✅ Define links based on role

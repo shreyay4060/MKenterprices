@@ -2,9 +2,25 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import myContext from "../../context/myContext";
 import toast from "react-hot-toast";
-import { addDoc, collection, Timestamp, getDocs, query, where } from "firebase/firestore";
-import { auth, fireDB, googleProvider } from "../../firebase/FirebaseConfig";
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import {
+  setDoc,
+  doc,
+  getDocs,
+  collection,
+  query,
+  where,
+  Timestamp,
+} from "firebase/firestore";
+import {
+  auth,
+  fireDB,
+  googleProvider,
+} from "../../firebase/FirebaseConfig";
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
+import { requestNotificationPermission } from "../../firebase/messaging";
 import Loader from "../../components/loader/Loader";
 import Layout from "../../components/layout/Layout";
 
@@ -12,27 +28,24 @@ export default function Signup() {
   const navigate = useNavigate();
   const context = useContext(myContext);
   const { loading, setLoading } = context;
-
   const [close, setClose] = useState(false);
-
-  function onClose() {
-    setClose(true);
-    navigate("/");
-  }
 
   const [userSignup, setUserSignup] = useState({
     name: "",
     email: "",
     password: "",
     role: "user",
+    fcmToken: "",
   });
+
+  function onClose() {
+    setClose(true);
+    navigate("/");
+  }
 
   function handleChangeFun(event) {
     const { name, value } = event.target;
-    setUserSignup((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setUserSignup((prev) => ({ ...prev, [name]: value }));
   }
 
   const handleGoogleSignup = async () => {
@@ -42,16 +55,18 @@ export default function Signup() {
       const user = result.user;
 
       const q = query(collection(fireDB, "user"), where("uid", "==", user.uid));
-      const querySnapshot = await getDocs(q);
+      const snapshot = await getDocs(q);
 
       let userData;
+      const fcmToken = await requestNotificationPermission(user.uid);
 
-      if (querySnapshot.empty) {
+      if (snapshot.empty) {
         userData = {
           name: user.displayName,
           email: user.email,
           uid: user.uid,
           role: "user",
+          fcmToken,
           time: Timestamp.now(),
           date: new Date().toLocaleString("en-US", {
             month: "short",
@@ -59,23 +74,20 @@ export default function Signup() {
             year: "numeric",
           }),
         };
-
-        const userRef = await addDoc(collection(fireDB, "user"), userData);
-        userData = { ...userData, id: userRef.id };
+        await setDoc(doc(fireDB, "user", user.uid), userData);
+        userData = { ...userData, id: user.uid };
       } else {
-        userData = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+        const docSnap = snapshot.docs[0];
+        userData = { id: docSnap.id, ...docSnap.data(), fcmToken };
+        await setDoc(doc(fireDB, "user", userData.id), { ...userData });
       }
 
       localStorage.setItem("users", JSON.stringify(userData));
       toast.success("Signed in with Google");
       navigate("/homePage");
     } catch (error) {
-      
-    
-  console.error("Google Signup Error", error);
-  toast.error(`Google Signup Failed: ${error.message}`);
-
-
+      console.error("Google Signup Error", error);
+      toast.error(`Google Signup Failed: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -86,29 +98,23 @@ export default function Signup() {
     const { name, email, password } = userSignup;
 
     const nameRegex = /^[A-Za-z\s]{3,}$/;
-
-    if (!name || !email || !password) {
-      return toast.error("Please fill all the fields");
-    }
-
-    if (!nameRegex.test(name)) {
-      return toast.error(
-        "Name must be at least 3 letters and contain only alphabets and spaces"
-      );
-    }
-
-    if (password.length < 6) {
-      return toast.error("Password must be at least 6 characters");
-    }
+    if (!name || !email || !password) return toast.error("Please fill all the fields");
+    if (!nameRegex.test(name)) return toast.error("Name must be at least 3 letters and contain only alphabets and spaces");
+    if (password.length < 6) return toast.error("Password must be at least 6 characters");
 
     setLoading(true);
     try {
-      const users = await createUserWithEmailAndPassword(auth, email, password);
-      const user = {
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      const user = result.user;
+
+      const fcmToken = await requestNotificationPermission(user.uid);
+
+      const userData = {
         name,
         email,
-        uid: users.user.uid,
+        uid: user.uid,
         role: userSignup.role,
+        fcmToken,
         time: Timestamp.now(),
         date: new Date().toLocaleString("en-US", {
           month: "short",
@@ -117,26 +123,18 @@ export default function Signup() {
         }),
       };
 
-      const userSignupRef = collection(fireDB, "user");
-      const userRef = await addDoc(userSignupRef, user);
-      const userWithId = { ...user, id: userRef.id };
-      localStorage.setItem("users", JSON.stringify(userWithId));
+      await setDoc(doc(fireDB, "user", user.uid), userData);
 
-      setUserSignup({ name: "", email: "", password: "" });
-
+      localStorage.setItem("users", JSON.stringify({ ...userData, id: user.uid }));
+      setUserSignup({ name: "", email: "", password: "", fcmToken: "" });
       toast.success("You are signed up successfully");
       navigate("/homePage");
     } catch (error) {
       console.error(error);
-      if (error.code === "auth/email-already-in-use") {
-        toast.error("Email is already registered");
-      } else if (error.code === "auth/invalid-email") {
-        toast.error("Invalid email format");
-      } else if (error.code === "auth/weak-password") {
-        toast.error("Password should be at least 6 characters");
-      } else {
-        toast.error("Failed to signup, please try again");
-      }
+      if (error.code === "auth/email-already-in-use") toast.error("Email is already registered");
+      else if (error.code === "auth/invalid-email") toast.error("Invalid email format");
+      else if (error.code === "auth/weak-password") toast.error("Password should be at least 6 characters");
+      else toast.error("Failed to signup, please try again");
     } finally {
       setLoading(false);
     }
@@ -155,67 +153,20 @@ export default function Signup() {
             >
               &times;
             </button>
-            <h2 className="text-2xl font-bold text-center text-yellow-400 mb-6">
-              Create a New Account
-            </h2>
+            <h2 className="text-2xl font-bold text-center text-yellow-400 mb-6">Create a New Account</h2>
             <form onSubmit={userSignupFun} className="space-y-4">
-              <input
-                type="text"
-                onChange={handleChangeFun}
-                value={userSignup.name}
-                name="name"
-                placeholder="Full Name"
-                className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
-              />
-              <input
-                type="email"
-                value={userSignup.email}
-                onChange={handleChangeFun}
-                name="email"
-                placeholder="Email"
-                className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
-              />
-              <input
-                type="password"
-                onChange={handleChangeFun}
-                name="password"
-                value={userSignup.password}
-                placeholder="Password"
-                className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
-              />
-              <button
-                type="submit"
-                disabled={loading}
-                className={`w-full py-2 font-semibold rounded transition duration-200 ${
-                  loading
-                    ? "bg-yellow-300 cursor-not-allowed"
-                    : "bg-yellow-500 hover:bg-yellow-600 text-black"
-                }`}
-              >
+              <input type="text" name="name" value={userSignup.name} onChange={handleChangeFun} placeholder="Full Name" className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+              <input type="email" name="email" value={userSignup.email} onChange={handleChangeFun} placeholder="Email" className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+              <input type="password" name="password" value={userSignup.password} onChange={handleChangeFun} placeholder="Password" className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+              <button type="submit" disabled={loading} className={`w-full py-2 font-semibold rounded transition duration-200 ${loading ? "bg-yellow-300 cursor-not-allowed" : "bg-yellow-500 hover:bg-yellow-600 text-black"}`}>
                 {loading ? "Signing up..." : "Sign Up"}
               </button>
             </form>
-            <p className="mt-4 text-center text-sm text-gray-400">
-              Already have an account?{" "}
-              <span
-                onClick={() => navigate("/login")}
-                className="text-yellow-400 font-semibold cursor-pointer hover:underline"
-              >
-                Login
-              </span>
-            </p>
+            <p className="mt-4 text-center text-sm text-gray-400">Already have an account? <span onClick={() => navigate("/login")} className="text-yellow-400 font-semibold cursor-pointer hover:underline">Login</span></p>
             <div className="mt-4 text-center">
               <p className="text-gray-400 text-sm mb-2">or</p>
-              <button
-                type="button"
-                onClick={handleGoogleSignup}
-                className="w-full py-2 px-4 flex items-center justify-center gap-2 rounded bg-white text-black font-semibold hover:bg-gray-200 transition"
-              >
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/281/281764.png"
-                  alt="Google"
-                  className="w-5 h-5"
-                />
+              <button type="button" onClick={handleGoogleSignup} className="w-full py-2 px-4 flex items-center justify-center gap-2 rounded bg-white text-black font-semibold hover:bg-gray-200 transition">
+                <img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" alt="Google" className="w-5 h-5" />
                 Continue with Google
               </button>
             </div>

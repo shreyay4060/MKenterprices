@@ -52,7 +52,7 @@ export default function Contact() {
       <div className="min-h-screen  pb-20 pt-40 bg-gradient-to-br from-black via-slate-900 to-gray-800 text-white  px-4">
         {/* Header */}
         <motion.h1
-          className="text-4xl font-bold text-center border-t border-white pt-12 text-yellow-400 mb-3"
+          className="text-4xl font-bold text-center  pt-12 text-yellow-400 mb-3"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}

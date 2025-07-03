@@ -12,6 +12,7 @@ import Service from "../service/Service";
 import AvailableWork from "../work/AvailableWork";
 import ReviewMsg from "../review/ReviewMsg";
 import FooterLogo from "../../components/FooterLogo";
+import ClientApplication from "../../components/ClientApplication";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -58,7 +59,10 @@ export default function HomePage() {
       <div id="availableWork" style={{ marginTop: "-120px" }}>
         <AvailableWork />
       </div>
-
+      <div id="clientApllication" style={{ marginTop: "-120px" }}>
+        <ClientApplication />
+      </div>
+    
       <div style={{ marginTop: "-200px" }} id="contact">
         <Contact />
       </div>

@@ -83,8 +83,8 @@ export default function AvailableWork() {
                           <span className="text-yellow-400 font-medium">
                             Dress code :
                           </span>{" "}
-                          Black shirt , Black formal pant & black formal shoes . .
-                          Black Blazer if you have . .
+                          Black shirt , Black formal pant & black formal shoes .
+                          . Black Blazer if you have . .
                         </p>
                         <p>
                           <span className="text-yellow-400 font-medium">
@@ -96,7 +96,8 @@ export default function AvailableWork() {
                           <span className="text-yellow-400 font-medium">
                             Date :
                           </span>{" "}
-                          {formatDate(item.fromDate)} - {formatDate(item.toDate)}
+                          {formatDate(item.fromDate)} -{" "}
+                          {formatDate(item.toDate)}
                         </p>
                         <p className="mt-2 text-gray-400">
                           {item.description?.substring(0, 25)}...
@@ -129,18 +130,7 @@ export default function AvailableWork() {
                 +91 9325662421
               </a>
             </p>
-            <div className="mt-10">
-            <h3 className="text-center text-3xl text-yellow-400 underline mb-9">Client Application</h3>
-            <p className="text-center text-white mb-4">If you want to post your own work, please fill out our application form.</p>
-            <div className="flex justify-center">
-              <Link
-                to="/clientApplicationForm"
-                className="bg-yellow-500 active:bg-yellow-500 hover:bg-white font-bold hover:text-violet-700 text-black py-2 px-6 rounded-md transition duration-200"
-              >
-                 Client Application Form
-              </Link>
-            </div>
-          </div>
+            
           </div>
         </div>
       </div>

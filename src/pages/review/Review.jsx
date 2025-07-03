@@ -1,3 +1,4 @@
+// your imports remain unchanged
 import React, { useState, useCallback } from "react";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { fireDB } from "../../firebase/FirebaseConfig";
@@ -105,9 +106,12 @@ export default function Review() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-47 md:pt-32 bg-gray-100 px-4 py-10">
+      <div className="min-h-screen pt-47 md:pt-32 text-white bg-gradient-to-br from-black via-slate-900 to-gray-800 px-4 py-10">
         <div className="max-w-md mx-auto">
-          <form onSubmit={submitReview} className="bg-white p-8 rounded-lg shadow-lg w-full transition-all">
+          <form
+            onSubmit={submitReview}
+            className="bg-gradient-to-br from-black via-slate-900 to-gray-800 border border-gray-700 p-8 rounded-lg shadow-lg w-full transition-all"
+          >
             <h2 className="text-2xl font-bold mb-6 text-yellow-500 text-center">
               Submit Your Review
             </h2>
@@ -118,7 +122,7 @@ export default function Review() {
               value={reviewData.name}
               onChange={handleChange}
               placeholder="Your Name"
-              className={`w-full mb-2 px-4 py-2 border outline-none border-white rounded bg-white focus:outline-none focus:ring-2 ${
+              className={`w-full mb-2 px-4 py-2 border border-white rounded bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
                 errors.name
                   ? "border-red-500 focus:ring-red-400"
                   : "focus:ring-violet-500"
@@ -132,7 +136,7 @@ export default function Review() {
               value={reviewData.email}
               onChange={handleChange}
               placeholder="Your Email"
-              className={`w-full mb-2 px-4 py-2 border border-white outline-none rounded bg-white focus:outline-none focus:ring-2 ${
+              className={`w-full mb-2 px-4 py-2 border border-white rounded bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
                 errors.email
                   ? "border-red-500 focus:ring-red-400"
                   : "focus:ring-yellow-500"
@@ -146,33 +150,33 @@ export default function Review() {
               onChange={handleChange}
               placeholder="Write your review here..."
               rows="5"
-              className={`w-full mb-1 px-4 py-2 border rounded bg-white outline-none focus:outline-none focus:ring-2 ${
+              className={`w-full mb-1 px-4 py-2 border border-white rounded bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
                 errors.message
                   ? "border-red-500 focus:ring-red-400"
                   : "focus:ring-yellow-500"
               }`}
             />
-            <div className="text-sm text-gray-600 mb-2 text-right">
+            <div className="text-sm text-gray-400 mb-2 text-right">
               {reviewData.message.length}/{messageMaxLength}
             </div>
             {errors.message && <p className="text-sm text-red-500 mb-2">{errors.message}</p>}
 
             <div className="mb-4">
-              <label className="block mb-1 text-sm">Upload Image (optional)</label>
+              <label className="block mb-1 text-sm text-white">Upload Image (optional)</label>
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
                 className="file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-yellow-600 file:text-white hover:file:bg-yellow-700"
               />
-              <small className="block text-gray-500 mt-1">
+              <small className="block text-gray-400 mt-1">
                 Max 2MB, JPG/PNG format only
               </small>
               {reviewData.image && (
                 <img
                   src={reviewData.image}
                   alt="Preview"
-                  className="mt-2 h-24 rounded border"
+                  className="mt-2 h-24 rounded border border-gray-500"
                 />
               )}
             </div>
