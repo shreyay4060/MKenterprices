@@ -32,6 +32,7 @@ import AdminNotificationForm from "./components/AdminNotificationForm";
 // In App.jsx or wherever messaging is initialized
 import { messaging } from "./firebase/messaging";
 import { onMessage } from "firebase/messaging";
+import { auth } from "./firebase/FirebaseConfig";
 
 
 export default function App() {
