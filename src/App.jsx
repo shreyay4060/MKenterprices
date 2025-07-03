@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/homePage/HomePage";
 import Login from "./pages/registration/Login";
@@ -28,7 +28,22 @@ import Review from "./pages/review/Review";
 import ClientApplicationForm from "./pages/clientApplication/ClientApplicationForm";
 import AdminNotificationForm from "./components/AdminNotificationForm";
 
+
+// In App.jsx or wherever messaging is initialized
+import { messaging } from "./firebase/messaging";
+import { onMessage } from "firebase/messaging";
+
+
+
+
 export default function App() {
+  useEffect(() => {
+  onMessage(messaging, (payload) => {
+    console.log("📨 Message received in foreground: ", payload);
+    alert(`${payload.notification.title} - ${payload.notification.body}`);
+    // Optionally use custom toast or browser notification
+  });
+}, []);
   return (
     <MyState>
       <Router>

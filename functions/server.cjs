@@ -5,7 +5,7 @@ const { getFirestore } = require("firebase-admin/firestore");
 
 const app = express();
 app.use(cors());
-app.use(express.json()); // ⬅️ Important for reading JSON body
+app.use(express.json());
 
 const serviceAccount = require("./serviceAccountKey.json");
 
@@ -20,9 +20,7 @@ app.post("/sendNotification", async (req, res) => {
 
   const { title, body } = req.body;
 
-  // Check for required fields
   if (!title || !body) {
-    console.log("❌ Missing title or body");
     return res.status(400).json({ success: false, error: "Missing title or body" });
   }
 
@@ -33,17 +31,19 @@ app.post("/sendNotification", async (req, res) => {
       .filter((token) => typeof token === "string" && token.trim() !== "");
 
     if (tokens.length === 0) {
-      console.log("❌ No valid FCM tokens found");
       return res.status(400).json({ success: false, error: "No valid FCM tokens found" });
     }
 
     const message = {
       notification: { title, body },
-      tokens,
     };
 
-    const response = await admin.messaging().sendMulticast(message);
-    console.log("✅ Notification sent successfully:", response);
+    const response = await admin.messaging().sendEachForMulticast({
+      tokens,
+      ...message,
+    });
+
+    console.log("✅ Notification response:", response);
     res.json({ success: true, response });
   } catch (err) {
     console.error("❌ Error while sending notification:", err);

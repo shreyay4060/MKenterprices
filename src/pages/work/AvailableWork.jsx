@@ -21,7 +21,7 @@ export default function AvailableWork() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-50 lg:pt-40 pb-20 px-4 sm:px-10 bg-gradient-to-br from-black via-slate-900 to-gray-800 text-white">
+      <div className=" pt-50 lg:pt-40 pb-20 px-4 sm:px-10 bg-gradient-to-br from-black via-slate-900 to-gray-800 text-white">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-center items-center mb-10">
             <motion.h2
@@ -124,14 +124,14 @@ export default function AvailableWork() {
                 </div>
               ))}
             <br />
-            <p>
+            
+          </div>
+            <p className="mt-6">
               For more info call -{" "}
               <a href="tel:+919325662421" className="text-yellow-400 underline">
                 +91 9325662421
               </a>
             </p>
-            
-          </div>
         </div>
       </div>
     </Layout>
