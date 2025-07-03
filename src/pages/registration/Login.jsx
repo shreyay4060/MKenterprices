@@ -5,31 +5,25 @@ import myContext from "../../context/myContext";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, fireDB } from "../../firebase/FirebaseConfig";
 import toast from "react-hot-toast";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where, doc, setDoc } from "firebase/firestore";
 import Layout from "../../components/layout/Layout";
+import { requestNotificationPermission } from "../../firebase/messaging"; // ✅ import
 
 export default function Login() {
   const navigate = useNavigate();
   const { loading, setLoading } = useContext(myContext);
 
-  // close state
   const [close, setClose] = useState(false);
+  const [userLogin, setUserLogin] = useState({ email: "", password: "" });
+
   function onClose() {
     setClose(true);
     navigate("/");
   }
 
-  const [userLogin, setUserLogin] = useState({
-    email: "",
-    password: "",
-  });
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserLogin((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setUserLogin((prev) => ({ ...prev, [name]: value }));
   };
 
   const userLoginFun = async (e) => {
@@ -43,22 +37,26 @@ export default function Login() {
 
     setLoading(true);
     try {
-      // Firebase auth
       const users = await signInWithEmailAndPassword(auth, email, password);
-      const q = query(
-        collection(fireDB, "user"),
-        where("uid", "==", users.user.uid)
-      );
+      const user = users.user;
+
+      const q = query(collection(fireDB, "user"), where("uid", "==", user.uid));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        const userDoc = querySnapshot.docs[0].data();
-        localStorage.setItem("users", JSON.stringify(userDoc));
-        toast.success("Login successful");
+        const userDoc = querySnapshot.docs[0];
+        const userData = userDoc.data();
 
+        // ✅ Request permission and save token
+        const fcmToken = await requestNotificationPermission(user.uid);
+        await setDoc(doc(fireDB, "user", user.uid), { ...userData, fcmToken }, { merge: true });
+
+        localStorage.setItem("users", JSON.stringify({ ...userData, fcmToken }));
+
+        toast.success("Login successful");
         setUserLogin({ email: "", password: "" });
 
-        if (userDoc.role === "user") {
+        if (userData.role === "user") {
           navigate("/userDashboard");
         } else {
           navigate("/adminDashboard");
@@ -117,7 +115,7 @@ export default function Login() {
                     : "bg-yellow-500 hover:bg-yellow-600 text-black"
                 }`}
               >
-                {loading ? "Loging..." : "Login"}
+                {loading ? "Logging in..." : "Login"}
               </button>
             </form>
 

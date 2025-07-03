@@ -18,6 +18,7 @@ const messaging = getMessaging(app);
 
 export const requestNotificationPermission = async (userId) => {
   try {
+    // Request permission inside a user gesture context (e.g., login/signup click)
     const permission = await Notification.requestPermission();
     console.log("🔔 Notification permission:", permission);
 
@@ -46,4 +47,5 @@ export const requestNotificationPermission = async (userId) => {
   }
 };
 
+// Helpful foreground notification listener setup (safe to import anywhere in React tree)
 export { messaging, onMessage };
