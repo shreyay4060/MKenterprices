@@ -9,17 +9,38 @@ import ReviewsDetails from "../../components/admin/ReviewsDetails";
 import "react-tabs/style/react-tabs.css";
 import WorkInfo from "../work/WorkInfo";
 import myContext from "../../context/myContext";
-import { doc, updateDoc, getDocs, collection, query, where } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  getDocs,
+  collection,
+  query,
+  where,
+} from "firebase/firestore";
 import { fireDB } from "../../firebase/FirebaseConfig";
 import toast from "react-hot-toast";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "../../utils/cropImage";
 import ClientApplications from "../../components/admin/ClientApplications";
+import { useNavigate } from "react-router";
 
 export default function AdminDashboard() {
+  // navigation
+
+  const navigate = useNavigate();
+
   const context = useContext(myContext);
-  const { getAllUser, getAllWork, getAllContactMsg,getAllReviews,  getAllWorkers , getAllClientApplications} = context;
-  const [admin, setAdmin] = useState(() => JSON.parse(localStorage.getItem("users")));
+  const {
+    getAllUser,
+    getAllWork,
+    getAllContactMsg,
+    getAllReviews,
+    getAllWorkers,
+    getAllClientApplications,
+  } = context;
+  const [admin, setAdmin] = useState(() =>
+    JSON.parse(localStorage.getItem("users"))
+  );
   const [preview, setPreview] = useState(admin?.profileImage || null);
   const [cropModal, setCropModal] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
@@ -47,7 +68,10 @@ export default function AdminDashboard() {
   };
 
   const getAdminDocId = async () => {
-    const q = query(collection(fireDB, "user"), where("email", "==", admin.email));
+    const q = query(
+      collection(fireDB, "user"),
+      where("email", "==", admin.email)
+    );
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs[0]?.id;
   };
@@ -105,8 +129,12 @@ export default function AdminDashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-4xl font-extrabold text-yellow-400">Welcome, {admin.name}!</h1>
-            <p className="text-gray-300 mt-2 text-base tracking-wide">Your personalized admin dashboard</p>
+            <h1 className="text-4xl font-extrabold text-yellow-400">
+              Welcome, {admin.name}!
+            </h1>
+            <p className="text-gray-300 mt-2 text-base tracking-wide">
+              Your personalized admin dashboard
+            </p>
           </motion.div>
 
           <motion.div
@@ -117,7 +145,10 @@ export default function AdminDashboard() {
           >
             <div className="text-center">
               <img
-                src={preview || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
+                src={
+                  preview ||
+                  "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                }
                 alt="Admin"
                 className="w-32 h-32 sm:w-36 sm:h-36 rounded-full object-cover border-4 border-yellow-400 shadow-lg mx-auto"
               />
@@ -140,11 +171,25 @@ export default function AdminDashboard() {
             </div>
 
             <div className="flex-1 space-y-4 text-base sm:text-lg text-left">
-              <h2 className="text-2xl font-bold text-violet-300">{admin.name}</h2>
-              <p><span className="text-yellow-400 font-semibold">Name:</span> {admin.name}</p>
-              <p><span className="text-yellow-400 font-semibold">Email:</span> {admin.email}</p>
-              <p><span className="text-yellow-400 font-semibold">Role:</span> {admin.role}</p>
-              <p><span className="text-yellow-400 font-semibold">Joined:</span> {admin.date}</p>
+              <h2 className="text-2xl font-bold text-violet-300">
+                {admin.name}
+              </h2>
+              <p>
+                <span className="text-yellow-400 font-semibold">Name:</span>{" "}
+                {admin.name}
+              </p>
+              <p>
+                <span className="text-yellow-400 font-semibold">Email:</span>{" "}
+                {admin.email}
+              </p>
+              <p>
+                <span className="text-yellow-400 font-semibold">Role:</span>{" "}
+                {admin.role}
+              </p>
+              <p>
+                <span className="text-yellow-400 font-semibold">Joined:</span>{" "}
+                {admin.date}
+              </p>
             </div>
           </motion.div>
 
@@ -180,58 +225,95 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+          <div>
+            <p>Send notification</p>
+            <button
+              className="border rounded-md px-2 py-1 bg-yellow-400 text-black"
+              onClick={() => navigate("/adminNotificationForm")}
+            >
+              Notification
+            </button>
+          </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
             <Tabs>
               <TabList className="flex flex-wrap gap-7 justify-center mb-6">
                 <Tab className="tab-custom" selectedClassName="tab-selected">
                   <div className="tab-box">
                     <span className="tab-icon">👥</span>
-                    <h2 className="text-xl font-bold mt-1">({getAllUser.length})</h2>
+                    <h2 className="text-xl font-bold mt-1">
+                      ({getAllUser.length})
+                    </h2>
                     <p className="text-sm">Users</p>
                   </div>
                 </Tab>
                 <Tab className="tab-custom" selectedClassName="tab-selected">
                   <div className="tab-box">
                     <span className="tab-icon">📄</span>
-                    <h2 className="text-xl font-bold mt-1">({getAllWorkers.length})</h2>
+                    <h2 className="text-xl font-bold mt-1">
+                      ({getAllWorkers.length})
+                    </h2>
                     <p className="text-sm">Applicants</p>
                   </div>
                 </Tab>
                 <Tab className="tab-custom" selectedClassName="tab-selected">
                   <div className="tab-box">
                     <span className="tab-icon">📝</span>
-                    <h2 className="text-xl font-bold mt-1">({getAllWork.length})</h2>
+                    <h2 className="text-xl font-bold mt-1">
+                      ({getAllWork.length})
+                    </h2>
                     <p className="text-sm">Available Work</p>
                   </div>
                 </Tab>
                 <Tab className="tab-custom" selectedClassName="tab-selected">
                   <div className="tab-box">
                     <span className="tab-icon">✉️</span>
-                    <h2 className="text-xl font-bold mt-1">({getAllContactMsg.length})</h2>
+                    <h2 className="text-xl font-bold mt-1">
+                      ({getAllContactMsg.length})
+                    </h2>
                     <p className="text-sm">Contact Msg</p>
                   </div>
                 </Tab>
                 <Tab className="tab-custom" selectedClassName="tab-selected">
                   <div className="tab-box">
                     <span className="tab-icon">✉️</span>
-                    <h2 className="text-xl font-bold mt-1">({getAllReviews.length})</h2>
+                    <h2 className="text-xl font-bold mt-1">
+                      ({getAllReviews.length})
+                    </h2>
                     <p className="text-sm">Reviews</p>
                   </div>
                 </Tab>
                 <Tab className="tab-custom" selectedClassName="tab-selected">
                   <div className="tab-box">
                     <span className="tab-icon">✉️</span>
-                    <h2 className="text-xl font-bold mt-1">({getAllClientApplications.length})</h2>
+                    <h2 className="text-xl font-bold mt-1">
+                      ({getAllClientApplications.length})
+                    </h2>
                     <p className="text-sm">Client Applications</p>
                   </div>
                 </Tab>
               </TabList>
-              <TabPanel><UserDetails /></TabPanel>
-              <TabPanel><WorkerDetails /></TabPanel>
-              <TabPanel><WorkInfo /></TabPanel>
-              <TabPanel><ContactDetails /></TabPanel>
-              <TabPanel><ReviewsDetails /> </TabPanel>
-              <TabPanel><ClientApplications /> </TabPanel>
+              <TabPanel>
+                <UserDetails />
+              </TabPanel>
+              <TabPanel>
+                <WorkerDetails />
+              </TabPanel>
+              <TabPanel>
+                <WorkInfo />
+              </TabPanel>
+              <TabPanel>
+                <ContactDetails />
+              </TabPanel>
+              <TabPanel>
+                <ReviewsDetails />{" "}
+              </TabPanel>
+              <TabPanel>
+                <ClientApplications />{" "}
+              </TabPanel>
             </Tabs>
           </motion.div>
         </div>

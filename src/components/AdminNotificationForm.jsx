@@ -1,6 +1,7 @@
 // src/pages/admin/AdminNotificationForm.jsx
 import React, { useState } from "react";
 import toast from "react-hot-toast"; // ✅ Optional but recommended
+import Layout from "./layout/Layout"
 
 export default function AdminNotificationForm() {
   const [title, setTitle] = useState("");
@@ -38,7 +39,9 @@ export default function AdminNotificationForm() {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-6 rounded-xl shadow-lg bg-[#0f172a] text-white border border-[#1e293b]">
+    <Layout>
+      <div className="min-h-screen  bg-gradient-to-br from-black via-slate-900 to-gray-800">
+    <div className="max-w-xl  mx-auto pt-47 lg:pt-26 p-6 rounded-xl shadow-lg bg-[#0f172a] text-white border border-[#1e293b]">
       <h2 className="text-2xl font-bold text-yellow-400 mb-6">
         📢 Admin: Send Notification
       </h2>
@@ -68,5 +71,7 @@ export default function AdminNotificationForm() {
         {loading ? "Sending..." : "🚀 Send Notification"}
       </button>
     </div>
+    </div>
+    </Layout>
   );
 }
