@@ -40,6 +40,7 @@ app.post("/sendNotification", async (req, res) => {
         priority: "high",
         notification: {
           sound: "default",
+          icon: "https://mkenterprices.vercel.app/images/logo.jpg",
         },
       },
       apns: {
@@ -47,6 +48,11 @@ app.post("/sendNotification", async (req, res) => {
           aps: {
             sound: "default",
           },
+        },
+      },
+      webpush: {
+        notification: {
+          icon: "https://mkenterprices.vercel.app/images/logo.jpg",
         },
       },
     };
