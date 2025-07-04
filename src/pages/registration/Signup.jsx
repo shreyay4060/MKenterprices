@@ -170,7 +170,7 @@ export default function Signup() {
                 name="name"
                 value={userSignup.name}
                 onChange={handleChangeFun}
-                placeholder="Full Name"
+                placeholder="First Name"
                 className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
               <input

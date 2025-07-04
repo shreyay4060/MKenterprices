@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { addDoc, collection } from "firebase/firestore";
 import { fireDB } from "../../firebase/FirebaseConfig";
 import { useNavigate } from "react-router";
+import axios from "axios"; // ✅ Added
 
 export default function AddWork() {
   const navigate = useNavigate();
@@ -13,24 +14,21 @@ export default function AddWork() {
   const { loading, setLoading } = context;
 
   const [work, setWork] = useState({
-  title: "",
-  image: "",
-  place: "",
-  location: "",
-  description: "",
-  salary: "",
-  time: "",
-  fromDate: "",
-  toDate: "",
-  postedDate:new Date().toLocaleString(
-    "en-US",{
-      month:"short",
-      day:"2-digit",
-      year:"numeric"
-    }
-  )
-});
-
+    title: "",
+    image: "",
+    place: "",
+    location: "",
+    description: "",
+    salary: "",
+    time: "",
+    fromDate: "",
+    toDate: "",
+    postedDate: new Date().toLocaleString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    }),
+  });
 
   const handleChange = (event) => {
     const { name, value, type, files } = event.target;
@@ -50,7 +48,7 @@ export default function AddWork() {
     setLoading(true);
     try {
       const { title, image, location, salary } = work;
-      if (!title  || !location || !salary) {
+      if (!title || !location || !salary) {
         toast.error("Please fill all the required fields");
         setLoading(false);
         return;
@@ -59,17 +57,24 @@ export default function AddWork() {
       await addDoc(collection(fireDB, "work"), work);
       toast.success("Work added successfully");
 
+      // ✅ Send auto notification after adding work
+      await axios.post("http://localhost:5000/sendNotification", {
+        title: "New Work Added",
+        body: "New work is uploaded, please check it out!",
+        key: "super_secret_123", // ✅ Required
+      });
+
       setWork({
         title: "",
         image: "",
-        place:"",
+        place: "",
         location: "",
         description: "",
         salary: "",
         time: "",
         fromDate: "",
         toDate: "",
-        postedDate:""
+        postedDate: "",
       });
 
       navigate("/adminDashboard");
@@ -119,6 +124,7 @@ export default function AddWork() {
                 className="w-full px-4 py-2 text-white bg-gray-800 border border-violet-600 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-violet-700 file:text-white hover:file:bg-violet-600"
               />
             </div>
+
             {/* Place */}
             <div>
               <label className="block text-violet-300 mb-2">Place</label>

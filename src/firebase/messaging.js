@@ -4,6 +4,7 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { doc, setDoc } from "firebase/firestore";
 import { fireDB } from "./FirebaseConfig";
 
+// ✅ Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAH2Dqb8PR55uVjASJFJa_omCtNUboznQE",
   authDomain: "mkgrp-7c801.firebaseapp.com",
@@ -13,12 +14,13 @@ const firebaseConfig = {
   appId: "1:434906872434:web:458344549563d20a69e0eb",
 };
 
+// ✅ Initialize Firebase app (singleton)
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 const messaging = getMessaging(app);
 
+// ✅ Request permission + register service worker + save token
 export const requestNotificationPermission = async (userId) => {
   try {
-    // Request permission inside a user gesture context (e.g., login/signup click)
     const permission = await Notification.requestPermission();
     console.log("🔔 Notification permission:", permission);
 
@@ -27,8 +29,13 @@ export const requestNotificationPermission = async (userId) => {
       return null;
     }
 
+    // ✅ Register service worker
+    const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+
+    // ✅ Get FCM token
     const token = await getToken(messaging, {
       vapidKey: "BH8LQbEluEd6R-8yLCtgJ1KQmJbsCFWHML3Wyb0xBzq7eDQyWRUO1LHXA9ck0oOtlkNx-_CY_ZWwV6JqP2ERf_k",
+      serviceWorkerRegistration: registration,
     });
 
     if (token) {
@@ -47,5 +54,5 @@ export const requestNotificationPermission = async (userId) => {
   }
 };
 
-// Helpful foreground notification listener setup (safe to import anywhere in React tree)
+// ✅ Export messaging and listener
 export { messaging, onMessage };

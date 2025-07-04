@@ -1,27 +1,37 @@
+// ✅ Updated server.js
 const express = require("express");
 const admin = require("firebase-admin");
 const cors = require("cors");
 const { getFirestore } = require("firebase-admin/firestore");
+require("dotenv").config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const serviceAccount = require("./serviceAccountKey.json");
-
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+  }),
 });
 
 const db = getFirestore();
+const ADMIN_KEY = "super_secret_123";
 
 app.post("/sendNotification", async (req, res) => {
   console.log("🔔 Incoming request:", req.body);
 
-  const { title, body } = req.body;
+  const { title, body, key } = req.body;
 
   if (!title || !body) {
     return res.status(400).json({ success: false, error: "Missing title or body" });
+  }
+
+  // If key exists in request, validate it. If not present, skip check.
+  if (key !== undefined && key !== ADMIN_KEY) {
+    return res.status(403).json({ success: false, error: "Unauthorized request" });
   }
 
   try {
@@ -35,7 +45,11 @@ app.post("/sendNotification", async (req, res) => {
     }
 
     const message = {
-      notification: { title, body },
+      notification: {
+        title,
+        body,
+        image: "https://mkenterprices.vercel.app/images/logo.jpg",
+      },
       android: {
         priority: "high",
         notification: {
@@ -53,6 +67,7 @@ app.post("/sendNotification", async (req, res) => {
       webpush: {
         notification: {
           icon: "https://mkenterprices.vercel.app/images/logo.jpg",
+          image: "https://mkenterprices.vercel.app/images/logo.jpg",
         },
       },
     };
@@ -62,15 +77,15 @@ app.post("/sendNotification", async (req, res) => {
       ...message,
     });
 
-    console.log("✅ Notification response:", response);
-    res.json({ success: true, response });
+    console.log(`✅ Notifications sent: ${response.successCount}`);
+    res.json({ success: true, sent: response.successCount });
   } catch (err) {
-    console.error("❌ Error while sending notification:", err);
+    console.error("❌ Error sending notification:", err.message);
     res.status(500).json({ success: false, error: err.message });
   }
 });
 
 const PORT = 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });

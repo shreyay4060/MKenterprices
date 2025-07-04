@@ -1,3 +1,4 @@
+// public/firebase-messaging-sw.js
 importScripts("https://www.gstatic.com/firebasejs/10.12.1/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/10.12.1/firebase-messaging-compat.js");
 
@@ -12,23 +13,23 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
+// ✅ Background message handler
 messaging.onBackgroundMessage(function (payload) {
   console.log("🔕 Background message received:", payload);
 
-  const notificationTitle = payload.notification.title;
+  const notificationTitle = payload.notification.title || "🔔 New Notification";
   const notificationOptions = {
     body: payload.notification.body,
-    icon: "/images/logo.jpg", // ✅ Use correct path
-    badge: "/images/logo.jpg", // optional
+    icon: payload.notification.icon || "/images/logo.jpg",
+    badge: "/images/logo.jpg",
+    image: payload.notification.image || undefined,
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-// ✅ Handle click (optional)
+// ✅ Optional click behavior
 self.addEventListener("notificationclick", function (event) {
   event.notification.close();
-  event.waitUntil(
-    clients.openWindow("/") // or custom URL
-  );
+  event.waitUntil(clients.openWindow("/"));
 });
