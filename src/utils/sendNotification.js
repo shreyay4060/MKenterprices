@@ -1,7 +1,8 @@
 import axios from "axios";
 
 // Optional: use your deployed backend URL instead of localhost
-const BASE_URL = "http://localhost:5000"; // Change to live URL when deployed
+const BASE_URL = "https://mkgrp-backend.onrender.com"; // ✅ Use deployed backend
+
 
 export const sendAutoNotification = async () => {
   try {
@@ -17,6 +18,8 @@ export const sendAutoNotification = async () => {
       console.warn("⚠️ Notification failed:", res.data.error || "Unknown error");
     }
   } catch (err) {
-    console.error("❌ Notification request error:", err.message);
-  }
+  console.error("❌ Notification request error:", err.message);
+  alert("Failed to send notification. Please check your internet or try again later.");
+}
+
 };
