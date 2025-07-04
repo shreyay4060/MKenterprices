@@ -47,11 +47,16 @@ export default function Login() {
         const userDoc = querySnapshot.docs[0];
         const userData = userDoc.data();
 
-        // ✅ Request permission and save token
+        // ✅ Request permission and save FCM token if available
         const fcmToken = await requestNotificationPermission(user.uid);
-        await setDoc(doc(fireDB, "user", user.uid), { ...userData, fcmToken }, { merge: true });
+        console.log("🔔 FCM Token:", fcmToken);
 
-        localStorage.setItem("users", JSON.stringify({ ...userData, fcmToken }));
+        if (fcmToken) {
+          await setDoc(doc(fireDB, "user", user.uid), { ...userData, fcmToken }, { merge: true });
+          localStorage.setItem("users", JSON.stringify({ ...userData, fcmToken }));
+        } else {
+          localStorage.setItem("users", JSON.stringify(userData));
+        }
 
         toast.success("Login successful");
         setUserLogin({ email: "", password: "" });

@@ -59,7 +59,6 @@ export default function Signup() {
           email: user.email,
           uid: user.uid,
           role: "user",
-          fcmToken,
           time: Timestamp.now(),
           date: new Date().toLocaleString("en-US", {
             month: "short",
@@ -67,12 +66,16 @@ export default function Signup() {
             year: "numeric",
           }),
         };
+        if (fcmToken) userData.fcmToken = fcmToken;
+
         await setDoc(doc(fireDB, "user", user.uid), userData);
         userData = { ...userData, id: user.uid };
       } else {
         const docSnap = snapshot.docs[0];
-        userData = { id: docSnap.id, ...docSnap.data(), fcmToken };
-        await setDoc(doc(fireDB, "user", userData.id), { ...userData });
+        userData = { id: docSnap.id, ...docSnap.data() };
+        if (fcmToken) userData.fcmToken = fcmToken;
+
+        await setDoc(doc(fireDB, "user", userData.id), userData);
       }
 
       localStorage.setItem("users", JSON.stringify(userData));
@@ -102,11 +105,7 @@ export default function Signup() {
 
     setLoading(true);
     try {
-      const result = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const result = await createUserWithEmailAndPassword(auth, email, password);
       const user = result.user;
 
       const fcmToken = await requestNotificationPermission(user.uid);
@@ -116,7 +115,6 @@ export default function Signup() {
         email,
         uid: user.uid,
         role: userSignup.role,
-        fcmToken,
         time: Timestamp.now(),
         date: new Date().toLocaleString("en-US", {
           month: "short",
@@ -124,6 +122,8 @@ export default function Signup() {
           year: "numeric",
         }),
       };
+
+      if (fcmToken) userData.fcmToken = fcmToken;
 
       await setDoc(doc(fireDB, "user", user.uid), userData);
 
