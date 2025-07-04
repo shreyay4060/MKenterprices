@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Optional: use your deployed backend URL instead of localhost
-const BASE_URL = "https://mkgrp-backend.onrender.com"; // ✅ Use deployed backend
+const BASE_URL = "https://mkgrp-backend-1.onrender.com/"; // ✅ Use deployed backend
 
 
 export const sendAutoNotification = async () => {
