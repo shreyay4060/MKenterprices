@@ -58,7 +58,7 @@ export default function AddWork() {
       toast.success("Work added successfully");
 
       // ✅ Send auto notification after adding work
-      await axios.post("http://localhost:5000/sendNotification", {
+      await axios.post("https://mkenterprises-backend.onrender.com/sendNotification", {
         title: "New Work Added",
         body: "New work is uploaded, please check it out!",
         key: "super_secret_123", // ✅ Required
