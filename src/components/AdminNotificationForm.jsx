@@ -20,7 +20,7 @@ export default function AdminNotificationForm() {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/sendNotification", {
+      const res = await fetch("https://mkenterprises-backend.onrender.com", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, body }),
