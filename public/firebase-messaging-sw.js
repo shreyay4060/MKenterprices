@@ -8,28 +8,29 @@ firebase.initializeApp({
   projectId: "mkgrp-7c801",
   storageBucket: "mkgrp-7c801.appspot.com",
   messagingSenderId: "434906872434",
-  appId: "1:434906872434:web:458344549563d20a69e0eb"
+  appId: "1:434906872434:web:458344549563d20a69e0eb",
 });
 
 const messaging = firebase.messaging();
 
-// ✅ Background message handler
+// ✅ Background notification handler
 messaging.onBackgroundMessage(function (payload) {
   console.log("🔕 Background message received:", payload);
 
   const notificationTitle = payload.notification.title || "🔔 New Notification";
   const notificationOptions = {
-    body: payload.notification.body,
+    body: payload.notification.body || "You have a new message.",
     icon: payload.notification.icon || "/images/logo.jpg",
     badge: "/images/logo.jpg",
     image: payload.notification.image || undefined,
+    requireInteraction: true, // Keeps notification open until user interacts
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-// ✅ Optional click behavior
+// ✅ Notification click behavior
 self.addEventListener("notificationclick", function (event) {
   event.notification.close();
-  event.waitUntil(clients.openWindow("/"));
+  event.waitUntil(clients.openWindow("/")); // Opens home page on click
 });

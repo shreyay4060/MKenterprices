@@ -28,17 +28,16 @@ import ClientApplicationForm from "./pages/clientApplication/ClientApplicationFo
 import AdminNotificationForm from "./components/AdminNotificationForm";
 
 import { onAuthStateChanged } from "firebase/auth";
-import { messaging, requestNotificationPermission } from "./firebase/messaging";
-import { onMessage } from "firebase/messaging";
+import { messaging, requestNotificationPermission, onMessage } from "./firebase/messaging";
 import { auth } from "./firebase/FirebaseConfig";
+import toast from "react-hot-toast";
 
 export default function App() {
   useEffect(() => {
-    // Foreground push notification handler
-    onMessage(messaging, (payload) => {
-      console.log("📨 Message received in foreground:", payload);
-
-      const { title, body, icon, image } = payload.notification;
+    // ✅ Foreground push notification handler
+    const unsubscribe = onMessage((payload) => {
+      console.log("📨 Foreground message:", payload);
+      const { title, body, icon, image } = payload?.notification || {};
 
       if (Notification.permission === "granted") {
         new Notification(title || "Notification", {
@@ -48,14 +47,22 @@ export default function App() {
           badge: icon || "/images/logo.jpg",
           requireInteraction: true,
         });
+      } else {
+        toast(`${title || "🔔 New Message"}: ${body || ""}`);
       }
     });
 
-    onAuthStateChanged(auth, (user) => {
+    // ✅ Request notification permission on auth change
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       if (user) {
         requestNotificationPermission(user.uid);
       }
     });
+
+    return () => {
+      unsubscribe();
+      unsubscribeAuth();
+    };
   }, []);
 
   return (
