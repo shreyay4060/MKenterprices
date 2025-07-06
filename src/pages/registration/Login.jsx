@@ -1,3 +1,4 @@
+// ✅ Login.jsx - only the Firestore query logic is changed to use `doc()`
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router";
 import Loader from "../../components/loader/Loader";
@@ -5,14 +6,13 @@ import myContext from "../../context/myContext";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, fireDB } from "../../firebase/FirebaseConfig";
 import toast from "react-hot-toast";
-import { collection, getDocs, query, where, doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import Layout from "../../components/layout/Layout";
-import { requestNotificationPermission } from "../../firebase/messaging"; // ✅ import
+import { requestNotificationPermission } from "../../firebase/messaging";
 
 export default function Login() {
   const navigate = useNavigate();
   const { loading, setLoading } = useContext(myContext);
-
   const [close, setClose] = useState(false);
   const [userLogin, setUserLogin] = useState({ email: "", password: "" });
 
@@ -40,19 +40,17 @@ export default function Login() {
       const users = await signInWithEmailAndPassword(auth, email, password);
       const user = users.user;
 
-      const q = query(collection(fireDB, "user"), where("uid", "==", user.uid));
-      const querySnapshot = await getDocs(q);
+      const userDocRef = doc(fireDB, "user", user.uid);
+      const userDocSnap = await getDoc(userDocRef);
 
-      if (!querySnapshot.empty) {
-        const userDoc = querySnapshot.docs[0];
-        const userData = userDoc.data();
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
 
-        // ✅ Request permission and save FCM token if available
         const fcmToken = await requestNotificationPermission(user.uid);
-        console.log("🔔 FCM Token:", fcmToken);
+        console.log("\ud83d\udd14 FCM Token:", fcmToken);
 
         if (fcmToken) {
-          await setDoc(doc(fireDB, "user", user.uid), { ...userData, fcmToken }, { merge: true });
+          await setDoc(userDocRef, { ...userData, fcmToken }, { merge: true });
           localStorage.setItem("users", JSON.stringify({ ...userData, fcmToken }));
         } else {
           localStorage.setItem("users", JSON.stringify(userData));
@@ -89,11 +87,9 @@ export default function Login() {
             >
               &times;
             </button>
-
             <h2 className="text-2xl font-bold text-center text-yellow-400 mb-6">
               Login to Your Account
             </h2>
-
             <form onSubmit={userLoginFun} className="space-y-5">
               <input
                 type="email"
@@ -123,7 +119,6 @@ export default function Login() {
                 {loading ? "Logging in..." : "Login"}
               </button>
             </form>
-
             <p className="mt-4 text-center text-sm text-gray-400">
               Don’t have an account?{" "}
               <span
