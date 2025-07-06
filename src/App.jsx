@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { onAuthStateChanged } from "firebase/auth";
+import toast from "react-hot-toast";
+
 import HomePage from "./pages/homePage/HomePage";
 import Login from "./pages/registration/Login";
 import Signup from "./pages/registration/Signup";
-import { Toaster } from "react-hot-toast";
 import MyState from "./context/myState";
 import WorkforceService from "./pages/service/WorkforceService";
 import About from "./pages/about/About";
@@ -27,15 +30,13 @@ import Review from "./pages/review/Review";
 import ClientApplicationForm from "./pages/clientApplication/ClientApplicationForm";
 import AdminNotificationForm from "./components/AdminNotificationForm";
 
-import { onAuthStateChanged } from "firebase/auth";
 import { messaging, requestNotificationPermission, onMessage } from "./firebase/messaging";
 import { auth } from "./firebase/FirebaseConfig";
-import toast from "react-hot-toast";
 
 export default function App() {
   useEffect(() => {
     // ✅ Foreground push notification handler
-    const unsubscribe = onMessage((payload) => {
+    const unsubscribeOnMessage = onMessage((payload) => {
       console.log("📨 Foreground message:", payload);
       const { title, body, icon, image } = payload?.notification || {};
 
@@ -52,15 +53,15 @@ export default function App() {
       }
     });
 
-    // ✅ Request notification permission on auth change
+    // ✅ Request notification permission after login
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
-      if (user) {
+      if (user?.uid) {
         requestNotificationPermission(user.uid);
       }
     });
 
     return () => {
-      unsubscribe();
+      unsubscribeOnMessage();
       unsubscribeAuth();
     };
   }, []);
