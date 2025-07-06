@@ -30,10 +30,16 @@ export default function Navbar() {
 
   // ✅ Add dashboard link conditionally
   if (role === "admin") {
-    baseLinks.push({ path: "/adminDashboard", label: user?.name.slice(0,8) || "Admin" });
-  } else if (role === "user") {
-    baseLinks.push({ path: "/userDashboard", label: user?.name.slice(0,8) || "User" });
-  }
+  baseLinks.push({
+    path: "/adminDashboard",
+    label: user?.name?.split(" ")[0] || "Admin",
+  });
+} else if (role === "user") {
+  baseLinks.push({
+    path: "/userDashboard",
+    label: user?.name?.split(" ")[0] || "User",
+  });
+}
 
   const logoutFun = () => {
     localStorage.clear("users");

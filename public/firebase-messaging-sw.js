@@ -1,6 +1,7 @@
 // public/firebase-messaging-sw.js
 importScripts("https://www.gstatic.com/firebasejs/10.12.1/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/10.12.1/firebase-messaging-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore-compat.js");
 
 firebase.initializeApp({
   apiKey: "AIzaSyAH2Dqb8PR55uVjASJFJa_omCtNUboznQE",
@@ -13,24 +14,23 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// ✅ Background notification handler
 messaging.onBackgroundMessage(function (payload) {
   console.log("🔕 Background message received:", payload);
 
-  const notificationTitle = payload.notification.title || "🔔 New Notification";
+  const notificationTitle =
+    payload.notification?.title || payload.data?.title || "🔔 New Notification";
   const notificationOptions = {
-    body: payload.notification.body || "You have a new message.",
-    icon: payload.notification.icon || "/images/logo.jpg",
+    body: payload.notification?.body || payload.data?.body || "You have a new message.",
+    icon: payload.notification?.icon || "/images/logo.jpg",
     badge: "/images/logo.jpg",
-    image: payload.notification.image || undefined,
-    requireInteraction: true, // Keeps notification open until user interacts
+    image: payload.notification?.image || payload.data?.image,
+    requireInteraction: true,
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-// ✅ Notification click behavior
 self.addEventListener("notificationclick", function (event) {
   event.notification.close();
-  event.waitUntil(clients.openWindow("/")); // Opens home page on click
+  event.waitUntil(clients.openWindow("/")); // Redirect to homepage on click
 });
