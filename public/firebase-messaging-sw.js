@@ -1,7 +1,6 @@
 // public/firebase-messaging-sw.js
 importScripts("https://www.gstatic.com/firebasejs/10.12.1/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/10.12.1/firebase-messaging-compat.js");
-importScripts("https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore-compat.js");
 
 firebase.initializeApp({
   apiKey: "AIzaSyAH2Dqb8PR55uVjASJFJa_omCtNUboznQE",
@@ -32,5 +31,5 @@ messaging.onBackgroundMessage(function (payload) {
 
 self.addEventListener("notificationclick", function (event) {
   event.notification.close();
-  event.waitUntil(clients.openWindow("/")); // Redirect to homepage on click
+  event.waitUntil(clients.openWindow("/"));
 });
