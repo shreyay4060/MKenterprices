@@ -1,4 +1,4 @@
-// src/pages/admin/AdminNotificationForm.jsx
+// ✅ src/pages/admin/AdminNotificationForm.jsx (Updated)
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import Layout from "./layout/Layout";
@@ -24,7 +24,7 @@ export default function AdminNotificationForm() {
         body: JSON.stringify({
           title,
           body,
-          key: "super_secret_123", // ✅ Required to authorize with backend
+          key: "super_secret_123" // ✅ Required to match backend AUTH key
         }),
       });
 
@@ -35,7 +35,7 @@ export default function AdminNotificationForm() {
         setBody("");
         navigate("/adminDashboard");
       } else {
-        toast.error("❌ Failed to send notification.");
+        toast.error("❌ Failed to send notification: " + (data.error || "Unknown error"));
       }
     } catch (error) {
       console.error("Error:", error);

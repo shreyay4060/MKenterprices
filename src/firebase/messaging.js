@@ -1,3 +1,4 @@
+// ✅ firebase/messaging.js
 import { initializeApp, getApps } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { doc, setDoc } from "firebase/firestore";
@@ -25,9 +26,11 @@ export const requestNotificationPermission = async (userId) => {
       return null;
     }
 
+    // ✅ Ensure the service worker is registered before retrieving the token
     const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
     console.log("✅ Service worker registered:", registration);
 
+    // ✅ Get FCM token
     const token = await getToken(messaging, {
       vapidKey: "BH8LQbEluEd6R-8yLCtgJ1KQmJbsCFWHML3Wyb0xBzq7eDQyWRUO1LHXA9ck0oOtlkNx-_CY_ZWwV6JqP2ERf_k",
       serviceWorkerRegistration: registration,

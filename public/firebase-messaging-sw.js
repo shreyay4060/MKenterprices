@@ -13,23 +13,35 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
+// ✅ Handle background notification
 messaging.onBackgroundMessage(function (payload) {
   console.log("🔕 Background message received:", payload);
 
-  const notificationTitle =
-    payload.notification?.title || payload.data?.title || "🔔 New Notification";
-  const notificationOptions = {
+  const title = payload.notification?.title || payload.data?.title || "🔔 New Notification";
+  const options = {
     body: payload.notification?.body || payload.data?.body || "You have a new message.",
-    icon: payload.notification?.icon || "/images/logo.jpg",
-    badge: "/images/logo.jpg",
+    icon: payload.notification?.icon || "https://mkenterprices.vercel.app/images/logo.jpg",
+    badge: "https://mkenterprices.vercel.app/images/logo.jpg",
     image: payload.notification?.image || payload.data?.image,
     requireInteraction: true,
   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  self.registration.showNotification(title, options);
 });
 
+// ✅ Redirect user to site when notification is clicked
 self.addEventListener("notificationclick", function (event) {
   event.notification.close();
-  event.waitUntil(clients.openWindow("/"));
+  event.waitUntil(
+    clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+      for (const client of clientList) {
+        if (client.url === "/" && "focus" in client) {
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow("/");
+      }
+    })
+  );
 });
