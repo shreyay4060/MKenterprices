@@ -1,4 +1,4 @@
-// Updated App.jsx
+// App.jsx
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
@@ -36,6 +36,7 @@ import { auth } from "./firebase/FirebaseConfig";
 
 export default function App() {
   useEffect(() => {
+    // ✅ Foreground notifications
     const unsubscribeOnMessage = onMessage((payload) => {
       console.log("📨 Foreground message:", payload);
       const { title, body, icon, image } = payload?.notification || {};
@@ -53,6 +54,7 @@ export default function App() {
       }
     });
 
+    // ✅ Request permission after auth state is ready
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       if (user?.uid) {
         requestNotificationPermission(user.uid);
