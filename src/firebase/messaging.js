@@ -27,10 +27,15 @@ export const requestNotificationPermission = async (userId) => {
     }
 
     // ✅ Ensure the service worker is registered before retrieving the token
-    const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
-    console.log("✅ Service worker registered:", registration);
+    const registration = await navigator.serviceWorker
+      .register("/firebase-messaging-sw.js")
+      .catch((err) => {
+        console.error("❌ Failed to register service worker:", err);
+        return null;
+      });
 
-    // ✅ Get FCM token
+    if (!registration) return null;
+
     const token = await getToken(messaging, {
       vapidKey: "BH8LQbEluEd6R-8yLCtgJ1KQmJbsCFWHML3Wyb0xBzq7eDQyWRUO1LHXA9ck0oOtlkNx-_CY_ZWwV6JqP2ERf_k",
       serviceWorkerRegistration: registration,
